@@ -320,7 +320,7 @@ OpenCover/
 /ExtendedWPFToolkitSolution/Src/Xceed.Wpf.DataGrid/obj/*
 /ExtendedWPFToolkitSolution/Src/Xceed.Wpf.Toolkit.LiveExplorer/bin/*
 /ExtendedWPFToolkitSolution/Src/Xceed.Wpf.Toolkit.LiveExplorer/CodeFiles/*
-/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.Toolkit.LiveExplorer/CodeFiles/*
+/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.Toolkit.LiveExplorer/CodeFiles/*.txt
 /ExtendedWPFToolkitSolution/Src/Xceed.Wpf.Toolkit.LiveExplorer/obj/*
 /ExtendedWPFToolkitSolution/Src/Xceed.Wpf.Toolkit.LiveExplorer/Xceed.Wpf.Toolkit.LiveExplorer.csproj.user
 /ExtendedWPFToolkitSolution/Src/Xceed.Wpf.Toolkit/bin/*
