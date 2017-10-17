@@ -159,6 +159,7 @@ namespace Xceed.Wpf.Toolkit
       {
         // if UpdateValueOnEnterKey is true, 
         // Sync Value on Text only when Enter Key is pressed.
+        // 20171017 IUEditor (UpdateValue_ -> Spinner update : format string not working / )
         if( this.UpdateValueOnEnterKey )
         {
           var currentValue = this.ConvertTextToValue( this.TextBox.Text );
