@@ -169,7 +169,19 @@ namespace Xceed.Wpf.Toolkit
       }
     }
 
-    public static readonly DependencyProperty HeaderBackgroundProperty = DependencyProperty.Register( "HeaderBackground", typeof( Brush ), typeof( WizardPage ), new UIPropertyMetadata( Brushes.White ) );
+
+        // IUEditor. 2017.10-20 / add finish button style
+        public static DependencyProperty FinishButtonStyleProperty = DependencyProperty.Register("FinishButtonStyle",
+                                        typeof(Style),
+                                        typeof(WizardPage));
+        public Style FinishButtonStyle
+        {
+            get { return (Style)GetValue(FinishButtonStyleProperty); }
+            set { SetValue(FinishButtonStyleProperty, value); }
+        }
+
+
+        public static readonly DependencyProperty HeaderBackgroundProperty = DependencyProperty.Register( "HeaderBackground", typeof( Brush ), typeof( WizardPage ), new UIPropertyMetadata( Brushes.White ) );
     public Brush HeaderBackground
     {
       get
@@ -272,6 +284,8 @@ namespace Xceed.Wpf.Toolkit
         base.SetValue( TitleProperty, value );
       }
     }
+
+
 
     #endregion //Properties
 

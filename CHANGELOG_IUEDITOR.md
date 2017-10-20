@@ -11,6 +11,9 @@ The "Master" Branch will always be synced to the official Codeplex Version.
 
 ## History
 
+* 2017-10-20 
+	* wizard button style add (binding) 
+
 * 2017-10-17 : upstream change([https://github.com/xceedsoftware/wpftoolkit](https://github.com/xceedsoftware/wpftoolkit "xceed"))
 	* color applied (no color) 
 	* numeric (remove - code 위치 표시)  
