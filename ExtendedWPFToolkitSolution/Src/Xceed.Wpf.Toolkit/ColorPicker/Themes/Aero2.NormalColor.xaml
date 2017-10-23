@@ -266,7 +266,7 @@
                                             BorderBrush="{DynamicResource {x:Static themes:ResourceKeys.ControlNormalBorderKey}}"
                                             BorderThickness="1"
                                             Style="{StaticResource ColorDisplayStyle}" />
-                                        <TextBlock VerticalAlignment="Center" Text="{Binding SelectedColorText, RelativeSource={RelativeSource TemplatedParent}}" />
+                                        <TextBlock VerticalAlignment="Center" Text="{Binding SelectedColorText, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue=No color}" />
                                     </StackPanel>
                                 </Border>
                             </Grid>
