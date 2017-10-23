@@ -203,7 +203,7 @@
 
     <!--  IUEditor edited by DH 2017.06.15  -->
     <!--  빨간색 대각선 추가  -->
-    <DrawingBrush x:Key="RedDiagonalLineBrush">
+    <DrawingBrush x:Key="RedDiagonalLineBrush" Stretch="Fill">
         <DrawingBrush.Drawing>
             <DrawingGroup>
                 <GeometryDrawing Brush="White">

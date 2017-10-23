@@ -184,17 +184,19 @@
         <Setter Property="ContentTemplate">
             <Setter.Value>
                 <DataTemplate>
-                    <Border Background="{StaticResource CheckerBrush}">
-                        <Rectangle Fill="{Binding SelectedColor, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:ColorPicker}, Converter={StaticResource ColorToSolidColorBrushConverter}, TargetNullValue={StaticResource RedDiagonalLineBrush}}" />
+                    <Border Margin="0" Padding="0" Background="{StaticResource CheckerBrush}">
+                        <Rectangle Margin="0" Fill="{Binding SelectedColor, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:ColorPicker}, Converter={StaticResource ColorToSolidColorBrushConverter}, TargetNullValue={StaticResource RedDiagonalLineBrush}, FallbackValue={StaticResource RedDiagonalLineBrush}}" />
                     </Border>
                 </DataTemplate>
             </Setter.Value>
         </Setter>
+        <!-- IUEditor remove null style
         <Style.Triggers>
             <DataTrigger Binding="{Binding SelectedColor, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:ColorPicker}}" Value="{x:Null}">
                 <Setter Property="Visibility" Value="Collapsed" />
             </DataTrigger>
         </Style.Triggers>
+        -->
     </Style>
 
     <Style x:Key="ColorListStyle" TargetType="ListBox">
