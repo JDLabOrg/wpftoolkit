@@ -11,8 +11,10 @@ The "Master" Branch will always be synced to the official Codeplex Version.
 
 ## History
 
-* 2017-10-20 
+* 2017-10-20
+	* property grid clear button image change / border color  
 	* wizard button style add (binding) 
+
 
 * 2017-10-17 : upstream change([https://github.com/xceedsoftware/wpftoolkit](https://github.com/xceedsoftware/wpftoolkit "xceed"))
 	* color applied (no color) 
