@@ -754,6 +754,8 @@ namespace Xceed.Wpf.Toolkit
     private static ObservableCollection<ColorItem> CreateStandardColors()
     {
       ObservableCollection<ColorItem> standardColors = new ObservableCollection<ColorItem>();
+            // IUEditor 2017-10-23, added null color
+      standardColors.Add( new ColorItem( null, "No color" ) );
       standardColors.Add( new ColorItem( Colors.Transparent, "Transparent" ) );
       standardColors.Add( new ColorItem( Colors.White, "White" ) );
       standardColors.Add( new ColorItem( Colors.Gray, "Gray" ) );
