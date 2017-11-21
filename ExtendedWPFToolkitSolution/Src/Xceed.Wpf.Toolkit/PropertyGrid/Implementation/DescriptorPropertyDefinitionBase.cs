@@ -129,6 +129,11 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     protected abstract BindingBase CreateValueBinding();
 
+        // IUEditor start
+        protected abstract BindingBase CreateEditorEnabledBinding();
+        public abstract string EditorEnabledPropertyName();
+        // IUEditor end
+
     #endregion
 
     #region Internal Methods
@@ -231,6 +236,17 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
         bindingExpr.UpdateTarget();
       }
     }
+
+        // IUEditor start
+        internal void UpdateEditorEnabledFromSource()
+        {
+            var bindingExpr = BindingOperations.GetBindingExpressionBase(this, EditorEnabledProperty);
+            if (bindingExpr != null)
+            {
+                bindingExpr.UpdateTarget();
+            }
+        }
+        // IUEditor end
 
 
 
@@ -614,6 +630,26 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     #endregion //Value Property
 
+
+        // IUEditor Start
+        #region Enabled Property (DP)
+        public static readonly DependencyProperty EditorEnabledProperty = DependencyProperty.Register("EditorEnabled", typeof(bool), typeof(DescriptorPropertyDefinitionBase), new FrameworkPropertyMetadata(true, OnEditorEnabledChanged));
+        public bool EditorEnabled
+        {
+            get => (bool)GetValue(EditorEnabledProperty);
+            set => SetValue(EditorEnabledProperty, value);
+        }
+        private static void OnEditorEnabledChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+        {
+            ((DescriptorPropertyDefinitionBase)o).OnEditorEnabledChanged((bool)e.OldValue, (bool)e.NewValue);
+        }
+        internal virtual void OnEditorEnabledChanged(bool oldValue, bool newValue)
+        {
+            // todo: Is this necessary? remove if not
+        }
+        #endregion // Enabled Property
+        // IUEditor End
+
     public virtual void InitProperties()
     {
       // Do "IsReadOnly" and PropertyName first since the others may need that value.
@@ -636,6 +672,25 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
       BindingBase valueBinding = this.CreateValueBinding();
       BindingOperations.SetBinding( this, DescriptorPropertyDefinitionBase.ValueProperty, valueBinding );
+
+            // IUEditor start
+            Console.WriteLine("InitProperties - enabledBinding Begin");
+            BindingBase enabledBinding = this.CreateEditorEnabledBinding();
+            if (enabledBinding != null)
+            {
+                Console.WriteLine("InitProperties - enabledBinding not null:" + enabledBinding.ToString());
+                try
+                {
+                    BindingOperations.SetBinding(this, DescriptorPropertyDefinitionBase.EditorEnabledProperty, enabledBinding);
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine("SetBinding Error for property " + PropertyName);
+                    Console.WriteLine( e.StackTrace );
+                }
+            }
+            Console.WriteLine("InitProperties - enabledBinding End");
+            // IUEditor end
     }
 
 

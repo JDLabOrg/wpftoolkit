@@ -197,6 +197,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     public virtual void NotifyPropertyDefinitionsCollectionChanged() { }
 
     public abstract void UpdateValuesFromSource();
+        public abstract void UpdateEditorEnabledFromSource();// IUEditor
 
     protected internal virtual void SetPropertiesExpansion( bool isExpanded )
     {

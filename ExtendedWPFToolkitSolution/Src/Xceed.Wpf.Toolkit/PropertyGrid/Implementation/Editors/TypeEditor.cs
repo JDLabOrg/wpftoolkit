@@ -45,6 +45,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
       SetValueDependencyProperty();
       SetControlProperties( propertyItem );
       ResolveValueBinding( propertyItem );
+            ResolveEditorEnabledBinding(propertyItem); // IUEditor
       return Editor;
     }
 
@@ -67,10 +68,25 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
       var _binding = new Binding( "Value" );
       _binding.Source = propertyItem;
       _binding.UpdateSourceTrigger = (Editor is InputBase) ? UpdateSourceTrigger.PropertyChanged : UpdateSourceTrigger.Default;
-      _binding.Mode = propertyItem.IsReadOnly ? BindingMode.OneWay : BindingMode.TwoWay;
+            //_binding.Mode = propertyItem.IsReadOnly ? BindingMode.OneWay : BindingMode.TwoWay;
+            _binding.Mode = BindingMode.TwoWay; // IUEditor JB
       _binding.Converter = CreateValueConverter();
       BindingOperations.SetBinding( Editor, ValueProperty, _binding );
     }
+
+        // IUEditor start
+        // TODO: @JB After test,(if successful) promote this method to ITypeEditor for all other editors not inheriting TypeEditor
+        protected void ResolveEditorEnabledBinding(PropertyItem propertyItem)
+        {
+            var _binding = new Binding("EditorEnabled")
+            {
+                Source = propertyItem,
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+                Mode = BindingMode.TwoWay
+            };
+            BindingOperations.SetBinding(Editor, UIElement.IsEnabledProperty, _binding);
+        }
+        // IUEditor end
 
     protected virtual void SetControlProperties( PropertyItem propertyItem )
     {

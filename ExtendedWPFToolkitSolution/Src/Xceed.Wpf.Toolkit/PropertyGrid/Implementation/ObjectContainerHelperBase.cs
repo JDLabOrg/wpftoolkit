@@ -122,6 +122,17 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       }
     }
 
+        // IUEditor start
+        public override void UpdateEditorEnabledFromSource()
+        {
+            foreach(PropertyItem item in PropertyItems)
+            {
+                item.DescriptorDefinition.UpdateEditorEnabledFromSource();
+                item.ContainerHelper.UpdateEditorEnabledFromSource();
+            }
+        }
+        // IUEditor end
+
     public void GenerateProperties()
     {
       if( (PropertyItems.Count == 0)
@@ -398,6 +409,12 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       SetupDefinitionBinding( propertyItem, PropertyItemBase.AdvancedOptionsIconProperty, pd, () => pd.AdvancedOptionsIcon, BindingMode.OneWay );
       SetupDefinitionBinding( propertyItem, PropertyItemBase.AdvancedOptionsTooltipProperty, pd, () => pd.AdvancedOptionsTooltip, BindingMode.OneWay );
       SetupDefinitionBinding( propertyItem, PropertyItem.ValueProperty, pd, () => pd.Value, BindingMode.TwoWay );
+            // IUEditor start
+            string editorEnabledPropertyName = pd.EditorEnabledPropertyName();
+            if (editorEnabledPropertyName != null) { 
+                SetupEnabledBiding(propertyItem, pd, "EditorEnabled", BindingMode.TwoWay );
+            }
+            // IUEditor end
 
       if( pd.CommandBindings != null )
       {
@@ -450,6 +467,18 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
       propertyItem.SetBinding( itemProperty, binding );
     }
+
+        // IUEditor start
+        private void SetupEnabledBiding(PropertyItem propertyItem, DescriptorPropertyDefinitionBase pd, string enabledProperty, BindingMode bindingMode)
+        {
+            Binding binding = new Binding(enabledProperty)
+            {
+                Source = pd,
+                Mode = bindingMode
+            };
+            propertyItem.SetBinding(PropertyItem.EditorEnabledProperty, binding);
+        }
+        // IUEditor end
 
     internal FrameworkElement GenerateChildrenEditorElement( PropertyItem propertyItem )
     {

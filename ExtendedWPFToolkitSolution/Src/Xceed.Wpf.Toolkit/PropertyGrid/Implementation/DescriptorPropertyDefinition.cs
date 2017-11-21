@@ -107,6 +107,46 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
       return binding;
     }
+        // IUEditor start
+
+        private const string ENABLED_PREFIX = "IsEnabled"; // IsEnabled[PropertyName]
+        /// <summary>
+        /// Gives SelectedObject's enabled property name, if exists
+        /// </summary>
+        /// <returns>if exist, enabled property name (IsEnabledPropertyName) / null otherwise.</returns>
+        public override string EditorEnabledPropertyName()
+        {
+            var selectedObject = SelectedObject;
+            string enabledPropertyName = ENABLED_PREFIX + PropertyDescriptor.Name;
+            bool hasEnabledProperty = selectedObject.GetType().GetProperty(enabledPropertyName) != null;
+            if (hasEnabledProperty)
+            {
+                return enabledPropertyName;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Gives Binding for EditorEnabled property, only if it exists in selected object
+        /// </summary>
+        /// <returns>if exist, Binding object with source(selectedObject) and enabled property(IsEnabledPropertyName) / null otherwise.</returns>
+        protected override BindingBase CreateEditorEnabledBinding()
+        {
+            var selectedObject = SelectedObject;
+            string enabledPropertyName = EditorEnabledPropertyName();
+            if (enabledPropertyName == null)
+            {
+                return null;
+            }
+
+            var binding = new Binding(enabledPropertyName)
+            {
+                Source = this.GetValueInstance(selectedObject),
+                Mode = BindingMode.OneWay
+            };
+            return binding;
+        }
+        // IUEditor end
 
     protected override bool ComputeIsReadOnly()
     {
