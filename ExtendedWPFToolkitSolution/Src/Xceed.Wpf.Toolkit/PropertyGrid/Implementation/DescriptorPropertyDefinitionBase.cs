@@ -633,19 +633,11 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
         // IUEditor Start
         #region Enabled Property (DP)
-        public static readonly DependencyProperty EditorEnabledProperty = DependencyProperty.Register("EditorEnabled", typeof(bool), typeof(DescriptorPropertyDefinitionBase), new FrameworkPropertyMetadata(true, OnEditorEnabledChanged));
+        public static readonly DependencyProperty EditorEnabledProperty = DependencyProperty.Register("EditorEnabled", typeof(bool), typeof(DescriptorPropertyDefinitionBase), new UIPropertyMetadata(true));
         public bool EditorEnabled
         {
             get => (bool)GetValue(EditorEnabledProperty);
             set => SetValue(EditorEnabledProperty, value);
-        }
-        private static void OnEditorEnabledChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
-        {
-            ((DescriptorPropertyDefinitionBase)o).OnEditorEnabledChanged((bool)e.OldValue, (bool)e.NewValue);
-        }
-        internal virtual void OnEditorEnabledChanged(bool oldValue, bool newValue)
-        {
-            // todo: Is this necessary? remove if not
         }
         #endregion // Enabled Property
         // IUEditor End
