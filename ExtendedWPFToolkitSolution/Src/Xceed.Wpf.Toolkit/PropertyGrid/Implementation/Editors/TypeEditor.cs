@@ -74,7 +74,6 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
     }
 
         // IUEditor start
-        // TODO: @JB After test,(if successful) promote this method to ITypeEditor for all other editors not inheriting TypeEditor
         protected void ResolveEditorEnabledBinding(PropertyItem propertyItem)
         {
             var _binding = new Binding("EditorEnabled")
