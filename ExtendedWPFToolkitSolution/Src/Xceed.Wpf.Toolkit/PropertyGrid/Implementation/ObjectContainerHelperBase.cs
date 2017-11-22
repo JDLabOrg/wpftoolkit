@@ -122,7 +122,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       }
     }
 
-        // IUEditor start
+        #region IUEditor
         public override void UpdateEditorEnabledFromSource()
         {
             foreach(PropertyItem item in PropertyItems)
@@ -131,7 +131,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
                 item.ContainerHelper.UpdateEditorEnabledFromSource();
             }
         }
-        // IUEditor end
+        #endregion // IUEditor
 
     public void GenerateProperties()
     {
@@ -409,12 +409,12 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       SetupDefinitionBinding( propertyItem, PropertyItemBase.AdvancedOptionsIconProperty, pd, () => pd.AdvancedOptionsIcon, BindingMode.OneWay );
       SetupDefinitionBinding( propertyItem, PropertyItemBase.AdvancedOptionsTooltipProperty, pd, () => pd.AdvancedOptionsTooltip, BindingMode.OneWay );
       SetupDefinitionBinding( propertyItem, PropertyItem.ValueProperty, pd, () => pd.Value, BindingMode.TwoWay );
-            // IUEditor start
+            #region IUEditor
             string editorEnabledPropertyName = pd.EditorEnabledPropertyName();
             if (editorEnabledPropertyName != null) { 
                 SetupEnabledBiding(propertyItem, pd, "EditorEnabled", BindingMode.OneWay );
             }
-            // IUEditor end
+            #endregion // IUEditor
 
       if( pd.CommandBindings != null )
       {
@@ -468,7 +468,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       propertyItem.SetBinding( itemProperty, binding );
     }
 
-        // IUEditor start
+        #region IUEditor
         private void SetupEnabledBiding(PropertyItem propertyItem, DescriptorPropertyDefinitionBase pd, string enabledProperty, BindingMode bindingMode)
         {
             Binding binding = new Binding(enabledProperty)
@@ -478,7 +478,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
             };
             propertyItem.SetBinding(PropertyItem.EditorEnabledProperty, binding);
         }
-        // IUEditor end
+        #endregion // IUEditor
 
     internal FrameworkElement GenerateChildrenEditorElement( PropertyItem propertyItem )
     {

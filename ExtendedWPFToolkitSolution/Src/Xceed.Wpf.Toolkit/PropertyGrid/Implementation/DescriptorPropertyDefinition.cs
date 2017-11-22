@@ -107,8 +107,8 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
       return binding;
     }
-        // IUEditor start
 
+        #region IUEditor
         private const string ENABLED_PREFIX = "IsEnabled"; // IsEnabled[PropertyName]
         /// <summary>
         /// Gives SelectedObject's enabled property name, if exists
@@ -146,8 +146,8 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
             };
             return binding;
         }
-        // IUEditor end
-
+        #endregion IUEditor
+    
     protected override bool ComputeIsReadOnly()
     {
       return PropertyDescriptor.IsReadOnly;

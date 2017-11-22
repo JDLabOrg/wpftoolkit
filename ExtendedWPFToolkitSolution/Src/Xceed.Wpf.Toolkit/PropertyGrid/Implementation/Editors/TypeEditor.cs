@@ -45,7 +45,9 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
       SetValueDependencyProperty();
       SetControlProperties( propertyItem );
       ResolveValueBinding( propertyItem );
-            ResolveEditorEnabledBinding(propertyItem); // IUEditor
+            #region IUEditor
+            ResolveEditorEnabledBinding(propertyItem);
+            #endregion // IUEditor
       return Editor;
     }
 
@@ -73,7 +75,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
       BindingOperations.SetBinding( Editor, ValueProperty, _binding );
     }
 
-        // IUEditor start
+        #region IUEditor
         protected void ResolveEditorEnabledBinding(PropertyItem propertyItem)
         {
             var _binding = new Binding("EditorEnabled")
@@ -84,7 +86,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
             };
             BindingOperations.SetBinding(Editor, UIElement.IsEnabledProperty, _binding);
         }
-        // IUEditor end
+        #endregion // IUEditor
 
     protected virtual void SetControlProperties( PropertyItem propertyItem )
     {
