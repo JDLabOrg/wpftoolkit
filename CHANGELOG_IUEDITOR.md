@@ -11,6 +11,9 @@ The "Master" Branch will always be synced to the official Codeplex Version.
 
 ## History
 
+* 2017-11-22
+	* added EditorEnabled dependency property in PropertyGrid for CanChange function
+
 * 2017-10-20
 	* property grid clear button image change / border color  
 	* wizard button style add (binding) 
