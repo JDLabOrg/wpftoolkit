@@ -666,22 +666,11 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       BindingOperations.SetBinding( this, DescriptorPropertyDefinitionBase.ValueProperty, valueBinding );
 
             // IUEditor start
-            Console.WriteLine("InitProperties - enabledBinding Begin");
             BindingBase enabledBinding = this.CreateEditorEnabledBinding();
             if (enabledBinding != null)
             {
-                Console.WriteLine("InitProperties - enabledBinding not null:" + enabledBinding.ToString());
-                try
-                {
-                    BindingOperations.SetBinding(this, DescriptorPropertyDefinitionBase.EditorEnabledProperty, enabledBinding);
-                }
-                catch(Exception e)
-                {
-                    Console.WriteLine("SetBinding Error for property " + PropertyName);
-                    Console.WriteLine( e.StackTrace );
-                }
+                BindingOperations.SetBinding(this, DescriptorPropertyDefinitionBase.EditorEnabledProperty, enabledBinding);
             }
-            Console.WriteLine("InitProperties - enabledBinding End");
             // IUEditor end
     }
 

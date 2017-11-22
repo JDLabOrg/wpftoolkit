@@ -412,7 +412,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
             // IUEditor start
             string editorEnabledPropertyName = pd.EditorEnabledPropertyName();
             if (editorEnabledPropertyName != null) { 
-                SetupEnabledBiding(propertyItem, pd, "EditorEnabled", BindingMode.TwoWay );
+                SetupEnabledBiding(propertyItem, pd, "EditorEnabled", BindingMode.OneWay );
             }
             // IUEditor end
 
