@@ -14,9 +14,11 @@
 
   ***********************************************************************************/
 
+using System;
 using System.Windows;
 using System.Windows.Data;
 using Xceed.Wpf.Toolkit.Primitives;
+using Xceed.Wpf.Toolkit.PropertyGrid.Implementation.Attributes;
 
 namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
 {
@@ -68,8 +70,24 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
       _binding.Source = propertyItem;
       _binding.UpdateSourceTrigger = (Editor is InputBase) ? UpdateSourceTrigger.PropertyChanged : UpdateSourceTrigger.Default;
       _binding.Mode = propertyItem.IsReadOnly ? BindingMode.OneWay : BindingMode.TwoWay;
-      _binding.Converter = CreateValueConverter();
-      BindingOperations.SetBinding( Editor, ValueProperty, _binding );
+
+#region IUEditor
+      IValueConverter converter = CreateValueConverter();
+
+      // 기존 conveter가 null이고 ValueConverterAttribute가 있는경우 ValueConverterAttribute사용 
+      if (converter == null)
+      {
+        var valueConterterAttribute = PropertyGridUtilities.GetAttribute<ValueConverterAttribute>(propertyItem.DescriptorDefinition.PropertyDescriptor);
+        if (valueConterterAttribute != null)
+        {
+          converter = (IValueConverter)Activator.CreateInstance(valueConterterAttribute.ConverterType);
+        }
+      }
+
+      _binding.Converter = converter;
+#endregion // IUEditor
+
+       BindingOperations.SetBinding( Editor, ValueProperty, _binding );
     }
 
     protected virtual void SetControlProperties( PropertyItem propertyItem )

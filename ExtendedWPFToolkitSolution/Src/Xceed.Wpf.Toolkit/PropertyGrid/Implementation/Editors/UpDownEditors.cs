@@ -6,7 +6,7 @@
 
    This program is provided to you under the terms of the Microsoft Public
    License (Ms-PL) as published at http://wpftoolkit.codeplex.com/license 
-
+editor.setcontrolproperties
    For more features, controls, and fast professional support,
    pick up the Plus Edition at http://xceed.com/wpf_toolkit
 
@@ -17,6 +17,7 @@
 using Xceed.Wpf.Toolkit.Primitives;
 using System;
 using System.Windows;
+using System.Windows.Data;
 #if !VS2008
 using System.ComponentModel.DataAnnotations;
 #endif
@@ -28,7 +29,28 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
   {
     protected override void SetControlProperties( PropertyItem propertyItem )
     {
-      Editor.TextAlignment = System.Windows.TextAlignment.Left;
+        Editor.TextAlignment = System.Windows.TextAlignment.Left;
+
+#region IUEditor
+        // format string
+            var displayFormatAttribute = PropertyGridUtilities.GetAttribute<DisplayFormatAttribute>(propertyItem.DescriptorDefinition.PropertyDescriptor);
+        if (displayFormatAttribute != null)
+        {
+            var formatStringProperty = Editor.GetType().GetProperty("FormatString");
+            if (formatStringProperty != null)
+            {
+                formatStringProperty.SetValue(Editor, displayFormatAttribute.DataFormatString, null); 
+            }
+        }
+
+        // wartermark
+        var displayAttribute = PropertyGridUtilities.GetAttribute<DisplayAttribute>(propertyItem.PropertyDescriptor);
+        if (displayAttribute != null)
+        {
+            this.Editor.Watermark = displayAttribute.GetPrompt();
+        }
+
+#endregion // IUEditor
     }
     protected override void SetValueDependencyProperty()
     {
