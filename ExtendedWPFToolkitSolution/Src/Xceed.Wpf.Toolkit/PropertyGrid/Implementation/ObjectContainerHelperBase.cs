@@ -122,6 +122,17 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       }
     }
 
+        #region IUEditor
+        public override void UpdateIsEnabledFromSource()
+        {
+            foreach(PropertyItem item in PropertyItems)
+            {
+                item.DescriptorDefinition.UpdateIsEnabledFromSource();
+                item.ContainerHelper.UpdateIsEnabledFromSource();
+            }
+        }
+        #endregion // IUEditor
+
     public void GenerateProperties()
     {
       if( (PropertyItems.Count == 0)
@@ -398,6 +409,12 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       SetupDefinitionBinding( propertyItem, PropertyItemBase.AdvancedOptionsIconProperty, pd, () => pd.AdvancedOptionsIcon, BindingMode.OneWay );
       SetupDefinitionBinding( propertyItem, PropertyItemBase.AdvancedOptionsTooltipProperty, pd, () => pd.AdvancedOptionsTooltip, BindingMode.OneWay );
       SetupDefinitionBinding( propertyItem, PropertyItem.ValueProperty, pd, () => pd.Value, BindingMode.TwoWay );
+            #region IUEditor
+            string editorEnabledPropertyName = pd.IsEnabledPropertyName();
+            if (editorEnabledPropertyName != null) { 
+                SetupEnabledBiding(propertyItem, pd, "IsEnabled", BindingMode.OneWay );
+            }
+            #endregion // IUEditor
 
       if( pd.CommandBindings != null )
       {
@@ -450,6 +467,18 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
       propertyItem.SetBinding( itemProperty, binding );
     }
+
+        #region IUEditor
+        private void SetupEnabledBiding(PropertyItem propertyItem, DescriptorPropertyDefinitionBase pd, string enabledProperty, BindingMode bindingMode)
+        {
+            Binding binding = new Binding(enabledProperty)
+            {
+                Source = pd,
+                Mode = bindingMode
+            };
+            propertyItem.SetBinding(PropertyItem.IsEnabledProperty, binding);
+        }
+        #endregion // IUEditor
 
     internal FrameworkElement GenerateChildrenEditorElement( PropertyItem propertyItem )
     {
