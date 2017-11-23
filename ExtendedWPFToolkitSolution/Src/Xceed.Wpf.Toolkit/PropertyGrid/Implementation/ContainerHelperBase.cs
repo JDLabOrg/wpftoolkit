@@ -198,7 +198,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     public abstract void UpdateValuesFromSource();
         #region IUEditor
-        public abstract void UpdateEditorEnabledFromSource();
+        public abstract void UpdateIsEnabledFromSource();
         #endregion // IUEditor
 
     protected internal virtual void SetPropertiesExpansion( bool isExpanded )

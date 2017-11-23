@@ -130,8 +130,8 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     protected abstract BindingBase CreateValueBinding();
 
         #region IUEditor
-        protected abstract BindingBase CreateEditorEnabledBinding();
-        public abstract string EditorEnabledPropertyName();
+        protected abstract BindingBase CreateIsEnabledBinding();
+        public abstract string IsEnabledPropertyName();
         #endregion // IUEditor
 
     #endregion // Virtual Methods
@@ -238,9 +238,9 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     }
 
         #region IUEditor
-        internal void UpdateEditorEnabledFromSource()
+        internal void UpdateIsEnabledFromSource()
         {
-            var bindingExpr = BindingOperations.GetBindingExpressionBase(this, EditorEnabledProperty);
+            var bindingExpr = BindingOperations.GetBindingExpressionBase(this, IsEnabledProperty);
             if (bindingExpr != null)
             {
                 bindingExpr.UpdateTarget();
@@ -631,11 +631,11 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
 
         #region IUEditor - Enabled Property (DP)
-        public static readonly DependencyProperty EditorEnabledProperty = DependencyProperty.Register("EditorEnabled", typeof(bool), typeof(DescriptorPropertyDefinitionBase), new UIPropertyMetadata(true));
-        public bool EditorEnabled
+        public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.Register("IsEnabled", typeof(bool), typeof(DescriptorPropertyDefinitionBase), new UIPropertyMetadata(true));
+        public bool IsEnabled
         {
-            get => (bool)GetValue(EditorEnabledProperty);
-            set => SetValue(EditorEnabledProperty, value);
+            get => (bool)GetValue(IsEnabledProperty);
+            set => SetValue(IsEnabledProperty, value);
         }
         #endregion // IUEditor Enabled Property
 
@@ -663,10 +663,10 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       BindingOperations.SetBinding( this, DescriptorPropertyDefinitionBase.ValueProperty, valueBinding );
 
             #region IUEditor
-            BindingBase enabledBinding = this.CreateEditorEnabledBinding();
+            BindingBase enabledBinding = this.CreateIsEnabledBinding();
             if (enabledBinding != null)
             {
-                BindingOperations.SetBinding(this, DescriptorPropertyDefinitionBase.EditorEnabledProperty, enabledBinding);
+                BindingOperations.SetBinding(this, DescriptorPropertyDefinitionBase.IsEnabledProperty, enabledBinding);
             }
             #endregion // IUEditor
     }

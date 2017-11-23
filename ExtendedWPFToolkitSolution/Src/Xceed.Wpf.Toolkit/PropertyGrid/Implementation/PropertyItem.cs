@@ -52,21 +52,21 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     #endregion //IsReadOnly
 
-        #region IUEditor - EditorEnabled  
-            // EditorEnabled naming: IsReadOnly는 XCTK에, IsEnabled는 WPF에 원래 있는 이름이어서 EditorEnabled 로 정함
+        #region IUEditor - IsEnabled  
+            // IsEnabled naming: IsReadOnly는 XCTK에, IsEnabled는 WPF에 원래 있는 이름이어서 IsEnabled 로 정함
 
         /// <summary>
-        /// Identifies the EditorEnabled dependency property
+        /// Identifies the IsEnabled dependency property
         /// </summary>
-        public static readonly DependencyProperty EditorEnabledProperty =
-            DependencyProperty.Register("EditorEnabled", typeof(bool), typeof(PropertyItem), new UIPropertyMetadata(true));
+        public static readonly DependencyProperty IsEnabledProperty =
+            DependencyProperty.Register("IsEnabled", typeof(bool), typeof(PropertyItem), new UIPropertyMetadata(true));
 
-        public bool EditorEnabled
+        public bool IsEnabled
         {
-            get { return (bool)GetValue(EditorEnabledProperty); }
-            set { SetValue(EditorEnabledProperty, value); }
+            get { return (bool)GetValue(IsEnabledProperty); }
+            set { SetValue(IsEnabledProperty, value); }
         }
-        #endregion // IUEditor EditorEnabled
+        #endregion // IUEditor IsEnabled
 
     #region PropertyDescriptor
 

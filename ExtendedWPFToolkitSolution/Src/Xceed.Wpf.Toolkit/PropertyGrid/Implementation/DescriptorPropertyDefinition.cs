@@ -114,7 +114,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
         /// Gives SelectedObject's enabled property name, if exists
         /// </summary>
         /// <returns>if exist, enabled property name (IsEnabledPropertyName) / null otherwise.</returns>
-        public override string EditorEnabledPropertyName()
+        public override string IsEnabledPropertyName()
         {
             var selectedObject = SelectedObject;
             string enabledPropertyName = ENABLED_PREFIX + PropertyDescriptor.Name;
@@ -127,13 +127,13 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
         }
 
         /// <summary>
-        /// Gives Binding for EditorEnabled property, only if it exists in selected object
+        /// Gives Binding for IsEnabled property, only if it exists in selected object
         /// </summary>
         /// <returns>if exist, Binding object with source(selectedObject) and enabled property(IsEnabledPropertyName) / null otherwise.</returns>
-        protected override BindingBase CreateEditorEnabledBinding()
+        protected override BindingBase CreateIsEnabledBinding()
         {
             var selectedObject = SelectedObject;
-            string enabledPropertyName = EditorEnabledPropertyName();
+            string enabledPropertyName = IsEnabledPropertyName();
             if (enabledPropertyName == null)
             {
                 return null;

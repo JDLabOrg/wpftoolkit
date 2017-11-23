@@ -123,12 +123,12 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     }
 
         #region IUEditor
-        public override void UpdateEditorEnabledFromSource()
+        public override void UpdateIsEnabledFromSource()
         {
             foreach(PropertyItem item in PropertyItems)
             {
-                item.DescriptorDefinition.UpdateEditorEnabledFromSource();
-                item.ContainerHelper.UpdateEditorEnabledFromSource();
+                item.DescriptorDefinition.UpdateIsEnabledFromSource();
+                item.ContainerHelper.UpdateIsEnabledFromSource();
             }
         }
         #endregion // IUEditor
@@ -410,9 +410,9 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       SetupDefinitionBinding( propertyItem, PropertyItemBase.AdvancedOptionsTooltipProperty, pd, () => pd.AdvancedOptionsTooltip, BindingMode.OneWay );
       SetupDefinitionBinding( propertyItem, PropertyItem.ValueProperty, pd, () => pd.Value, BindingMode.TwoWay );
             #region IUEditor
-            string editorEnabledPropertyName = pd.EditorEnabledPropertyName();
+            string editorEnabledPropertyName = pd.IsEnabledPropertyName();
             if (editorEnabledPropertyName != null) { 
-                SetupEnabledBiding(propertyItem, pd, "EditorEnabled", BindingMode.OneWay );
+                SetupEnabledBiding(propertyItem, pd, "IsEnabled", BindingMode.OneWay );
             }
             #endregion // IUEditor
 
@@ -476,7 +476,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
                 Source = pd,
                 Mode = bindingMode
             };
-            propertyItem.SetBinding(PropertyItem.EditorEnabledProperty, binding);
+            propertyItem.SetBinding(PropertyItem.IsEnabledProperty, binding);
         }
         #endregion // IUEditor
 
