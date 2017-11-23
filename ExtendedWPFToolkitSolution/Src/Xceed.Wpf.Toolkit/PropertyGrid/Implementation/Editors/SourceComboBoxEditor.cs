@@ -38,7 +38,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
       return _collection;
     }
 
-    protected override IValueConverter CreateValueConverter()
+    protected override IValueConverter CreateValueConverter(PropertyItem propertyItem)
     {
       //When using a stringConverter, we need to convert the value
       if( (_typeConverter != null) && (_typeConverter is StringConverter) )

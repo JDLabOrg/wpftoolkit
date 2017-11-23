@@ -62,9 +62,18 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
       return new T();
     }
 
-    protected virtual IValueConverter CreateValueConverter()
+    protected virtual IValueConverter CreateValueConverter(PropertyItem propertyItem)
     {
-      return null;
+        #region IUEditor
+        var valueConterterAttribute = PropertyGridUtilities.GetAttribute<ValueConverterAttribute>(propertyItem.DescriptorDefinition.PropertyDescriptor);
+        if (valueConterterAttribute != null)
+        {
+            return (IValueConverter)Activator.CreateInstance(valueConterterAttribute.ConverterType);
+        }
+
+        return null;
+
+        #endregion // IUEditor
     }
 
     protected virtual void ResolveValueBinding( PropertyItem propertyItem )
@@ -73,23 +82,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
       _binding.Source = propertyItem;
       _binding.UpdateSourceTrigger = (Editor is InputBase) ? UpdateSourceTrigger.PropertyChanged : UpdateSourceTrigger.Default;
       _binding.Mode = propertyItem.IsReadOnly ? BindingMode.OneWay : BindingMode.TwoWay;
-
-#region IUEditor
-      IValueConverter converter = CreateValueConverter();
-
-      // 기존 conveter가 null이고 ValueConverterAttribute가 있는경우 ValueConverterAttribute사용 
-      if (converter == null)
-      {
-        var valueConterterAttribute = PropertyGridUtilities.GetAttribute<ValueConverterAttribute>(propertyItem.DescriptorDefinition.PropertyDescriptor);
-        if (valueConterterAttribute != null)
-        {
-          converter = (IValueConverter)Activator.CreateInstance(valueConterterAttribute.ConverterType);
-        }
-      }
-
-      _binding.Converter = converter;
-#endregion // IUEditor
-
+      _binding.Converter = CreateValueConverter(propertyItem);
        BindingOperations.SetBinding( Editor, ValueProperty, _binding );
     }
 
