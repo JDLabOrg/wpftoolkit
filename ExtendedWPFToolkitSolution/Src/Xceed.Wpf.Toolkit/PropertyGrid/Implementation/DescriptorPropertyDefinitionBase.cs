@@ -129,7 +129,12 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     protected abstract BindingBase CreateValueBinding();
 
-    #endregion
+        #region IUEditor
+        protected abstract BindingBase CreateIsEnabledBinding();
+        public abstract string IsEnabledPropertyName();
+        #endregion // IUEditor
+
+    #endregion // Virtual Methods
 
     #region Internal Methods
 
@@ -232,6 +237,16 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       }
     }
 
+        #region IUEditor
+        internal void UpdateIsEnabledFromSource()
+        {
+            var bindingExpr = BindingOperations.GetBindingExpressionBase(this, IsEnabledProperty);
+            if (bindingExpr != null)
+            {
+                bindingExpr.UpdateTarget();
+            }
+        }
+        #endregion // IUEditor
 
 
 
@@ -614,6 +629,16 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     #endregion //Value Property
 
+
+        #region IUEditor - Enabled Property (DP)
+        public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.Register("IsEnabled", typeof(bool), typeof(DescriptorPropertyDefinitionBase), new UIPropertyMetadata(true));
+        public bool IsEnabled
+        {
+            get => (bool)GetValue(IsEnabledProperty);
+            set => SetValue(IsEnabledProperty, value);
+        }
+        #endregion // IUEditor Enabled Property
+
     public virtual void InitProperties()
     {
       // Do "IsReadOnly" and PropertyName first since the others may need that value.
@@ -636,6 +661,14 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
       BindingBase valueBinding = this.CreateValueBinding();
       BindingOperations.SetBinding( this, DescriptorPropertyDefinitionBase.ValueProperty, valueBinding );
+
+            #region IUEditor
+            BindingBase enabledBinding = this.CreateIsEnabledBinding();
+            if (enabledBinding != null)
+            {
+                BindingOperations.SetBinding(this, DescriptorPropertyDefinitionBase.IsEnabledProperty, enabledBinding);
+            }
+            #endregion // IUEditor
     }
 
 
