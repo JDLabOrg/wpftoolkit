@@ -28,7 +28,28 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
   {
     protected override void SetControlProperties( PropertyItem propertyItem )
     {
-      Editor.TextAlignment = System.Windows.TextAlignment.Left;
+        Editor.TextAlignment = System.Windows.TextAlignment.Left;
+
+#region IUEditor
+        // format string
+            var displayFormatAttribute = PropertyGridUtilities.GetAttribute<DisplayFormatAttribute>(propertyItem.DescriptorDefinition.PropertyDescriptor);
+        if (displayFormatAttribute != null)
+        {
+            var formatStringProperty = Editor.GetType().GetProperty("FormatString");
+            if (formatStringProperty != null)
+            {
+                formatStringProperty.SetValue(Editor, displayFormatAttribute.DataFormatString, null); 
+            }
+        }
+
+        // wartermark
+        var displayAttribute = PropertyGridUtilities.GetAttribute<DisplayAttribute>(propertyItem.PropertyDescriptor);
+        if (displayAttribute != null)
+        {
+            Editor.Watermark = displayAttribute.GetPrompt();
+        }
+
+#endregion // IUEditor
     }
     protected override void SetValueDependencyProperty()
     {
