@@ -71,9 +71,8 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
             return (IValueConverter)Activator.CreateInstance(valueConverterAttribute.ConverterType);
         }
 
-        return null;
-
         #endregion // IUEditor
+        return null;
     }
 
     protected virtual void ResolveValueBinding( PropertyItem propertyItem )
