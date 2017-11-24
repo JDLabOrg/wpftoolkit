@@ -6,7 +6,7 @@
 
    This program is provided to you under the terms of the Microsoft Public
    License (Ms-PL) as published at http://wpftoolkit.codeplex.com/license 
-editor.setcontrolproperties
+
    For more features, controls, and fast professional support,
    pick up the Plus Edition at http://xceed.com/wpf_toolkit
 
@@ -17,7 +17,6 @@ editor.setcontrolproperties
 using Xceed.Wpf.Toolkit.Primitives;
 using System;
 using System.Windows;
-using System.Windows.Data;
 #if !VS2008
 using System.ComponentModel.DataAnnotations;
 #endif
@@ -47,7 +46,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
         var displayAttribute = PropertyGridUtilities.GetAttribute<DisplayAttribute>(propertyItem.PropertyDescriptor);
         if (displayAttribute != null)
         {
-            this.Editor.Watermark = displayAttribute.GetPrompt();
+            Editor.Watermark = displayAttribute.GetPrompt();
         }
 
 #endregion // IUEditor

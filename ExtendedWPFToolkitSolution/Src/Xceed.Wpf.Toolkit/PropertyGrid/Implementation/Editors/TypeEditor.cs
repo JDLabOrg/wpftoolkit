@@ -65,10 +65,10 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
     protected virtual IValueConverter CreateValueConverter(PropertyItem propertyItem)
     {
         #region IUEditor
-        var valueConterterAttribute = PropertyGridUtilities.GetAttribute<ValueConverterAttribute>(propertyItem.DescriptorDefinition.PropertyDescriptor);
-        if (valueConterterAttribute != null)
+        var valueConverterAttribute = PropertyGridUtilities.GetAttribute<ValueConverterAttribute>(propertyItem.DescriptorDefinition.PropertyDescriptor);
+        if (valueConverterAttribute != null)
         {
-            return (IValueConverter)Activator.CreateInstance(valueConterterAttribute.ConverterType);
+            return (IValueConverter)Activator.CreateInstance(valueConverterAttribute.ConverterType);
         }
 
         return null;
