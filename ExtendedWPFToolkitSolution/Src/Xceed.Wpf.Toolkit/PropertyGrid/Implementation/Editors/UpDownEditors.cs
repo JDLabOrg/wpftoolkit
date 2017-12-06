@@ -15,6 +15,7 @@
   ***********************************************************************************/
 
 using Xceed.Wpf.Toolkit.Primitives;
+using Xceed.Wpf.Toolkit.PropertyGrid.Implementation.Attributes;
 using System;
 using System.Windows;
 #if !VS2008
@@ -30,26 +31,42 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
     {
         Editor.TextAlignment = System.Windows.TextAlignment.Left;
 
-#region IUEditor
-        // format string
-            var displayFormatAttribute = PropertyGridUtilities.GetAttribute<DisplayFormatAttribute>(propertyItem.DescriptorDefinition.PropertyDescriptor);
-        if (displayFormatAttribute != null)
-        {
-            var formatStringProperty = Editor.GetType().GetProperty("FormatString");
-            if (formatStringProperty != null)
+            #region IUEditor
+
+            // Increment
+            var numericUpDown = Editor as NumericUpDown<TType>;
+            if (numericUpDown != null)
             {
-                formatStringProperty.SetValue(Editor, displayFormatAttribute.DataFormatString, null); 
+                var incrementAttribute = PropertyGridUtilities.GetAttribute<IncrementAttribute>(propertyItem.PropertyDescriptor);
+                if (incrementAttribute != null)
+                {
+                    var increment = (TType)incrementAttribute.Increment;
+                    if (increment != null)
+                    {
+                        numericUpDown.Increment = increment;
+                    }
+                }
             }
-        }
 
-        // wartermark
-        var displayAttribute = PropertyGridUtilities.GetAttribute<DisplayAttribute>(propertyItem.PropertyDescriptor);
-        if (displayAttribute != null)
-        {
-            Editor.Watermark = displayAttribute.GetPrompt();
-        }
+            // format string
+            var displayFormatAttribute = PropertyGridUtilities.GetAttribute<DisplayFormatAttribute>(propertyItem.DescriptorDefinition.PropertyDescriptor);
+            if (displayFormatAttribute != null)
+            {
+                var formatStringProperty = Editor.GetType().GetProperty("FormatString");
+                if (formatStringProperty != null)
+                {
+                    formatStringProperty.SetValue(Editor, displayFormatAttribute.DataFormatString, null);
+                }
+            }
 
-#endregion // IUEditor
+            // wartermark
+            var displayAttribute = PropertyGridUtilities.GetAttribute<DisplayAttribute>(propertyItem.PropertyDescriptor);
+            if (displayAttribute != null)
+            {
+                Editor.Watermark = displayAttribute.GetPrompt();
+            }
+
+            #endregion // IUEditor
     }
     protected override void SetValueDependencyProperty()
     {
