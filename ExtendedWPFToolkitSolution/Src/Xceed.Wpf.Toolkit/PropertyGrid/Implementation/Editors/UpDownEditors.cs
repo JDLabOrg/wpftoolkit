@@ -32,22 +32,6 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
         Editor.TextAlignment = System.Windows.TextAlignment.Left;
 
             #region IUEditor
-
-            // Increment
-            var numericUpDown = Editor as NumericUpDown<TType>;
-            if (numericUpDown != null)
-            {
-                var incrementAttribute = PropertyGridUtilities.GetAttribute<IncrementAttribute>(propertyItem.PropertyDescriptor);
-                if (incrementAttribute != null)
-                {
-                    var increment = (TType)incrementAttribute.Increment;
-                    if (increment != null)
-                    {
-                        numericUpDown.Increment = increment;
-                    }
-                }
-            }
-
             // format string
             var displayFormatAttribute = PropertyGridUtilities.GetAttribute<DisplayFormatAttribute>(propertyItem.DescriptorDefinition.PropertyDescriptor);
             if (displayFormatAttribute != null)
@@ -66,8 +50,23 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
                 Editor.Watermark = displayAttribute.GetPrompt();
             }
 
+            // Increment
+            var numericUpDown = Editor as NumericUpDown<TType>;
+            if (numericUpDown != null)
+            {
+                var incrementAttribute = PropertyGridUtilities.GetAttribute<IncrementAttribute>(propertyItem.PropertyDescriptor);
+                if (incrementAttribute != null)
+                {
+                    var increment = (TType)incrementAttribute.Increment;
+                    if (increment != null)
+                    {
+                        numericUpDown.Increment = increment;
+                    }
+                }
+            }
+
             #endregion // IUEditor
-    }
+        }
     protected override void SetValueDependencyProperty()
     {
       ValueProperty = UpDownBase<TType>.ValueProperty;
