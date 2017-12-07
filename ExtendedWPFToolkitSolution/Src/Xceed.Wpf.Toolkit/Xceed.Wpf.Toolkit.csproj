@@ -433,6 +433,7 @@
     <Compile Include="Core\EditableKeyValuePair.cs" />
     <Compile Include="Primitives\DateTimePickerBase.cs" />
     <Compile Include="Core\Utilities\DateTimeUtilities.cs" />
+    <Compile Include="PropertyGrid\Implementation\Attributes\IncrementAttribute.cs" />
     <Compile Include="PropertyGrid\Implementation\Attributes\ValueConverterAttribute.cs" />
     <Compile Include="PropertyGrid\Implementation\CategoryGroupStyleSelector.cs" />
     <Compile Include="PropertyGrid\Implementation\Converters\IsDefaultCategoryConverter.cs" />
