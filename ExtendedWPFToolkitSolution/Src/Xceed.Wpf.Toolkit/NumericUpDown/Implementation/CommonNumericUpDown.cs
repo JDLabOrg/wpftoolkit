@@ -118,6 +118,15 @@ namespace Xceed.Wpf.Toolkit
 
     private bool HandleNullSpin()
     {
+      if( !Increment.HasValue )
+      {
+        return true;
+      }
+
+      ///@note IUEditor 2018.01.23
+      /// if value is null, set default value or T's default value
+      /// and continue to increase or decrease a value <-- changed algorithm from xceed -->
+      /// original : stop to increase or decrease
       if( !Value.HasValue )
       {
         T forcedValue = ( DefaultValue.HasValue )
@@ -125,12 +134,6 @@ namespace Xceed.Wpf.Toolkit
           : default( T );
 
         Value = CoerceValueMinMax( forcedValue );
-
-        return true;
-      }
-      else if( !Increment.HasValue )
-      {
-        return true;
       }
 
       return false;
