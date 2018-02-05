@@ -158,63 +158,78 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
         #region IUEditor
 
-        #region IsClearValue
+        #region Designated Value
 
-        public static readonly DependencyProperty IsClearValueProperty = DependencyProperty.Register("IsClearValue", typeof(bool),
+        public static readonly DependencyProperty HasDesignatedValueProperty = DependencyProperty.Register("HasDesignatedValue", typeof(bool),
             typeof(PropertyItemBase), new UIPropertyMetadata(true));
-        public bool IsClearValue
+        public bool HasDesignatedValue
         {
             get
             {
-                return (bool)GetValue(IsClearValueProperty);
+                return (bool)GetValue(HasDesignatedValueProperty);
             }
             set
             {
-                SetValue(IsClearValueProperty, value);
+                SetValue(HasDesignatedValueProperty, value);
             }
         }
 
-        public static readonly RoutedEvent ClearEvent = EventManager.RegisterRoutedEvent(
-    "Clear", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(PropertyItemBase));
+        public static readonly DependencyProperty DesignatedValueProperty = DependencyProperty.Register("DesignedValue", typeof(object),
+            typeof(PropertyItemBase), new UIPropertyMetadata(true));
 
-        public event RoutedEventHandler Clear
-        {
-            add { AddHandler(ClearEvent, value); }
-            remove { RemoveHandler(ClearEvent, value); }
-        }
-
-        private RelayCommand _ClearCommand;
-        public ICommand ClearCommand
+        public object DesignedValue
         {
             get
             {
-                if (_ClearCommand == null)
-                {
-                    _ClearCommand = new RelayCommand(
-                        param => this.ClearValue(),
-                        param => this.CanClear()
-                    );
-                }
-                return _ClearCommand;
+                return (object)GetValue(DesignatedValueProperty);
+            }
+            set
+            {
+                SetValue(DesignatedValueProperty, value);
             }
         }
 
-        private bool CanClear()
+        public static readonly RoutedEvent SetDesignatedValueEvent = EventManager.RegisterRoutedEvent(
+    "SetDesignatedValue", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(PropertyItemBase));
+
+        public event RoutedEventHandler SetDesignatedValue
+        {
+            add { AddHandler(SetDesignatedValueEvent, value); }
+            remove { RemoveHandler(SetDesignatedValueEvent, value); }
+        }
+
+        private RelayCommand _designatedValueCommand;
+        public ICommand DesignatedValueCommand
+        {
+            get
+            {
+                if (_designatedValueCommand == null)
+                {
+                    _designatedValueCommand = new RelayCommand(
+                        param => this.DesignatedValueCommand_Execute(),
+                        param => this.DesignatedValueCommand_CanExecute()
+                    );
+                }
+                return _designatedValueCommand;
+            }
+        }
+
+        private bool DesignatedValueCommand_CanExecute()
         {
             // Verify command can be executed here
-            if (IsClearValue)
+            if (HasDesignatedValue)
             {
                 return true;
             }
             return false;
         }
 
-        private void ClearValue()
+        private void DesignatedValueCommand_Execute()
         {
-            RaiseEvent(new RoutedEventArgs(CustomPropertyItem.ClearEvent));
+            Value = DesignedValue;
         }
 
-        #endregion // HasClear
+        #endregion // Designed Value
         #endregion // IUEditor
 
 

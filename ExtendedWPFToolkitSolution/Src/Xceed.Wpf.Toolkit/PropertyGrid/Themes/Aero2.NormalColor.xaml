@@ -637,11 +637,11 @@
                                     </Grid.ColumnDefinitions>
 
                                     <!--#region IUEditor-->
-                                    <Button x:Name="_resetButton"
+                                    <Button x:Name="_designatedButton"
                                         Grid.Column="0"
-                                        Command="{Binding ClearCommand, RelativeSource={RelativeSource TemplatedParent}}"
-                                        Content="R"
-                                        Visibility="{Binding IsClearValue, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                        Command="{Binding DesignatedValueCommand, RelativeSource={RelativeSource TemplatedParent}}"
+                                        Content="D"
+                                        Visibility="{Binding HasDesignatedValue, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}" />
                                     <!--#endregion IUEditor-->
 
                                     <Grid Grid.Column="1" Margin="{Binding Level, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ExpandableObjectMarginConverter}}">

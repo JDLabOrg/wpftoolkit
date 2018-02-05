@@ -397,6 +397,13 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       propertyItem.Category = pd.Category;
       propertyItem.PropertyOrder = pd.DisplayOrder;
 
+            #region IUEditor Attribute
+            // IUEditor 
+            propertyItem.HasDesignatedValue = pd.HasDesignatedAttribute;
+            propertyItem.DesignedValue = pd.DefaultValue;
+            #endregion
+
+         
       //These properties can vary with the value. They need to be bound.
       if( pd.PropertyDescriptor.Converter is ExpandableObjectConverter )
       {
