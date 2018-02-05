@@ -174,6 +174,15 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
             }
         }
 
+        public static readonly RoutedEvent ClearEvent = EventManager.RegisterRoutedEvent(
+    "Clear", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(PropertyItemBase));
+
+        public event RoutedEventHandler Clear
+        {
+            add { AddHandler(ClearEvent, value); }
+            remove { RemoveHandler(ClearEvent, value); }
+        }
+
         private RelayCommand _ClearCommand;
         public ICommand ClearCommand
         {
@@ -202,6 +211,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
         private void ClearValue()
         {
+            RaiseEvent(new RoutedEventArgs(CustomPropertyItem.ClearEvent));
         }
 
         #endregion // HasClear
