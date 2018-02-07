@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Xceed.Wpf.Toolkit.PropertyGrid.Implementation.Attributes
+namespace Xceed.Wpf.Toolkit.PropertyGrid.Attributes
 {
     #region IUEditor
     /// <summary>

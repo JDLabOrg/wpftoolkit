@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 /// <summary>
 /// Custom atributes by IUEditor 
 /// </summary>
-namespace Xceed.Wpf.Toolkit.PropertyGrid.Implementation.Attributes
+namespace Xceed.Wpf.Toolkit.PropertyGrid.Attributes
 {
     public class DesignatedObjectAttribute  : Attribute
     {

@@ -15,7 +15,7 @@
   ***********************************************************************************/
 
 using Xceed.Wpf.Toolkit.Primitives;
-using Xceed.Wpf.Toolkit.PropertyGrid.Implementation.Attributes;
+using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 using System;
 using System.Windows;
 #if !VS2008
