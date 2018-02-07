@@ -29,6 +29,7 @@ using System.ComponentModel;
 using System.Windows.Markup.Primitives;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
+using Xceed.Wpf.Toolkit.PropertyGrid.Implementation.Attributes;
 #if !VS2008
 using System.ComponentModel.DataAnnotations;
 #endif
@@ -51,7 +52,14 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     private IList<Type> _newItemTypes;
     private IEnumerable<CommandBinding> _commandBindings;
 
-    #endregion
+        #region IUEditor
+        // IUEditor
+        private bool _hasDesignatedAttribute;
+        private object _designatedValue;
+        #endregion
+
+
+        #endregion
 
     internal abstract PropertyDescriptor PropertyDescriptor
     {
@@ -90,6 +98,18 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     {
       return int.MaxValue;
     }
+        #region IUEditor
+
+        protected virtual bool ComputeHasDesignatedAttribute()
+        {
+            return false;
+        }
+
+        protected virtual object ComputeDesignatedValueAttribute()
+        {
+            return null;
+        }
+        #endregion
 
     protected virtual bool ComputeExpandableAttribute()
     {
@@ -333,7 +353,23 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       return (attribute != null);
     }
 
-    internal int ComputeDisplayOrderInternal( bool isPropertyGridCategorized )
+        internal object ComputeHasDesignatedAttributeForItem(object item)
+        {
+            var pd = (PropertyDescriptor)item;
+
+            var attribute = PropertyGridUtilities.GetAttribute<DesignatedObjectAttribute>(pd);
+            return (attribute != null);
+        }
+
+        internal object ComputeDesignatedAttributeValueForItem(object item)
+        {
+            var pd = (PropertyDescriptor)item;
+
+            var attribute = PropertyGridUtilities.GetAttribute<DesignatedObjectAttribute>(pd);
+            return (attribute != null) ? attribute.Value : null;
+        }
+
+        internal int ComputeDisplayOrderInternal( bool isPropertyGridCategorized )
     {
       return this.ComputeDisplayOrder( isPropertyGridCategorized );
     }
@@ -553,6 +589,29 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       }
     }
 
+        #region IUEditor 
+        public bool HasDesignatedAttribute
+        {
+            get
+            {
+                return _hasDesignatedAttribute;
+            }
+        }
+
+        public object DesignatedValue
+        {
+            get
+            {
+                return _designatedValue;
+            }
+        }
+
+        #endregion IUEditor
+
+
+
+
+
     public IList<Type> NewItemTypes
     {
       get
@@ -649,9 +708,12 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       _displayName = ComputeDisplayName();
       _defaultValue = ComputeDefaultValueAttribute();
       _displayOrder = ComputeDisplayOrder( this.IsPropertyGridCategorized );
-
       _expandableAttribute = ComputeExpandableAttribute();
 
+            // IUEditor
+            _hasDesignatedAttribute = ComputeHasDesignatedAttribute();
+            _designatedValue = ComputeDesignatedValueAttribute();
+            // end of IUEditor
 
       _newItemTypes = ComputeNewItemTypes();
       _commandBindings = new CommandBinding[] { new CommandBinding( PropertyItemCommands.ResetValue, ExecuteResetValueCommand, CanExecuteResetValueCommand ) };

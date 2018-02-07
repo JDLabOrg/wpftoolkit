@@ -187,7 +187,22 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       return PropertyDescriptor.Category;
     }
 
-    protected override bool ComputeExpandableAttribute()
+
+        #region IUEditor
+        protected override bool ComputeHasDesignatedAttribute()
+        {
+            return (bool)this.ComputeHasDesignatedAttributeForItem(PropertyDescriptor);
+        }
+
+        protected override object ComputeDesignatedValueAttribute()
+        {
+            return (object)this.ComputeDesignatedAttributeValueForItem(PropertyDescriptor);
+        }
+
+
+        #endregion
+
+        protected override bool ComputeExpandableAttribute()
     {
       return ( bool )this.ComputeExpandableAttributeForItem( PropertyDescriptor );
     }
