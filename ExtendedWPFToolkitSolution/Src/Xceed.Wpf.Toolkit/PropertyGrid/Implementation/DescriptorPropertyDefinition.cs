@@ -109,43 +109,51 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     }
 
         #region IUEditor
-        private const string ENABLED_PREFIX = "IsEnabled"; // IsEnabled[PropertyName]
-        /// <summary>
-        /// Gives SelectedObject's enabled property name, if exists
-        /// </summary>
-        /// <returns>if exist, enabled property name (IsEnabledPropertyName) / null otherwise.</returns>
-        public override string IsEnabledPropertyName()
+        private const string IU_CONTEXT_POSTFIX = "Context"; // [PropertyName]Context
+
+        public override string ContextPropertyName()
         {
             var selectedObject = SelectedObject;
-            string enabledPropertyName = ENABLED_PREFIX + PropertyDescriptor.Name;
-            bool hasEnabledProperty = selectedObject.GetType().GetProperty(enabledPropertyName) != null;
-            if (hasEnabledProperty)
+            string contextPropertyName = PropertyDescriptor.Name + IU_CONTEXT_POSTFIX;
+            bool hasContextProperty = selectedObject.GetType().GetProperty(contextPropertyName) != null;
+            if (hasContextProperty)
             {
-                return enabledPropertyName;
+                return contextPropertyName;
             }
             return null;
         }
-
-        /// <summary>
-        /// Gives Binding for IsEnabled property, only if it exists in selected object
-        /// </summary>
-        /// <returns>if exist, Binding object with source(selectedObject) and enabled property(IsEnabledPropertyName) / null otherwise.</returns>
-        protected override BindingBase CreateIsEnabledBinding()
+        
+        protected override void CreateContextBinding()
         {
             var selectedObject = SelectedObject;
-            string enabledPropertyName = IsEnabledPropertyName();
-            if (enabledPropertyName == null)
+            string contextPropertyName = ContextPropertyName();
+            if (contextPropertyName == null)
             {
-                return null;
+                return ;
             }
 
-            var binding = new Binding(enabledPropertyName)
+            var value = this.GetValueInstance(selectedObject);
+
+            // create isenabled binding
+            var enabledBinding = new Binding(contextPropertyName+ ".IsEnabled")
             {
-                Source = this.GetValueInstance(selectedObject),
-                Mode = BindingMode.OneWay
+                Source = value,
+                Mode = BindingMode.OneWay,
+
             };
-            return binding;
+            BindingOperations.SetBinding(this, DescriptorPropertyDefinitionBase.IsEnabledProperty, enabledBinding);
+
+            // create iscolored binidng
+            var coloredBinding = new Binding(contextPropertyName + ".IsCascadingValue")
+            {
+                Source = value,
+                Mode = BindingMode.OneWay,
+            };
+            BindingOperations.SetBinding(this, DescriptorPropertyDefinitionBase.IsColoredTitleProperty, coloredBinding);
+
         }
+
+
         #endregion IUEditor
     
     protected override bool ComputeIsReadOnly()

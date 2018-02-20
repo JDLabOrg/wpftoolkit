@@ -662,10 +662,22 @@
                                         <pg:TrimmedTextBlock x:Name="_text"
                                             Grid.Column="1"
                                             HorizontalAlignment="Stretch" VerticalAlignment="Center"
-                                            Foreground="Green"
                                             IsEnabled="{Binding IsReadOnly, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pg:PropertyGrid}, Converter={StaticResource InverseBoolConverter}}"
                                             Text="{Binding DisplayName, RelativeSource={RelativeSource TemplatedParent}}"
-                                            TextTrimming="CharacterEllipsis" />
+                                            TextTrimming="CharacterEllipsis">
+                                            <pg:TrimmedTextBlock.Style>
+                                                <Style TargetType="{x:Type pg:TrimmedTextBlock}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsColoredTitle, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                                            <Setter Property="Foreground" Value="LightPink" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding IsColoredTitle, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Value="False">
+                                                            <Setter Property="Foreground" Value="DarkSlateBlue" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </pg:TrimmedTextBlock.Style>
+                                        </pg:TrimmedTextBlock>
                                     </Grid>
 
                                     <Grid
@@ -791,7 +803,7 @@
     </Style>
 
     <Style TargetType="{x:Type pg:PropertyGrid}">
-        <Setter Property="AdvancedOptionsMenu" Value="{StaticResource {ComponentResourceKey TypeInTargetAssembly={x:Type pg:PropertyGrid},                      ResourceId=SelectedObjectAdvancedOptionsMenu}}" />
+        <Setter Property="AdvancedOptionsMenu" Value="{StaticResource {ComponentResourceKey TypeInTargetAssembly={x:Type pg:PropertyGrid}, ResourceId=SelectedObjectAdvancedOptionsMenu}}" />
         <Setter Property="Background" Value="{DynamicResource {x:Static themes:ResourceKeys.ButtonNormalBackgroundKey}}" />
         <Setter Property="BorderBrush" Value="{DynamicResource {x:Static themes:ResourceKeys.ControlNormalBorderKey}}" />
         <Setter Property="BorderThickness" Value="1" />
