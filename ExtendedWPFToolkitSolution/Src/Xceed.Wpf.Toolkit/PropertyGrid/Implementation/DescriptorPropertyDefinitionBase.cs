@@ -37,7 +37,7 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace Xceed.Wpf.Toolkit.PropertyGrid
 {
-  internal abstract class DescriptorPropertyDefinitionBase : DependencyObject
+  internal abstract class DescriptorPropertyDefinitionBase : DependencyObject, INotifyPropertyChanged
   {
     #region Members
 
@@ -150,8 +150,8 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     protected abstract BindingBase CreateValueBinding();
 
         #region IUEditor
-        protected abstract BindingBase CreateIsEnabledBinding();
-        public abstract string IsEnabledPropertyName();
+        protected abstract void CreateContextBinding();
+        public abstract string ContextPropertyName();
         #endregion // IUEditor
 
     #endregion // Virtual Methods
@@ -256,20 +256,6 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
         bindingExpr.UpdateTarget();
       }
     }
-
-        #region IUEditor
-        internal void UpdateIsEnabledFromSource()
-        {
-            var bindingExpr = BindingOperations.GetBindingExpressionBase(this, IsEnabledProperty);
-            if (bindingExpr != null)
-            {
-                bindingExpr.UpdateTarget();
-            }
-        }
-        #endregion // IUEditor
-
-
-
 
     internal object ComputeDescriptionForItem( object item )
     {
@@ -439,6 +425,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     #region Events
 
     public event EventHandler ContainerHelperInvalidated;
+        public event PropertyChangedEventHandler PropertyChanged;
 
     #endregion
 
@@ -499,7 +486,53 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     #endregion //IsExpandable
 
-    public string Category
+    
+        #region IUEditor - Enabled Property (DP)
+        public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.Register("IsEnabled", typeof(bool),
+            typeof(DescriptorPropertyDefinitionBase), new FrameworkPropertyMetadata(true, OnIsEnabledChanged));
+        public bool IsEnabled
+        {
+            get => (bool)GetValue(IsEnabledProperty);
+            set => SetValue(IsEnabledProperty, value);
+        }
+
+        private static void OnIsEnabledChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+        {
+            DescriptorPropertyDefinitionBase b = o as DescriptorPropertyDefinitionBase;
+            if (b != null)
+            {
+                b.OnPropertyChanged(nameof(IsEnabled));
+            }
+
+        }
+
+        public static readonly DependencyProperty IsColoredTitleProperty = DependencyProperty.Register("IsColoredTitleProperty",
+            typeof(bool), typeof(DescriptorPropertyDefinitionBase), new FrameworkPropertyMetadata(false, OnIsColoredTitle));
+        public bool IsColoredTitle
+        {
+            get => (bool)GetValue(IsColoredTitleProperty);
+            set => SetValue(IsColoredTitleProperty, value);
+        }
+
+        private static void OnIsColoredTitle(DependencyObject o, DependencyPropertyChangedEventArgs e)
+        {
+            DescriptorPropertyDefinitionBase b = o as DescriptorPropertyDefinitionBase;
+            if (b != null)
+            {
+                b.OnPropertyChanged(nameof(IsColoredTitle));
+            }
+
+        }
+
+        protected void OnPropertyChanged(string name)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+
+        #endregion // IUEditor Enabled Property
+
+        public string Category
     {
       get
       {
@@ -689,14 +722,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     #endregion //Value Property
 
 
-        #region IUEditor - Enabled Property (DP)
-        public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.Register("IsEnabled", typeof(bool), typeof(DescriptorPropertyDefinitionBase), new UIPropertyMetadata(true));
-        public bool IsEnabled
-        {
-            get => (bool)GetValue(IsEnabledProperty);
-            set => SetValue(IsEnabledProperty, value);
-        }
-        #endregion // IUEditor Enabled Property
+      
 
     public virtual void InitProperties()
     {
@@ -725,13 +751,10 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       BindingOperations.SetBinding( this, DescriptorPropertyDefinitionBase.ValueProperty, valueBinding );
 
             #region IUEditor
-            BindingBase enabledBinding = this.CreateIsEnabledBinding();
-            if (enabledBinding != null)
-            {
-                BindingOperations.SetBinding(this, DescriptorPropertyDefinitionBase.IsEnabledProperty, enabledBinding);
-            }
+            // UpdateContext();
+            CreateContextBinding();
             #endregion // IUEditor
-    }
+        }
 
 
 
