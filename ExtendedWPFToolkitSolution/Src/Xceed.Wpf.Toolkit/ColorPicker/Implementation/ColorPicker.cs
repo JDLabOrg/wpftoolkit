@@ -753,8 +753,8 @@ namespace Xceed.Wpf.Toolkit
 
     private static ObservableCollection<ColorItem> CreateStandardColors()
     {
-            // use standard colors as web colors
-            ObservableCollection<ColorItem> standardColors = new ObservableCollection<ColorItem>
+      // use standard colors as web colors
+      ObservableCollection<ColorItem> standardColors = new ObservableCollection<ColorItem>
             {
                 // IUEditor 2017-10-23, added null color
                 // new ColorItem( null, "No color" ),
@@ -917,7 +917,7 @@ namespace Xceed.Wpf.Toolkit
                 new ColorItem(Color.FromRgb(240, 140, 0), "Orange9"),
                 new ColorItem(Color.FromRgb(230, 119, 0), "Orange10")
             };
-            return standardColors;
+      return standardColors;
     }
 
     private static ObservableCollection<ColorItem> CreateAvailableColors()
