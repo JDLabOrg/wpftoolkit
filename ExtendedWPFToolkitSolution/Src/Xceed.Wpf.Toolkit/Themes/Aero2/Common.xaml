@@ -149,20 +149,22 @@
 
     <!--  IUEditor edited by DH 2017.06.15  -->
     <!--  빨간색 대각선 추가  -->
-    <DrawingBrush x:Key="RedDiagonalLineBrush" Stretch="Fill">
+    <DrawingBrush
+        x:Key="RedDiagonalLineBrush"
+        Stretch="Fill" ViewboxUnits="Absolute" Viewport="0,0,10,10">
         <DrawingBrush.Drawing>
             <DrawingGroup>
                 <GeometryDrawing Brush="White">
                     <GeometryDrawing.Geometry>
-                        <RectangleGeometry Rect="0,0 1,1" />
+                        <RectangleGeometry Rect="0,0 10,10" />
                     </GeometryDrawing.Geometry>
                 </GeometryDrawing>
                 <GeometryDrawing>
                     <GeometryDrawing.Geometry>
-                        <LineGeometry StartPoint="0,0" EndPoint="1,1" />
+                        <LineGeometry StartPoint="0,0" EndPoint="10,10" />
                     </GeometryDrawing.Geometry>
                     <GeometryDrawing.Pen>
-                        <Pen Brush="Red" Thickness="0.03" />
+                        <Pen Brush="Red" Thickness="0.005" />
                     </GeometryDrawing.Pen>
                 </GeometryDrawing>
             </DrawingGroup>
