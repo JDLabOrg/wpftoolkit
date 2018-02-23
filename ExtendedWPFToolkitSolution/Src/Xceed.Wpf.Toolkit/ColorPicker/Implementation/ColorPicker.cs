@@ -388,7 +388,7 @@ namespace Xceed.Wpf.Toolkit
 
     #region ShowRecentColors
 
-    public static readonly DependencyProperty ShowRecentColorsProperty = DependencyProperty.Register( "ShowRecentColors", typeof( bool ), typeof( ColorPicker ), new UIPropertyMetadata( false ) );
+    public static readonly DependencyProperty ShowRecentColorsProperty = DependencyProperty.Register( "ShowRecentColors", typeof( bool ), typeof( ColorPicker ), new UIPropertyMetadata( true ) );
     public bool ShowRecentColors
     {
       get
@@ -739,7 +739,7 @@ namespace Xceed.Wpf.Toolkit
       if( !RecentColors.Contains( colorItem ) )
         RecentColors.Add( colorItem );
 
-      if( RecentColors.Count > 10 ) //don't allow more than ten, maybe make a property that can be set by the user.
+      if( RecentColors.Count > 20 ) //don't allow more than 20 (10->20 IUEditor) , maybe make a property that can be set by the user.
         RecentColors.RemoveAt( 0 );
     }
 

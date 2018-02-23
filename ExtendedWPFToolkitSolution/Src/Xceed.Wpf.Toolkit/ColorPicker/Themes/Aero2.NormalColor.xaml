@@ -83,9 +83,8 @@
             <Border
                 Margin="2,2,2,2"
                 Background="{StaticResource CheckerBrush}"
-                BorderBrush="{DynamicResource {x:Static themes:ResourceKeys.ControlNormalBorderKey}}"
-                BorderThickness="1">
-                <Rectangle Width="14" Height="14">
+                BorderBrush="Black" BorderThickness="1">
+                <Rectangle Width="19" Height="19">
                     <Rectangle.Style>
                         <Style TargetType="Rectangle">
                             <Setter Property="Fill" Value="{Binding Color, Converter={StaticResource ColorToSolidColorBrushConverter}, TargetNullValue={StaticResource RedDiagonalLineBrush}}" />
@@ -238,7 +237,7 @@
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="MaxDropDownWidth" Value="218" />
+        <Setter Property="MaxDropDownWidth" Value="270" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:ColorPicker}">
@@ -295,16 +294,55 @@
                                 BorderThickness="1">
                                 <TabControl x:Name="ColorPickerTabControl" Background="Transparent" SelectedIndex="{Binding ColorMode, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ColorModeToTabItemSelectedConverter}}">
                                     <local:ColorPickerTabItem x:Name="StandardTabItem" Header="{Binding StandardButtonHeader, RelativeSource={RelativeSource TemplatedParent}}" Template="{StaticResource TabItemTemplate}">
-                                        <Grid x:Name="_colorPaletteHost" Margin="4">
+                                        <Grid x:Name="_colorCanvasHost" Margin="4">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="5" />
                                                 <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+
+                                            <!--  ColorCanvas  -->
+                                            <local:ColorCanvas
+                                                Grid.Row="0"
+                                                Width="{Binding MaxDropDownWidth, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource AdditionConverter}, ConverterParameter=-18}"
+                                                Background="Transparent" BorderThickness="0"
+                                                SelectedColor="{Binding SelectedColor, RelativeSource={RelativeSource TemplatedParent}}"
+                                                UsingAlphaChannel="{Binding UsingAlphaChannel, RelativeSource={RelativeSource TemplatedParent}}" />
+
+                                            <Separator
+                                                Grid.Row="1"
+                                                Width="{Binding MaxDropDownWidth, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource AdditionConverter}, ConverterParameter=-12}"
+                                                Height="1"
+                                                HorizontalAlignment="Center"
+                                                Visibility="{TemplateBinding ShowRecentColors,
+                                                                             Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+                                            <!--  Recent Colors  -->
+                                            <Grid Grid.Row="2" Visibility="{TemplateBinding ShowRecentColors, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                </Grid.RowDefinitions>
+                                                <TextBlock
+                                                    Grid.Row="0"
+                                                    Margin="0,1,0,1" Padding="2"
+                                                    Text="{TemplateBinding RecentColorsHeader}" />
+                                                <ListBox x:Name="PART_RecentColors"
+                                                    Grid.Row="1"
+                                                    ItemsSource="{Binding RecentColors, RelativeSource={RelativeSource TemplatedParent}}"
+                                                    Style="{StaticResource ColorListStyle}" />
+                                            </Grid>
+                                        </Grid>
+                                    </local:ColorPickerTabItem>
+                                    <local:ColorPickerTabItem x:Name="AdvancedTabItem" Header="{Binding AdvancedButtonHeader, RelativeSource={RelativeSource TemplatedParent}}" Template="{StaticResource TabItemTemplate}">
+                                        <Grid x:Name="_colorPaletteHost" Margin="4">
+                                            <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto" />
                                                 <RowDefinition Height="Auto" />
                                             </Grid.RowDefinitions>
 
                                             <!--  Available Colors  -->
-                                            <Grid Grid.Row="1" Visibility="{TemplateBinding ShowAvailableColors, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <Grid Grid.Row="0" Visibility="{TemplateBinding ShowAvailableColors, Converter={StaticResource BooleanToVisibilityConverter}}">
                                                 <Grid>
                                                     <Grid.RowDefinitions>
                                                         <RowDefinition Height="Auto" />
@@ -320,18 +358,12 @@
                                                         Style="{StaticResource ColorListStyle}" />
                                                 </Grid>
                                             </Grid>
-
                                             <!--  Standard Colors  -->
-                                            <Grid Grid.Row="2" Visibility="{TemplateBinding ShowStandardColors, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <Grid Grid.Row="1" Visibility="{TemplateBinding ShowStandardColors, Converter={StaticResource BooleanToVisibilityConverter}}">
                                                 <Grid>
                                                     <Grid.RowDefinitions>
                                                         <RowDefinition Height="Auto" />
-                                                        <RowDefinition Height="Auto" />
                                                     </Grid.RowDefinitions>
-                                                    <TextBlock
-                                                        Margin="0,1,0,1" Padding="2"
-                                                        Background="AliceBlue"
-                                                        Text="{TemplateBinding StandardColorsHeader}" />
                                                     <ListBox x:Name="PART_StandardColors"
                                                         Grid.Row="1"
                                                         ItemsSource="{Binding StandardColors, RelativeSource={RelativeSource TemplatedParent}}"
@@ -339,34 +371,10 @@
                                                 </Grid>
                                             </Grid>
 
-                                            <!--  Recent Colors  -->
-                                            <Grid Grid.Row="3" Margin="0,1,0,1" Visibility="{TemplateBinding ShowRecentColors, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                                <Grid>
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="Auto" />
-                                                        <RowDefinition Height="22" />
-                                                    </Grid.RowDefinitions>
-                                                    <TextBlock
-                                                        Margin="0,1,0,1" Padding="2"
-                                                        Background="AliceBlue"
-                                                        Text="{TemplateBinding RecentColorsHeader}" />
-                                                    <ListBox x:Name="PART_RecentColors"
-                                                        Grid.Row="1"
-                                                        ItemsSource="{Binding RecentColors, RelativeSource={RelativeSource TemplatedParent}}"
-                                                        Style="{StaticResource ColorListStyle}" />
-                                                </Grid>
-                                            </Grid>
+
                                         </Grid>
-                                    </local:ColorPickerTabItem>
-                                    <local:ColorPickerTabItem x:Name="AdvancedTabItem" Header="{Binding AdvancedButtonHeader, RelativeSource={RelativeSource TemplatedParent}}" Template="{StaticResource TabItemTemplate}">
-                                        <!--  ColorCanvas  -->
-                                        <Grid x:Name="_colorCanvasHost">
-                                            <local:ColorCanvas
-                                                Width="{Binding MaxDropDownWidth, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource AdditionConverter}, ConverterParameter=-18}"
-                                                Background="Transparent" BorderThickness="0"
-                                                SelectedColor="{Binding SelectedColor, RelativeSource={RelativeSource TemplatedParent}}"
-                                                UsingAlphaChannel="{Binding UsingAlphaChannel, RelativeSource={RelativeSource TemplatedParent}}" />
-                                        </Grid>
+
+
                                     </local:ColorPickerTabItem>
                                 </TabControl>
                             </Border>
