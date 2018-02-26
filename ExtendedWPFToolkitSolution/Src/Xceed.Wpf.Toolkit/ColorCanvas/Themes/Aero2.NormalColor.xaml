@@ -188,6 +188,31 @@
     <Setter Property="Template" Value="{StaticResource AlphaSpectrumSliderTemplate}" />
   </Style>
 
+  <!--  ===============================================================================  -->
+  <!--  NullButton (Template and Style)  -->
+  <!--  ===============================================================================  -->
+
+  <Style x:Key="NullButtonStyle" TargetType="Button">
+    <Setter Property="OverridesDefaultStyle" Value="True" />
+    <Setter Property="Cursor" Value="Hand" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="Button">
+          <Border
+            Name="border"
+            Background="{StaticResource RedDiagonalLineBrush}"
+            BorderBrush="Black" BorderThickness="1">
+            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+              <Setter Property="Opacity" Value="0.8" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
 
   <!--  ===============================================================================  -->
   <!--  ColorCanvas (Template and Style)  -->
@@ -256,15 +281,14 @@
           <Border Grid.Row="1" Margin="0,5,0,0">
             <Grid>
               <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="20" />
+                <ColumnDefinition Width="22" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
               </Grid.ColumnDefinitions>
               <Button x:Name="PART_NullColorButton"
                 Grid.Column="0"
-                Width="19" Height="19"
-                Background="{StaticResource RedDiagonalLineBrush}"
-                BorderBrush="Black" BorderThickness="1" />
+                Height="22"
+                Style="{StaticResource NullButtonStyle}" />
               <Border x:Name="SelectedColorBorder"
                 Grid.Column="1"
                 Height="22"
@@ -275,6 +299,7 @@
               </Border>
               <TextBox x:Name="PART_HexadecimalTextBox"
                 Grid.Column="2"
+                Height="22"
                 Margin="2,0,2,0" VerticalAlignment="Center"
                 Style="{StaticResource ColorCanvasTextBoxStyle}" />
             </Grid>
