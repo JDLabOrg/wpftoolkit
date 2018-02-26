@@ -395,6 +395,7 @@
     <Compile Include="AutoSelectTextBox\Implementation\QueryMoveFocusEventArgs.cs" />
     <Compile Include="BusyIndicator\Implementation\BusyIndicator.cs" />
     <Compile Include="BusyIndicator\Implementation\Converters\ProgressBarWidthConverter.cs" />
+    <Compile Include="ColorCanvas\Implementation\AlphaSpectrumSlider.cs" />
     <Compile Include="ColorPicker\Implementation\ColorPickerTabItem.cs" />
     <Compile Include="Core\Converters\ColorModeToTabItemSelectedConverter.cs" />
     <Compile Include="Core\LocationEnum.cs" />

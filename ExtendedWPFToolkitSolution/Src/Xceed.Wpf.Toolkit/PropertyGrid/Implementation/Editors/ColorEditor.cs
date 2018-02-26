@@ -27,7 +27,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
     protected override void SetControlProperties( PropertyItem propertyItem )
     {
       Editor.BorderThickness = new System.Windows.Thickness( 0 );
-      Editor.DisplayColorAndName = true;
+      Editor.DisplayColorAndName = false;
     }
     protected override void SetValueDependencyProperty()
     {

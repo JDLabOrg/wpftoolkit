@@ -45,7 +45,7 @@ namespace Xceed.Wpf.DataGrid
       m_groupDescriptions = new GroupDescriptionCollection();
       m_sortDescriptions = new DataGridSortDescriptionCollection();
       m_statFunctions = new StatFunctionCollection();
-      m_autoFilterValues = new ReadOnlyDictionary<string, IList>();
+      m_autoFilterValues = new Xceed.Utils.Collections.ReadOnlyDictionary<string, IList>();
       m_autoFilteredItems = new ObservableCollection<DataGridItemPropertyBase>();
       m_registeredFieldNamesToAutoFilterValues = new Dictionary<string, INotifyCollectionChanged>();
       m_registeredAutoFilterValuesToFieldNames = new Dictionary<INotifyCollectionChanged, string>();
@@ -578,7 +578,7 @@ namespace Xceed.Wpf.DataGrid
     private StatFunctionCollection m_statFunctions;
     private GroupDescriptionCollection m_groupDescriptions;
     private DataGridSortDescriptionCollection m_sortDescriptions;
-    private ReadOnlyDictionary<string, IList> m_autoFilterValues;
+    private Xceed.Utils.Collections.ReadOnlyDictionary<string, IList> m_autoFilterValues;
     private ObservableCollection<DataGridItemPropertyBase> m_autoFilteredItems;
     private AutoFilterMode m_autoFilterMode = AutoFilterMode.None;
     private FilterCriteriaMode m_filterCriteriaMode = FilterCriteriaMode.And;
