@@ -293,7 +293,8 @@ namespace Xceed.Wpf.Toolkit
 
     #region UsingAlphaChannel
 
-    public static readonly DependencyProperty UsingAlphaChannelProperty = DependencyProperty.Register( "UsingAlphaChannel", typeof( bool ), typeof( ColorCanvas ), new FrameworkPropertyMetadata( true, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, new PropertyChangedCallback( OnUsingAlphaChannelPropertyChanged ) ) );
+    public static readonly DependencyProperty UsingAlphaChannelProperty = DependencyProperty.Register( "UsingAlphaChannel", typeof( bool ), 
+      typeof( ColorCanvas ), new FrameworkPropertyMetadata( true, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, new PropertyChangedCallback( OnUsingAlphaChannelPropertyChanged ) ) );
     public bool UsingAlphaChannel
     {
       get
@@ -628,12 +629,15 @@ namespace Xceed.Wpf.Toolkit
     {
       if ((colorToFormat == null) || !colorToFormat.HasValue)
         return string.Empty;
-      return ColorUtilities.FormatColorString( colorToFormat.ToString(), UsingAlphaChannel );
+
+      ///@note 
+      // do not use alpha string in IUEditor
+      return ColorUtilities.FormatColorString( colorToFormat.ToString(), false);
     }
 
     private string GetFormatedColorString( string stringToFormat )
     {
-      return ColorUtilities.FormatColorString( stringToFormat, UsingAlphaChannel );
+      return ColorUtilities.FormatColorString( stringToFormat, false);
     }
 
     private void SetHexadecimalStringProperty( string newValue, bool modifyFromUI )

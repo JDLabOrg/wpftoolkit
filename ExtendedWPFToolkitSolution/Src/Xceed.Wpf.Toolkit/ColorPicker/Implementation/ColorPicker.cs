@@ -241,7 +241,7 @@ namespace Xceed.Wpf.Toolkit
     #region MaxDropDownWidth
 
     public static readonly DependencyProperty MaxDropDownWidthProperty = DependencyProperty.Register( "MaxDropDownWidth", typeof( double )
-      , typeof( ColorPicker ), new UIPropertyMetadata( 214d ) );
+      , typeof( ColorPicker ), new UIPropertyMetadata( 275d ) );
     public double MaxDropDownWidth
     {
       get
@@ -439,7 +439,7 @@ namespace Xceed.Wpf.Toolkit
 
     #region StandardButtonHeader
 
-    public static readonly DependencyProperty StandardButtonHeaderProperty = DependencyProperty.Register( "StandardButtonHeader", typeof( string ), typeof( ColorPicker ), new UIPropertyMetadata( "Standard" ) );
+    public static readonly DependencyProperty StandardButtonHeaderProperty = DependencyProperty.Register( "StandardButtonHeader", typeof( string ), typeof( ColorPicker ), new UIPropertyMetadata( "Color" ) );
     public string StandardButtonHeader
     {
       get
