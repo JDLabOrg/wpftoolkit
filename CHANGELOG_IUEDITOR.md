@@ -10,6 +10,12 @@ The "Master" Branch will always be synced to the official Codeplex Version.
 ---
 
 ## History
+* 2018-02-27
+	* property grid
+		* disable horizontal scroll
+		* add designated object (w/ button)
+    * color panel
+    	* change design
 
 * 2017-11-22
 	* added EditorEnabled dependency property in PropertyGrid for CanChange function

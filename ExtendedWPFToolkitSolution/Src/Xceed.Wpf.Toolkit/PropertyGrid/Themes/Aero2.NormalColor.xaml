@@ -47,6 +47,7 @@
     <conv:InverseBoolConverter x:Key="InverseBoolConverter" />
     <conv:HalfConverter x:Key="HalfConverter" />
     <conv:NullToBoolConverter x:Key="NullToBoolConverter" />
+    <conv:AdditionConverter x:Key="AdditionConverter" />
     <pgconv:ExpandableObjectMarginConverter x:Key="ExpandableObjectMarginConverter" />
     <pgconv:ObjectToUIElementConverter x:Key="ObjectToUIElementConverter" />
     <pgconv:IsStringEmptyConverter x:Key="IsStringEmptyConverter" />
@@ -606,6 +607,7 @@
         <Setter Property="Background" Value="{x:Static SystemColors.WindowBrush}" />
         <!--  Set the margin at 1 pixel bottom to let the horizontal "line" effect appear.  -->
         <Setter Property="Margin" Value="0,0,0,1" />
+        <Setter Property="Width" Value="{Binding ActualWidth, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pg:PropertyGrid}, Converter={StaticResource AdditionConverter}, ConverterParameter=-40}" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="IsTabStop" Value="False" />
@@ -640,8 +642,9 @@
                                     <Button x:Name="_designatedButton"
                                         Grid.Column="0"
                                         Command="{Binding DesignatedValueCommand, RelativeSource={RelativeSource TemplatedParent}}"
-                                        Content="D"
-                                        Visibility="{Binding HasDesignatedValue, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                        Visibility="{Binding HasDesignatedValue, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <Image Source="../Images/IUDesignatedValue.png" />
+                                    </Button>
                                     <!--#endregion IUEditor-->
 
                                     <Grid Grid.Column="1" Margin="{Binding Level, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ExpandableObjectMarginConverter}}">
@@ -742,7 +745,9 @@
                                                 BorderBrush="{TemplateBinding BorderBrush}"
                                                 BorderThickness="{TemplateBinding BorderThickness}"
                                                 SnapsToDevicePixels="True">
-                                                <ScrollViewer Padding="{TemplateBinding Padding}" Focusable="False" VerticalScrollBarVisibility="Auto">
+                                                <ScrollViewer
+                                                    Padding="{TemplateBinding Padding}"
+                                                    Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
                                                     <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                                                 </ScrollViewer>
                                             </Border>
@@ -941,7 +946,7 @@
                                                 SnapsToDevicePixels="True">
                                                 <ScrollViewer
                                                     Padding="{TemplateBinding Padding}"
-                                                    Focusable="False" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                                                    Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
                                                     <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                                                 </ScrollViewer>
                                             </Border>
