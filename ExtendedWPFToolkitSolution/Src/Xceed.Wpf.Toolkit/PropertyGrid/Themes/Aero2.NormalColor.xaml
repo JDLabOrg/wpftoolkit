@@ -56,6 +56,7 @@
 
     <x:Static x:Key="EmptyString" Member="sys:String.Empty" />
 
+
     <!--  PropertyGrid numeric Editors  -->
     <Style BasedOn="{StaticResource NumericUpDown}" TargetType="{x:Type editor:PropertyGridEditorByteUpDown}">
         <Style.Triggers>
@@ -64,8 +65,7 @@
                     <Condition Property="IsKeyboardFocusWithin" Value="False" />
                     <Condition Property="IsMouseOver" Value="False" />
                 </MultiTrigger.Conditions>
-                <Setter Property="BorderBrush" Value="Transparent" />
-                <Setter Property="ShowButtonSpinner" Value="False" />
+                <Setter Property="BorderBrush" Value="#979797" />
             </MultiTrigger>
         </Style.Triggers>
     </Style>
@@ -77,8 +77,7 @@
                     <Condition Property="IsKeyboardFocusWithin" Value="False" />
                     <Condition Property="IsMouseOver" Value="False" />
                 </MultiTrigger.Conditions>
-                <Setter Property="BorderBrush" Value="Transparent" />
-                <Setter Property="ShowButtonSpinner" Value="False" />
+                <Setter Property="BorderBrush" Value="#979797" />
             </MultiTrigger>
         </Style.Triggers>
     </Style>
@@ -90,8 +89,7 @@
                     <Condition Property="IsKeyboardFocusWithin" Value="False" />
                     <Condition Property="IsMouseOver" Value="False" />
                 </MultiTrigger.Conditions>
-                <Setter Property="BorderBrush" Value="Transparent" />
-                <Setter Property="ShowButtonSpinner" Value="False" />
+                <Setter Property="BorderBrush" Value="#979797" />
             </MultiTrigger>
         </Style.Triggers>
     </Style>
@@ -103,8 +101,7 @@
                     <Condition Property="IsKeyboardFocusWithin" Value="False" />
                     <Condition Property="IsMouseOver" Value="False" />
                 </MultiTrigger.Conditions>
-                <Setter Property="BorderBrush" Value="Transparent" />
-                <Setter Property="ShowButtonSpinner" Value="False" />
+                <Setter Property="BorderBrush" Value="#979797" />
             </MultiTrigger>
         </Style.Triggers>
     </Style>
@@ -116,8 +113,7 @@
                     <Condition Property="IsKeyboardFocusWithin" Value="False" />
                     <Condition Property="IsMouseOver" Value="False" />
                 </MultiTrigger.Conditions>
-                <Setter Property="BorderBrush" Value="Transparent" />
-                <Setter Property="ShowButtonSpinner" Value="False" />
+                <Setter Property="BorderBrush" Value="#979797" />
             </MultiTrigger>
         </Style.Triggers>
     </Style>
@@ -129,8 +125,7 @@
                     <Condition Property="IsKeyboardFocusWithin" Value="False" />
                     <Condition Property="IsMouseOver" Value="False" />
                 </MultiTrigger.Conditions>
-                <Setter Property="BorderBrush" Value="Transparent" />
-                <Setter Property="ShowButtonSpinner" Value="False" />
+                <Setter Property="BorderBrush" Value="#979797" />
             </MultiTrigger>
         </Style.Triggers>
     </Style>
@@ -142,8 +137,7 @@
                     <Condition Property="IsKeyboardFocusWithin" Value="False" />
                     <Condition Property="IsMouseOver" Value="False" />
                 </MultiTrigger.Conditions>
-                <Setter Property="BorderBrush" Value="Transparent" />
-                <Setter Property="ShowButtonSpinner" Value="False" />
+                <Setter Property="BorderBrush" Value="#979797" />
             </MultiTrigger>
         </Style.Triggers>
     </Style>
@@ -156,8 +150,7 @@
                     <Condition Property="IsKeyboardFocusWithin" Value="False" />
                     <Condition Property="IsMouseOver" Value="False" />
                 </MultiTrigger.Conditions>
-                <Setter Property="BorderBrush" Value="Transparent" />
-                <Setter Property="ShowButtonSpinner" Value="False" />
+                <Setter Property="BorderBrush" Value="#979797" />
             </MultiTrigger>
         </Style.Triggers>
     </Style>
@@ -170,8 +163,7 @@
                     <Condition Property="IsKeyboardFocusWithin" Value="False" />
                     <Condition Property="IsMouseOver" Value="False" />
                 </MultiTrigger.Conditions>
-                <Setter Property="BorderBrush" Value="Transparent" />
-                <Setter Property="ShowButtonSpinner" Value="False" />
+                <Setter Property="BorderBrush" Value="#979797" />
             </MultiTrigger>
         </Style.Triggers>
     </Style>
@@ -184,7 +176,7 @@
                     <Condition Property="IsKeyboardFocusWithin" Value="False" />
                     <Condition Property="IsMouseOver" Value="False" />
                 </MultiTrigger.Conditions>
-                <Setter Property="BorderBrush" Value="Transparent" />
+                <Setter Property="BorderBrush" Value="#979797" />
                 <Setter Property="Background" Value="Transparent" />
             </MultiTrigger>
             <Trigger Property="IsEnabled" Value="False">
@@ -206,7 +198,7 @@
                     <Condition Property="IsKeyboardFocusWithin" Value="False" />
                     <Condition Property="IsMouseOver" Value="False" />
                 </MultiTrigger.Conditions>
-                <Setter Property="BorderBrush" Value="Transparent" />
+                <Setter Property="BorderBrush" Value="#979797" />
             </MultiTrigger>
         </Style.Triggers>
     </Style>
@@ -224,7 +216,7 @@
                     <Condition Property="IsKeyboardFocusWithin" Value="False" />
                     <Condition Property="IsMouseOver" Value="False" />
                 </MultiTrigger.Conditions>
-                <Setter Property="BorderBrush" Value="Transparent" />
+                <Setter Property="BorderBrush" Value="#979797" />
                 <Setter Property="ShowDropDownButton" Value="False" />
             </MultiTrigger>
         </Style.Triggers>
@@ -256,8 +248,7 @@
                     <Condition Property="IsKeyboardFocusWithin" Value="False" />
                     <Condition Property="IsMouseOver" Value="False" />
                 </MultiTrigger.Conditions>
-                <Setter Property="BorderBrush" Value="Transparent" />
-                <Setter Property="ShowButtonSpinner" Value="False" />
+                <Setter Property="BorderBrush" Value="#979797" />
             </MultiTrigger>
         </Style.Triggers>
     </Style>
@@ -269,8 +260,7 @@
                     <Condition Property="IsKeyboardFocusWithin" Value="False" />
                     <Condition Property="IsMouseOver" Value="False" />
                 </MultiTrigger.Conditions>
-                <Setter Property="BorderBrush" Value="Transparent" />
-                <Setter Property="ShowButtonSpinner" Value="False" />
+                <Setter Property="BorderBrush" Value="#979797" />
             </MultiTrigger>
         </Style.Triggers>
     </Style>
@@ -282,8 +272,7 @@
                     <Condition Property="IsKeyboardFocusWithin" Value="False" />
                     <Condition Property="IsMouseOver" Value="False" />
                 </MultiTrigger.Conditions>
-                <Setter Property="BorderBrush" Value="Transparent" />
-                <Setter Property="ShowButtonSpinner" Value="False" />
+                <Setter Property="BorderBrush" Value="#979797" />
             </MultiTrigger>
         </Style.Triggers>
     </Style>
@@ -295,8 +284,7 @@
                     <Condition Property="IsKeyboardFocusWithin" Value="False" />
                     <Condition Property="IsMouseOver" Value="False" />
                 </MultiTrigger.Conditions>
-                <Setter Property="BorderBrush" Value="Transparent" />
-                <Setter Property="ShowButtonSpinner" Value="False" />
+                <Setter Property="BorderBrush" Value="#979797" />
             </MultiTrigger>
         </Style.Triggers>
     </Style>
@@ -607,6 +595,7 @@
         <Setter Property="Background" Value="{x:Static SystemColors.WindowBrush}" />
         <!--  Set the margin at 1 pixel bottom to let the horizontal "line" effect appear.  -->
         <Setter Property="Margin" Value="0,0,0,1" />
+        <Setter Property="Padding" Value="0,1,0,1" />
         <Setter Property="Width" Value="{Binding ActualWidth, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pg:PropertyGrid}, Converter={StaticResource AdditionConverter}, ConverterParameter=-40}" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
@@ -634,6 +623,7 @@
                                 <Grid Margin="2,2,2,2" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="15" />
+                                        <ColumnDefinition Width="1" />
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
@@ -641,13 +631,26 @@
                                     <!--#region IUEditor-->
                                     <Button x:Name="_designatedButton"
                                         Grid.Column="0"
+                                        Height="20"
+                                        VerticalAlignment="Center" HorizontalContentAlignment="Center"
+                                        Background="Transparent" BorderThickness="0"
                                         Command="{Binding DesignatedValueCommand, RelativeSource={RelativeSource TemplatedParent}}"
                                         Visibility="{Binding HasDesignatedValue, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                        <Image Source="../Images/IUDesignatedValue.png" />
+                                        <Border>
+                                            <Image Source="../Images/IUDesignatedValue.png" />
+                                        </Border>
                                     </Button>
+
+                                    <Border
+                                        Grid.Column="1"
+                                        Width="1"
+                                        Margin="0,-2"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}" />
                                     <!--#endregion IUEditor-->
 
-                                    <Grid Grid.Column="1" Margin="{Binding Level, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ExpandableObjectMarginConverter}}">
+
+                                    <Grid Grid.Column="2" Margin="{Binding Level, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ExpandableObjectMarginConverter}}">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="15" />
                                             <ColumnDefinition Width="*" />
@@ -675,7 +678,7 @@
                                                             <Setter Property="Foreground" Value="LightPink" />
                                                         </DataTrigger>
                                                         <DataTrigger Binding="{Binding IsColoredTitle, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Value="False">
-                                                            <Setter Property="Foreground" Value="DarkSlateBlue" />
+                                                            <Setter Property="Foreground" Value="#1E1E1E" />
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -684,7 +687,7 @@
                                     </Grid>
 
                                     <Grid
-                                        Grid.Column="2"
+                                        Grid.Column="3"
                                         Margin="5,0,5,0" HorizontalAlignment="Right"
                                         utilities:ContextMenuUtilities.OpenOnMouseLeftButtonClick="True"
                                         ContextMenu="{Binding AdvancedOptionsMenu, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pg:PropertyGrid}}"
