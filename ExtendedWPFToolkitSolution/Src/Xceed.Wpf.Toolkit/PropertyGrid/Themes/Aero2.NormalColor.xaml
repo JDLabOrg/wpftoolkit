@@ -614,6 +614,7 @@
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
 
+
                             <!--  Set the BorderThickness at 1 pixel to the right to let the "vertical line" appear  -->
                             <Border x:Name="PART_Name"
                                 Margin="0,0,1,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
@@ -622,35 +623,39 @@
                                 BorderThickness="{TemplateBinding BorderThickness}">
                                 <Grid Margin="2,2,2,2" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="15" />
+                                        <ColumnDefinition Width="22" />
                                         <ColumnDefinition Width="1" />
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
 
+
                                     <!--#region IUEditor-->
                                     <Button x:Name="_designatedButton"
                                         Grid.Column="0"
-                                        Height="20"
-                                        VerticalAlignment="Center" HorizontalContentAlignment="Center"
-                                        Background="Transparent" BorderThickness="0"
+                                        Width="20" Height="20"
+                                        Margin="-1,0"
+                                        Background="Transparent" BorderBrush="Transparent" BorderThickness="1"
                                         Command="{Binding DesignatedValueCommand, RelativeSource={RelativeSource TemplatedParent}}"
                                         Visibility="{Binding HasDesignatedValue, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}">
                                         <Border>
-                                            <Image Source="../Images/IUDesignatedValue.png" />
+                                            <Image
+                                                Width="15" Height="12"
+                                                HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                Source="../Images/IUDesignatedValue.png" />
                                         </Border>
                                     </Button>
-
                                     <Border
                                         Grid.Column="1"
-                                        Width="1"
+                                        Height="{Binding ActualHeight, ElementName=PART_Editor}"
                                         Margin="0,-2"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="{TemplateBinding BorderThickness}" />
+                                        BorderBrush="{DynamicResource {x:Static themes:ResourceKeys.ButtonNormalBackgroundKey}}"
+                                        BorderThickness="1,0,0,0" />
+
                                     <!--#endregion IUEditor-->
 
 
-                                    <Grid Grid.Column="2" Margin="{Binding Level, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ExpandableObjectMarginConverter}}">
+                                    <Grid x:Name="PART_DisplayName" Grid.Column="2" Margin="{Binding Level, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ExpandableObjectMarginConverter}}">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="15" />
                                             <ColumnDefinition Width="*" />
@@ -763,12 +768,15 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="PART_Name" Property="Background" Value="{DynamicResource {x:Static themes:ResourceKeys.ButtonMouseOverBackgroundKey}}" />
+                            <Setter Property="Background" Value="#F0F8FC" />
+                            <Setter Property="BorderBrush" Value="#7F3B99FC" />
                         </Trigger>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="PART_Name" Property="Background" Value="{DynamicResource {x:Static themes:ResourceKeys.ButtonPressedBackgroundKey}}" />
+                            <Setter Property="Background" Value="#81C5FF" />
+                            <Setter Property="BorderBrush" Value="#578BC1" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Background" Value="#F0F0F0" />
                             <Setter TargetName="PART_ValueContainer" Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
                             <Setter TargetName="_text" Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
                         </Trigger>
