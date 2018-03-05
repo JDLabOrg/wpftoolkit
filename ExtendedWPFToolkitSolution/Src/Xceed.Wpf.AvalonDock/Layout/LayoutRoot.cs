@@ -691,6 +691,7 @@ namespace Xceed.Wpf.AvalonDock.Layout
             reader.Read();
           }
             #region IUEditor
+          // Side가 null이면 autohide할때 exception 발생. 
             else
             {
                 TopSide = new LayoutAnchorSide();
@@ -703,6 +704,7 @@ namespace Xceed.Wpf.AvalonDock.Layout
             reader.Read();
           }
             #region IUEditor
+          // Side가 null이면 autohide할때 exception 발생. 
             else
             {
                 RightSide = new LayoutAnchorSide();
@@ -715,6 +717,7 @@ namespace Xceed.Wpf.AvalonDock.Layout
             reader.Read();
           }
             #region IUEditor
+          // Side가 null이면 autohide할때 exception 발생. 
             else
             {
                 LeftSide = new LayoutAnchorSide();
@@ -727,6 +730,7 @@ namespace Xceed.Wpf.AvalonDock.Layout
             reader.Read();
           }
             #region IUEditor
+          // Side가 null이면 autohide할때 exception 발생. 
             else
             {
                 BottomSide = new LayoutAnchorSide();
@@ -740,6 +744,7 @@ namespace Xceed.Wpf.AvalonDock.Layout
             FloatingWindows.Add( ( LayoutFloatingWindow )floatingWindow );
           }
 #region IUEditor
+          // Hidden은 제대로 동작하지않으므로 주석처리
           /*
             Hidden.Clear();
           var hidden = ReadElementList( reader );
@@ -752,7 +757,7 @@ namespace Xceed.Wpf.AvalonDock.Layout
         }
 
         #region IUEditor
-        // DO NOT use in IUEditor
+        // DO NOT use in IUEditor. RootPanel은 LayoutPanel이므로 LayoutPanel로 read/write하고 해당 function은 사용안함
         /*
         private List<ILayoutPanelElement> ReadRootPanel( XmlReader reader )
         {
@@ -905,8 +910,10 @@ namespace Xceed.Wpf.AvalonDock.Layout
 
         public void WriteXml( XmlWriter writer )
         {
-          writer.WriteStartElement( "LayoutPanel" );
-          if( RootPanel != null )
+#region IUEditor
+            writer.WriteStartElement( "LayoutPanel" );
+#endregion
+            if( RootPanel != null )
           {
             RootPanel.WriteXml( writer );
           }
@@ -951,6 +958,7 @@ namespace Xceed.Wpf.AvalonDock.Layout
           }
           writer.WriteEndElement();
             #region IUEditor
+            // Hidden은 제대로 동작하지않으므로 주석처리
             /*
           writer.WriteStartElement( "Hidden" );
           foreach( var layoutAnchorable in Hidden )

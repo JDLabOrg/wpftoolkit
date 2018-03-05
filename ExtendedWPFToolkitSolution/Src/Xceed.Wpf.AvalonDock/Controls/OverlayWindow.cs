@@ -242,6 +242,7 @@ namespace Xceed.Wpf.AvalonDock.Controls
                             if (isDraggingAnchorables && _gridDocumentPaneFullDropTargets != null)
                             {
                                 #region IUEditor
+                                // DocumentPane은 DragEnter 이벤트를 받지않아야하므로 주석처리
                                 /*
                                 var dropAreaDocumentPane = visibleArea as DropArea<LayoutDocumentPaneControl>;
                                 if (_documentPaneFullDropTargetLeft.IsVisible)
@@ -514,6 +515,7 @@ namespace Xceed.Wpf.AvalonDock.Controls
                     }
                     break;
                     #region IUEditor
+                    // DocumentPane은 DragEnter 이벤트를 받지않아야하므로 주석처리
                     /*
                 case DropAreaType.DocumentPane:
                 default:
