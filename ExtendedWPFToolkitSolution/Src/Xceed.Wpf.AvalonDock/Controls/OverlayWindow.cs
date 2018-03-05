@@ -241,6 +241,8 @@ namespace Xceed.Wpf.AvalonDock.Controls
                             bool isDraggingAnchorables = _floatingWindow.Model is LayoutAnchorableFloatingWindow;
                             if (isDraggingAnchorables && _gridDocumentPaneFullDropTargets != null)
                             {
+                                #region IUEditor
+                                /*
                                 var dropAreaDocumentPane = visibleArea as DropArea<LayoutDocumentPaneControl>;
                                 if (_documentPaneFullDropTargetLeft.IsVisible)
                                     yield return new DocumentPaneDropTarget(dropAreaDocumentPane.AreaElement, _documentPaneFullDropTargetLeft.GetScreenArea(), DropTargetType.DocumentPaneDockLeft);
@@ -271,7 +273,6 @@ namespace Xceed.Wpf.AvalonDock.Controls
                                     if (newAreaTabItemScreenArea.Right < dropAreaDocumentPane.AreaElement.GetScreenArea().Right)
                                         yield return new DocumentPaneDropTarget(dropAreaDocumentPane.AreaElement, newAreaTabItemScreenArea, DropTargetType.DocumentPaneDockInside, parentPaneModel.Children.Count);
                                 }
-
                                 if (_documentPaneDropTargetLeftAsAnchorablePane.IsVisible)
                                     yield return new DocumentPaneDropAsAnchorableTarget(dropAreaDocumentPane.AreaElement, _documentPaneDropTargetLeftAsAnchorablePane.GetScreenArea(), DropTargetType.DocumentPaneDockAsAnchorableLeft);
                                 if (_documentPaneDropTargetTopAsAnchorablePane.IsVisible)
@@ -280,10 +281,11 @@ namespace Xceed.Wpf.AvalonDock.Controls
                                     yield return new DocumentPaneDropAsAnchorableTarget(dropAreaDocumentPane.AreaElement, _documentPaneDropTargetRightAsAnchorablePane.GetScreenArea(), DropTargetType.DocumentPaneDockAsAnchorableRight);
                                 if (_documentPaneDropTargetBottomAsAnchorablePane.IsVisible)
                                     yield return new DocumentPaneDropAsAnchorableTarget(dropAreaDocumentPane.AreaElement, _documentPaneDropTargetBottomAsAnchorablePane.GetScreenArea(), DropTargetType.DocumentPaneDockAsAnchorableBottom);
+                                    */
+#endregion
                             }
                             else
                             {
-
                                 var dropAreaDocumentPane = visibleArea as DropArea<LayoutDocumentPaneControl>;
                                 if (_documentPaneDropTargetLeft.IsVisible)
                                     yield return new DocumentPaneDropTarget(dropAreaDocumentPane.AreaElement, _documentPaneDropTargetLeft.GetScreenArea(), DropTargetType.DocumentPaneDockLeft);
@@ -485,7 +487,7 @@ namespace Xceed.Wpf.AvalonDock.Controls
         {
             _visibleAreas.Add(area);
 
-            FrameworkElement areaElement;
+            FrameworkElement areaElement = null;
             switch (area.Type)
             {
                 case DropAreaType.DockingManager:
@@ -511,6 +513,8 @@ namespace Xceed.Wpf.AvalonDock.Controls
                         _documentPaneDropTargetBottom.Visibility = Visibility.Hidden;
                     }
                     break;
+                    #region IUEditor
+                    /*
                 case DropAreaType.DocumentPane:
                 default:
                     {
@@ -654,8 +658,11 @@ namespace Xceed.Wpf.AvalonDock.Controls
                         }
                     }
                     break;
+                    */
             }
-
+            if (areaElement == null)
+                return;
+#endregion
             Canvas.SetLeft(areaElement, area.DetectionRect.Left - Left);
             Canvas.SetTop(areaElement, area.DetectionRect.Top - Top);
             areaElement.Width = area.DetectionRect.Width;

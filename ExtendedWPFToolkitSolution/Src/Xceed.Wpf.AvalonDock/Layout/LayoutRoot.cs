@@ -678,42 +678,60 @@ namespace Xceed.Wpf.AvalonDock.Layout
             return;
           }
 
-          var layoutPanelElements = ReadRootPanel( reader );
-          if( layoutPanelElements != null )
-          {
-            //Create the RootPanel with the first child
-            RootPanel = new LayoutPanel( layoutPanelElements.First() );
-            //Add all children to RootPanel
-            for( int i = 1; i < layoutPanelElements.Count; ++i )
-            {
-              RootPanel.Children.Add( layoutPanelElements[ i ] );
-            }
-          }
+            reader.Read();
 
-          TopSide = ( LayoutAnchorSide )ReadElement( reader );
+#region IUEditor
+            RootPanel = (LayoutPanel)ReadElement(reader);
+#endregion
+
+            TopSide = ( LayoutAnchorSide )ReadElement( reader );
           if( TopSide != null )
           {
             TopSide.Children.Add( ( LayoutAnchorGroup )ReadElement( reader ) );
             reader.Read();
           }
-          RightSide = ( LayoutAnchorSide )ReadElement( reader );
+            #region IUEditor
+            else
+            {
+                TopSide = new LayoutAnchorSide();
+            }
+            #endregion
+            RightSide = ( LayoutAnchorSide )ReadElement( reader );
           if( RightSide != null )
           {
             RightSide.Children.Add( ( LayoutAnchorGroup )ReadElement( reader ) );
             reader.Read();
           }
-          LeftSide = ( LayoutAnchorSide )ReadElement( reader );
+            #region IUEditor
+            else
+            {
+                RightSide = new LayoutAnchorSide();
+            }
+            #endregion
+            LeftSide = ( LayoutAnchorSide )ReadElement( reader );
           if( LeftSide != null )
           {
             LeftSide.Children.Add( ( LayoutAnchorGroup )ReadElement( reader ) );
             reader.Read();
           }
-          BottomSide = ( LayoutAnchorSide )ReadElement( reader );
+            #region IUEditor
+            else
+            {
+                LeftSide = new LayoutAnchorSide();
+            }
+            #endregion
+            BottomSide = ( LayoutAnchorSide )ReadElement( reader );
           if( BottomSide != null )
           {
             BottomSide.Children.Add( ( LayoutAnchorGroup )ReadElement( reader ) );
             reader.Read();
           }
+            #region IUEditor
+            else
+            {
+                BottomSide = new LayoutAnchorSide();
+            }
+            #endregion
 
           FloatingWindows.Clear();
           var floatingWindows = ReadElementList( reader );
@@ -721,15 +739,21 @@ namespace Xceed.Wpf.AvalonDock.Layout
           {
             FloatingWindows.Add( ( LayoutFloatingWindow )floatingWindow );
           }
-
-          Hidden.Clear();
+#region IUEditor
+          /*
+            Hidden.Clear();
           var hidden = ReadElementList( reader );
           foreach( var hiddenObject in hidden )
           {
             Hidden.Add( ( LayoutAnchorable )hiddenObject );
           }
+          */
+#endregion
         }
 
+        #region IUEditor
+        // DO NOT use in IUEditor
+        /*
         private List<ILayoutPanelElement> ReadRootPanel( XmlReader reader )
         {
           var result = new List<ILayoutPanelElement>();
@@ -769,6 +793,8 @@ namespace Xceed.Wpf.AvalonDock.Layout
 
           return result;
         }
+        */
+#endregion
 
         private List<object> ReadElementList( XmlReader reader )
         {
@@ -879,7 +905,7 @@ namespace Xceed.Wpf.AvalonDock.Layout
 
         public void WriteXml( XmlWriter writer )
         {
-          writer.WriteStartElement( "RootPanel" );
+          writer.WriteStartElement( "LayoutPanel" );
           if( RootPanel != null )
           {
             RootPanel.WriteXml( writer );
@@ -924,13 +950,16 @@ namespace Xceed.Wpf.AvalonDock.Layout
             writer.WriteEndElement();
           }
           writer.WriteEndElement();
-
+            #region IUEditor
+            /*
           writer.WriteStartElement( "Hidden" );
           foreach( var layoutAnchorable in Hidden )
           {
             layoutAnchorable.WriteXml( writer );
           }
           writer.WriteEndElement();
+          */
+           #endregion
         }
 
         internal static Type FindType( string name )
