@@ -631,19 +631,19 @@
 
 
                            <!--#region IUEditor-->
-                           <Button x:Name="_designatedButton"
+                           <Button x:Name="PART_DesignatedButton"
                                         Grid.Column="0"
                                         Width="20" Height="20"
                                         Margin="-1,0"
                                         Background="Transparent" BorderBrush="Transparent" BorderThickness="1"
                                         Command="{Binding DesignatedValueCommand, RelativeSource={RelativeSource TemplatedParent}}"
                                         Visibility="{Binding HasDesignatedValue, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}">
-                              <Border>
+                              <Grid>
                                  <Image
                                                 Width="15" Height="12"
                                                 HorizontalAlignment="Center" VerticalAlignment="Center"
                                                 Source="../Images/IUDesignatedValue.png" />
-                              </Border>
+                              </Grid>
                            </Button>
                            <Border
                                         Grid.Column="1"
@@ -777,6 +777,8 @@
                   </Trigger>
                   <Trigger Property="IsEnabled" Value="False">
                      <Setter Property="Background" Value="#F0F0F0" />
+                     <Setter TargetName="PART_DesignatedButton" Property="BorderBrush" Value="Transparent" />
+                     <Setter TargetName="PART_DesignatedButton" Property="BorderThickness" Value="0" />
                      <Setter TargetName="PART_ValueContainer" Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
                      <Setter TargetName="_text" Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
                   </Trigger>
