@@ -911,6 +911,7 @@ namespace Xceed.Wpf.AvalonDock.Layout
         public void WriteXml( XmlWriter writer )
         {
 #region IUEditor
+            // change xml tag "RootPanel" to "LayoutPanel"
             writer.WriteStartElement( "LayoutPanel" );
 #endregion
             if( RootPanel != null )
