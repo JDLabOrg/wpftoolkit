@@ -270,7 +270,7 @@ namespace Xceed.Wpf.Toolkit
 
     #region RecentColors
 
-    public static readonly DependencyProperty RecentColorsProperty = DependencyProperty.Register( "RecentColors", typeof( ObservableCollection<ColorItem> ), typeof( ColorPicker ), new UIPropertyMetadata( null ) );
+    public static readonly DependencyProperty RecentColorsProperty = DependencyProperty.Register( "RecentColors", typeof( ObservableCollection<ColorItem> ), typeof( ColorPicker ), new UIPropertyMetadata( new ObservableCollection<ColorItem>() ) );
     public ObservableCollection<ColorItem> RecentColors
     {
       get
@@ -528,12 +528,13 @@ namespace Xceed.Wpf.Toolkit
 
     public ColorPicker()
     {
+      /* IUEditor- shared recent color
 #if VS2008
         this.RecentColors = new ObservableCollection<ColorItem>();
 #else
-      this.SetCurrentValue( ColorPicker.RecentColorsProperty, new ObservableCollection<ColorItem>() );
+      this.SetCurrentValue(ColorPicker.RecentColorsProperty, new ObservableCollection<ColorItem>());
 #endif
-
+*/
       Keyboard.AddKeyDownHandler( this, OnKeyDown );
       Mouse.AddPreviewMouseDownOutsideCapturedElementHandler( this, OnMouseDownOutsideCapturedElement );
     }

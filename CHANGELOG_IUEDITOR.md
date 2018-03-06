@@ -10,6 +10,11 @@ The "Master" Branch will always be synced to the official Codeplex Version.
 ---
 
 ## History
+
+* 2018-03-06
+	* color picker (recent property -> static)
+	* editor config added
+
 * 2018-02-27
 	* property grid
 		* disable horizontal scroll
