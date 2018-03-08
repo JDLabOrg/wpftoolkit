@@ -69,7 +69,7 @@ namespace Xceed.Wpf.Toolkit
 
     #region AdvancedButtonHeader
 
-    public static readonly DependencyProperty AdvancedButtonHeaderProperty = DependencyProperty.Register( "AdvancedButtonHeader", typeof( string ), typeof( ColorPicker ), new UIPropertyMetadata( "Advanced" ) );
+    public static readonly DependencyProperty AdvancedButtonHeaderProperty = DependencyProperty.Register( "AdvancedButtonHeader", typeof( string ), typeof( ColorPicker ), new UIPropertyMetadata( "Web Colors" ) );
     public string AdvancedButtonHeader
     {
       get
@@ -138,7 +138,7 @@ namespace Xceed.Wpf.Toolkit
 
     #region AvailableColorsHeader
 
-    public static readonly DependencyProperty AvailableColorsHeaderProperty = DependencyProperty.Register( "AvailableColorsHeader", typeof( string ), typeof( ColorPicker ), new UIPropertyMetadata( "Available Colors" ) );
+    public static readonly DependencyProperty AvailableColorsHeaderProperty = DependencyProperty.Register( "AvailableColorsHeader", typeof( string ), typeof( ColorPicker ), new UIPropertyMetadata( "Colors" ) );
     public string AvailableColorsHeader
     {
       get
@@ -241,7 +241,7 @@ namespace Xceed.Wpf.Toolkit
     #region MaxDropDownWidth
 
     public static readonly DependencyProperty MaxDropDownWidthProperty = DependencyProperty.Register( "MaxDropDownWidth", typeof( double )
-      , typeof( ColorPicker ), new UIPropertyMetadata( 214d ) );
+      , typeof( ColorPicker ), new UIPropertyMetadata( 275d ) );
     public double MaxDropDownWidth
     {
       get
@@ -371,7 +371,7 @@ namespace Xceed.Wpf.Toolkit
 
     #region ShowAvailableColors
 
-    public static readonly DependencyProperty ShowAvailableColorsProperty = DependencyProperty.Register( "ShowAvailableColors", typeof( bool ), typeof( ColorPicker ), new UIPropertyMetadata( true ) );
+    public static readonly DependencyProperty ShowAvailableColorsProperty = DependencyProperty.Register( "ShowAvailableColors", typeof( bool ), typeof( ColorPicker ), new UIPropertyMetadata( false ) );
     public bool ShowAvailableColors
     {
       get
@@ -388,7 +388,7 @@ namespace Xceed.Wpf.Toolkit
 
     #region ShowRecentColors
 
-    public static readonly DependencyProperty ShowRecentColorsProperty = DependencyProperty.Register( "ShowRecentColors", typeof( bool ), typeof( ColorPicker ), new UIPropertyMetadata( false ) );
+    public static readonly DependencyProperty ShowRecentColorsProperty = DependencyProperty.Register( "ShowRecentColors", typeof( bool ), typeof( ColorPicker ), new UIPropertyMetadata( true ) );
     public bool ShowRecentColors
     {
       get
@@ -439,7 +439,7 @@ namespace Xceed.Wpf.Toolkit
 
     #region StandardButtonHeader
 
-    public static readonly DependencyProperty StandardButtonHeaderProperty = DependencyProperty.Register( "StandardButtonHeader", typeof( string ), typeof( ColorPicker ), new UIPropertyMetadata( "Standard" ) );
+    public static readonly DependencyProperty StandardButtonHeaderProperty = DependencyProperty.Register( "StandardButtonHeader", typeof( string ), typeof( ColorPicker ), new UIPropertyMetadata( "Color" ) );
     public string StandardButtonHeader
     {
       get
@@ -739,7 +739,7 @@ namespace Xceed.Wpf.Toolkit
       if( !RecentColors.Contains( colorItem ) )
         RecentColors.Add( colorItem );
 
-      if( RecentColors.Count > 10 ) //don't allow more than ten, maybe make a property that can be set by the user.
+      if( RecentColors.Count > 20 ) //don't allow more than 20 (10->20 IUEditor) , maybe make a property that can be set by the user.
         RecentColors.RemoveAt( 0 );
     }
 
@@ -753,19 +753,170 @@ namespace Xceed.Wpf.Toolkit
 
     private static ObservableCollection<ColorItem> CreateStandardColors()
     {
-      ObservableCollection<ColorItem> standardColors = new ObservableCollection<ColorItem>();
-            // IUEditor 2017-10-23, added null color
-      standardColors.Add( new ColorItem( null, "No color" ) );
-      standardColors.Add( new ColorItem( Colors.Transparent, "Transparent" ) );
-      standardColors.Add( new ColorItem( Colors.White, "White" ) );
-      standardColors.Add( new ColorItem( Colors.Gray, "Gray" ) );
-      standardColors.Add( new ColorItem( Colors.Black, "Black" ) );
-      standardColors.Add( new ColorItem( Colors.Red, "Red" ) );
-      standardColors.Add( new ColorItem( Colors.Green, "Green" ) );
-      standardColors.Add( new ColorItem( Colors.Blue, "Blue" ) );
-      standardColors.Add( new ColorItem( Colors.Yellow, "Yellow" ) );
-      standardColors.Add( new ColorItem( Colors.Orange, "Orange" ) );
-      standardColors.Add( new ColorItem( Colors.Purple, "Purple" ) );
+      // use standard colors as web colors
+      ObservableCollection<ColorItem> standardColors = new ObservableCollection<ColorItem>
+            {
+                // IUEditor 2017-10-23, added null color
+                // new ColorItem( null, "No color" ),
+                // new ColorItem(Colors.Transparent, "Transparent"),
+
+                // black 1
+                new ColorItem(Color.FromRgb(248, 249, 250), "Black1"),
+                new ColorItem(Color.FromRgb(241, 243, 245), "Black2"),
+                new ColorItem(Color.FromRgb(233, 236, 239), "Black3"),
+                new ColorItem(Color.FromRgb(226, 226, 230), "Black4"),
+                new ColorItem(Color.FromRgb(206, 212, 218), "Black5"),
+
+                new ColorItem(Color.FromRgb(173, 181, 189), "Black6"),
+                new ColorItem(Color.FromRgb(134, 142, 150), "Black7"),
+                new ColorItem(Color.FromRgb(73, 80, 87), "Black8"),
+                new ColorItem(Color.FromRgb(52, 58, 64), "Black9"),
+                new ColorItem(Color.FromRgb(33, 37, 41), "Black10"),
+
+                // red 
+                new ColorItem(Color.FromRgb(255, 245, 245), "Red1"),
+                new ColorItem(Color.FromRgb(255, 227, 227), "Red2"),
+                new ColorItem(Color.FromRgb(255, 201, 201), "Red3"),
+                new ColorItem(Color.FromRgb(255, 168, 168), "Red4"),
+                new ColorItem(Color.FromRgb(255, 135, 135), "Red5"),
+
+                new ColorItem(Color.FromRgb(255, 107, 107), "Red6"),
+                new ColorItem(Color.FromRgb(250, 82, 82), "Red7"),
+                new ColorItem(Color.FromRgb(240, 62, 62), "Red8"),
+                new ColorItem(Color.FromRgb(224, 49, 49), "Red9"),
+                new ColorItem(Color.FromRgb(201, 42, 42), "Red10"),
+
+                // pink 
+                new ColorItem(Color.FromRgb(255, 240, 246), "Pink1"),
+                new ColorItem(Color.FromRgb(255, 222, 235), "Pink2"),
+                new ColorItem(Color.FromRgb(252, 194, 215), "Pink3"),
+                new ColorItem(Color.FromRgb(250, 162, 193), "Pink4"),
+                new ColorItem(Color.FromRgb(242, 131, 172), "Pink5"),
+
+                new ColorItem(Color.FromRgb(240, 101, 139), "Pink6"),
+                new ColorItem(Color.FromRgb(230, 73, 128), "Pink7"),
+                new ColorItem(Color.FromRgb(194, 37, 92), "Pink8"),
+                new ColorItem(Color.FromRgb(166, 30, 77), "Pink9"),
+                new ColorItem(Color.FromRgb(160, 30, 77), "Pink10"),
+
+                // purple
+                new ColorItem(Color.FromRgb(248, 240, 252), "Purple1"),
+                new ColorItem(Color.FromRgb(243, 217, 250), "Purple2"),
+                new ColorItem(Color.FromRgb(238, 190, 250), "Purple3"),
+                new ColorItem(Color.FromRgb(229, 153, 247), "Purple4"),
+                new ColorItem(Color.FromRgb(218, 119, 242), "Purple5"),
+
+                new ColorItem(Color.FromRgb(204, 93, 232), "Purple6"),
+                new ColorItem(Color.FromRgb(190, 75, 219), "Purple7"),
+                new ColorItem(Color.FromRgb(174, 62, 201), "Purple8"),
+                new ColorItem(Color.FromRgb(156, 54, 181), "Purple9"),
+                new ColorItem(Color.FromRgb(134, 46, 156), "Purple10"),
+
+                // BlueyPurple
+                new ColorItem(Color.FromRgb(243, 240, 255), "BlueyPurple1"),
+                new ColorItem(Color.FromRgb(229, 219, 255), "BlueyPurple2"),
+                new ColorItem(Color.FromRgb(208, 191, 255), "BlueyPurple3"),
+                new ColorItem(Color.FromRgb(177, 151, 252), "BlueyPurple4"),
+                new ColorItem(Color.FromRgb(151, 117, 250), "BlueyPurple5"),
+
+                new ColorItem(Color.FromRgb(132, 94, 247), "BlueyPurple6"),
+                new ColorItem(Color.FromRgb(121, 80, 242), "BlueyPurple7"),
+                new ColorItem(Color.FromRgb(112, 72, 232), "BlueyPurple8"),
+                new ColorItem(Color.FromRgb(103, 65, 217), "BlueyPurple9"),
+                new ColorItem(Color.FromRgb(95, 61, 196), "BlueyPurple10"),
+
+                
+                // WarmBlue
+                new ColorItem(Color.FromRgb(237, 242, 255), "WarmBlue1"),
+                new ColorItem(Color.FromRgb(219, 228, 255), "WarmBlue2"),
+                new ColorItem(Color.FromRgb(186, 200, 255), "WarmBlue3"),
+                new ColorItem(Color.FromRgb(145, 167, 255), "WarmBlue4"),
+                new ColorItem(Color.FromRgb(116, 143, 252), "WarmBlue5"),
+
+                new ColorItem(Color.FromRgb(92, 124, 250), "WarmBlue6"),
+                new ColorItem(Color.FromRgb(76, 110, 245), "WarmBlue7"),
+                new ColorItem(Color.FromRgb(66, 99, 235), "WarmBlue8"),
+                new ColorItem(Color.FromRgb(59, 91, 219), "WarmBlue9"),
+                new ColorItem(Color.FromRgb(54, 79, 199), "WarmBlue10"),
+
+                // WaterBlue
+                new ColorItem(Color.FromRgb(232, 247, 255), "WaterBlue1"),
+                new ColorItem(Color.FromRgb(204, 237, 255), "WaterBlue2"),
+                new ColorItem(Color.FromRgb(163, 218, 255), "WaterBlue3"),
+                new ColorItem(Color.FromRgb(114, 195, 252), "WaterBlue4"),
+                new ColorItem(Color.FromRgb(77, 173, 247), "WaterBlue5"),
+
+                new ColorItem(Color.FromRgb(50, 154, 240), "WaterBlue6"),
+                new ColorItem(Color.FromRgb(34, 138, 230), "WaterBlue7"),
+                new ColorItem(Color.FromRgb(28, 124, 214), "WaterBlue8"),
+                new ColorItem(Color.FromRgb(27, 110, 194), "WaterBlue9"),
+                new ColorItem(Color.FromRgb(24, 98, 171), "WaterBlue10"),
+
+                 // DeepAqua
+                new ColorItem(Color.FromRgb(227, 250, 252), "DeepAqua1"),
+                new ColorItem(Color.FromRgb(197, 246, 250), "DeepAqua2"),
+                new ColorItem(Color.FromRgb(153, 233, 242), "DeepAqua3"),
+                new ColorItem(Color.FromRgb(102, 217, 232), "DeepAqua4"),
+                new ColorItem(Color.FromRgb(59, 201, 219), "DeepAqua5"),
+
+                new ColorItem(Color.FromRgb(34, 184, 207), "DeepAqua6"),
+                new ColorItem(Color.FromRgb(21, 170, 191), "DeepAqua7"),
+                new ColorItem(Color.FromRgb(16, 152, 173), "DeepAqua8"),
+                new ColorItem(Color.FromRgb(12, 133, 153), "DeepAqua9"),
+                new ColorItem(Color.FromRgb(11, 114, 133), "DeepAqua10"),
+
+                // JungleGreen
+                new ColorItem(Color.FromRgb(230, 252, 245), "JungleGreen1"),
+                new ColorItem(Color.FromRgb(195, 250, 232), "JungleGreen2"),
+                new ColorItem(Color.FromRgb(150, 242, 215), "JungleGreen3"),
+                new ColorItem(Color.FromRgb(66, 230, 190), "JungleGreen4"),
+                new ColorItem(Color.FromRgb(56, 217, 169), "JungleGreen5"),
+
+                new ColorItem(Color.FromRgb(32, 201, 151), "JungleGreen6"),
+                new ColorItem(Color.FromRgb(18, 184, 134), "JungleGreen7"),
+                new ColorItem(Color.FromRgb(12, 166, 120), "JungleGreen8"),
+                new ColorItem(Color.FromRgb(9, 146, 104), "JungleGreen9"),
+                new ColorItem(Color.FromRgb(8, 127, 91), "JungleGreen10"),
+
+                 // Green
+                new ColorItem(Color.FromRgb(235, 251, 238), "Green1"),
+                new ColorItem(Color.FromRgb(211, 249, 216), "Green2"),
+                new ColorItem(Color.FromRgb(178, 242, 187), "Green3"),
+                new ColorItem(Color.FromRgb(140, 233, 154), "Green4"),
+                new ColorItem(Color.FromRgb(105, 219, 124), "Green5"),
+
+                new ColorItem(Color.FromRgb(81, 207, 102), "Green6"),
+                new ColorItem(Color.FromRgb(64, 192, 87), "Green7"),
+                new ColorItem(Color.FromRgb(55, 178, 77), "Green8"),
+                new ColorItem(Color.FromRgb(47, 158, 68), "Green9"),
+                new ColorItem(Color.FromRgb(43, 138, 62), "Green10"),
+
+                  // LawnGreen
+                new ColorItem(Color.FromRgb(244, 252, 227), "LawnGreen1"),
+                new ColorItem(Color.FromRgb(233, 250, 200), "LawnGreen2"),
+                new ColorItem(Color.FromRgb(216, 245, 162), "LawnGreen3"),
+                new ColorItem(Color.FromRgb(192, 235, 117), "LawnGreen4"),
+                new ColorItem(Color.FromRgb(169, 227, 75), "LawnGreen5"),
+
+                new ColorItem(Color.FromRgb(148, 215, 45), "LawnGreen6"),
+                new ColorItem(Color.FromRgb(130, 201, 30), "LawnGreen7"),
+                new ColorItem(Color.FromRgb(116, 184, 22), "LawnGreen8"),
+                new ColorItem(Color.FromRgb(102, 168, 15), "LawnGreen9"),
+                new ColorItem(Color.FromRgb(92, 148, 13), "LawnGreen10"),
+
+                  // Orange 
+                new ColorItem(Color.FromRgb(255, 249, 219), "Orange1"),
+                new ColorItem(Color.FromRgb(255, 243, 191), "Orange2"),
+                new ColorItem(Color.FromRgb(255, 236, 153), "Orange3"),
+                new ColorItem(Color.FromRgb(255, 224, 102), "Orange4"),
+                new ColorItem(Color.FromRgb(255, 212, 59), "Orange5"),
+
+                new ColorItem(Color.FromRgb(252, 196, 25), "Orange6"),
+                new ColorItem(Color.FromRgb(250, 176, 5), "Orange7"),
+                new ColorItem(Color.FromRgb(245, 159, 0), "Orange8"),
+                new ColorItem(Color.FromRgb(240, 140, 0), "Orange9"),
+                new ColorItem(Color.FromRgb(230, 119, 0), "Orange10")
+            };
       return standardColors;
     }
 

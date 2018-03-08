@@ -10,6 +10,7 @@ The "Master" Branch will always be synced to the official Codeplex Version.
 ---
 
 ## History
+
 * 2018-03-06
 	* avalondock
 		* change serialization tag &lt;RootPanel&gt; to &lt;LayoutPanel&gt;

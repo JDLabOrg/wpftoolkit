@@ -1,0 +1,6 @@
+﻿# Code files
+[*.xaml]
+indent_size = 3
+
+[*.cs]
+indent_size = 2
