@@ -389,8 +389,8 @@ namespace Xceed.Wpf.AvalonDock.Layout
         {
             if (reader.MoveToAttribute("Title"))
                 Title = reader.Value;
-            //if (reader.MoveToAttribute("IconSource"))
-            //    IconSource = new Uri(reader.Value, UriKind.RelativeOrAbsolute);
+            if (reader.MoveToAttribute("IconSource"))
+                IconSource = new System.Windows.Media.Imaging.BitmapImage(new Uri(reader.Value, UriKind.RelativeOrAbsolute));
 
             if (reader.MoveToAttribute("IsSelected"))
                 IsSelected = bool.Parse(reader.Value);
@@ -428,8 +428,8 @@ namespace Xceed.Wpf.AvalonDock.Layout
             if (!string.IsNullOrWhiteSpace(Title))
                 writer.WriteAttributeString("Title", Title);
 
-            //if (IconSource != null)
-            //    writer.WriteAttributeString("IconSource", IconSource.ToString());
+            if (IconSource != null)
+                writer.WriteAttributeString("IconSource", IconSource.ToString());
 
             if (IsSelected)
                 writer.WriteAttributeString("IsSelected", IsSelected.ToString());

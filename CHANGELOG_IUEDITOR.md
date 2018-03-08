@@ -10,6 +10,13 @@ The "Master" Branch will always be synced to the official Codeplex Version.
 ---
 
 ## History
+
+* 2018-03-06
+	* avalondock
+		* change serialization tag &lt;RootPanel&gt; to &lt;LayoutPanel&gt;
+		* disable drop LayoutAnchorable to DocumentPane
+		* bugfix : FixupLayout method
+
 * 2018-02-27
 	* property grid
 		* disable horizontal scroll

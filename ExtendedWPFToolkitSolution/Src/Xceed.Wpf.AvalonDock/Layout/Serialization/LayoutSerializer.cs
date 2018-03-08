@@ -82,13 +82,18 @@ namespace Xceed.Wpf.AvalonDock.Layout.Serialization
                     else if (args.Model.Content != null)
                         lcToFix.Hide(false);
                 }
+                #region IUEditor
+                //  previousAchorable이 존재하지않는 경우도 있음
+                /*
                 else if (previousAchorable == null)
                     lcToFix.Hide(false);
-                else
+                */
+                else if (previousAchorable != null)
                 {
                     lcToFix.Content = previousAchorable.Content;
                     lcToFix.IconSource = previousAchorable.IconSource;
                 }
+                #endregion
             }
 
 
@@ -113,10 +118,15 @@ namespace Xceed.Wpf.AvalonDock.Layout.Serialization
                     else if (args.Model.Content != null)
                         lcToFix.Close();
                 }
+                #region IUEditor
+                //  previousDocument가 존재하지않는 경우도 있음
+                /*
                 else if (previousDocument == null)
                     lcToFix.Close();
-                else
+                */
+                else if (previousDocument != null)
                     lcToFix.Content = previousDocument.Content;
+                #endregion
             }
 
 
