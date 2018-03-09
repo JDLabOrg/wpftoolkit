@@ -126,6 +126,10 @@ namespace Xceed.Wpf.AvalonDock.Controls
             {
                 _currentWindowAreas.ForEach(wa =>
                     {
+                        #region IUEditor
+                        if (wa is LayoutDocumentPaneControl)
+                            return;
+                        #endregion
                         if (_currentDropTarget != null)
                             return;
 

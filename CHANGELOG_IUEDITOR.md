@@ -14,6 +14,11 @@ The "Master" Branch will always be synced to the official Codeplex Version.
 * 2018-03-06
 	* color picker (recent property -> static)
 	* editor config added
+	* avalondock
+		* change serialization tag &lt;RootPanel&gt; to &lt;LayoutPanel&gt;
+		* disable drop LayoutAnchorable to DocumentPane
+		* bugfix : FixupLayout method
+
 
 * 2018-02-27
 	* property grid
