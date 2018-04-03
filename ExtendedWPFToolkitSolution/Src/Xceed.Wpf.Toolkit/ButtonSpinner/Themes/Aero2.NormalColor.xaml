@@ -54,6 +54,7 @@
                   <Grid>
                      <Grid.ColumnDefinitions>
                         <ColumnDefinition x:Name="firstContentColumn" Width="*" />
+                        <ColumnDefinition x:Name="bar" Width="1" />
                         <ColumnDefinition x:Name="secondContentColumn" Width="Auto" />
                      </Grid.ColumnDefinitions>
                      <ContentPresenter x:Name="contentPresenter"
@@ -63,14 +64,17 @@
                                 Focusable="False"
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
 
+                     <!--  IUEditor added  -->
+                     <Border
+                                Grid.Column="1" Width="1" BorderBrush="#d8d8d8"
+                                BorderThickness="1" />
                      <!--
                                 * IUEditor
                                 * change width
-                                {DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}} -> 20
+                                {DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}} -> 10
                             -->
                      <Grid x:Name="gridContent"
-                                Grid.Column="1"
-                                Width="20"
+                                Grid.Column="2" Width="10"
                                 Visibility="{TemplateBinding ShowButtonSpinner,
                                                              Converter={StaticResource BooleanToVisibilityConverter}}">
                         <Grid.RowDefinitions>
