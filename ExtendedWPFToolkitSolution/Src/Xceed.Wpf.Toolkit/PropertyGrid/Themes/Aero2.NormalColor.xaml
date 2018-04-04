@@ -637,11 +637,65 @@
                                         BorderThickness="1"
                                         Command="{Binding DesignatedValueCommand, RelativeSource={RelativeSource TemplatedParent}}"
                                         Visibility="{Binding HasDesignatedValue, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}">
-                              <Grid>
-                                 <Ellipse
-                                                Width="6" Height="6" VerticalAlignment="Center"
-                                                Fill="#d8d8d8" />
-                              </Grid>
+                              <Button.Style>
+                                 <Style TargetType="{x:Type Button}">
+                                    <Setter Property="Template">
+                                       <Setter.Value>
+                                          <ControlTemplate TargetType="{x:Type Button}">
+                                             <Grid x:Name="PART_DesignatedButtonWrapper" Width="6" Height="6">
+                                                <Ellipse x:Name="PART_DesignatedButtonCircle" />
+
+                                                <!--  A path that renders a cross.  -->
+                                                <Path x:Name="PART_DesignatedButtonPath"
+                                                                    Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                                    Stretch="Uniform" Stroke="White" StrokeEndLineCap="Square"
+                                                                    StrokeStartLineCap="Square" StrokeThickness="1">
+                                                   <Path.Data>
+                                                      <PathGeometry>
+                                                         <PathGeometry.Figures>
+                                                            <PathFigure StartPoint="0,0">
+                                                               <LineSegment Point="10,10" />
+                                                            </PathFigure>
+                                                            <PathFigure StartPoint="0,10">
+                                                               <LineSegment Point="10,0" />
+                                                            </PathFigure>
+                                                         </PathGeometry.Figures>
+                                                      </PathGeometry>
+                                                   </Path.Data>
+                                                </Path>
+                                             </Grid>
+                                             <ControlTemplate.Triggers>
+                                                <DataTrigger Binding="{Binding IsColoredTitle, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                                   <Setter TargetName="PART_DesignatedButtonCircle" Property="Fill" Value="#ffa94d" />
+                                                   <Setter TargetName="PART_DesignatedButtonPath" Property="Visibility" Value="Hidden" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsColoredTitle, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Value="False">
+                                                   <Setter TargetName="PART_DesignatedButtonCircle" Property="Fill" Value="#d8d8d8" />
+                                                   <Setter TargetName="PART_DesignatedButtonPath" Property="Visibility" Value="Hidden" />
+                                                </DataTrigger>
+                                                <!--  Colored & mouse over trigger  -->
+                                                <MultiDataTrigger>
+                                                   <MultiDataTrigger.Conditions>
+                                                      <Condition Binding="{Binding IsColoredTitle, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Value="True" />
+                                                      <Condition Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True" />
+                                                   </MultiDataTrigger.Conditions>
+                                                   <Setter Property="Cursor" Value="Hand" />
+                                                   <Setter TargetName="PART_DesignatedButtonPath" Property="Visibility" Value="Visible" />
+                                                   <Setter TargetName="PART_DesignatedButtonWrapper" Property="RenderTransformOrigin" Value="0.5, 0.5" />
+                                                   <Setter TargetName="PART_DesignatedButtonWrapper" Property="RenderTransform">
+                                                      <Setter.Value>
+                                                         <ScaleTransform ScaleX="2" ScaleY="2" />
+                                                      </Setter.Value>
+                                                   </Setter>
+                                                </MultiDataTrigger>
+                                             </ControlTemplate.Triggers>
+                                          </ControlTemplate>
+                                       </Setter.Value>
+                                    </Setter>
+
+                                 </Style>
+                              </Button.Style>
+
                            </Button>
                            <Border
                                         Grid.Column="2"
@@ -667,25 +721,11 @@
                                             Visibility="{Binding IsExpandable, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
 
-
                               <pg:TrimmedTextBlock x:Name="_text"
                                             Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center"
                                             IsEnabled="{Binding IsReadOnly, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pg:PropertyGrid}, Converter={StaticResource InverseBoolConverter}}"
                                             Text="{Binding DisplayName, RelativeSource={RelativeSource TemplatedParent}}"
-                                            TextTrimming="CharacterEllipsis">
-                                 <pg:TrimmedTextBlock.Style>
-                                    <Style TargetType="{x:Type pg:TrimmedTextBlock}">
-                                       <Style.Triggers>
-                                          <DataTrigger Binding="{Binding IsColoredTitle, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Value="True">
-                                             <Setter Property="Foreground" Value="LightPink" />
-                                          </DataTrigger>
-                                          <DataTrigger Binding="{Binding IsColoredTitle, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Value="False">
-                                             <Setter Property="Foreground" Value="#1E1E1E" />
-                                          </DataTrigger>
-                                       </Style.Triggers>
-                                    </Style>
-                                 </pg:TrimmedTextBlock.Style>
-                              </pg:TrimmedTextBlock>
+                                            TextTrimming="CharacterEllipsis" />
                            </Grid>
 
                            <Grid
