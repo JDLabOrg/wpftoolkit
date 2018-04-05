@@ -645,24 +645,26 @@
                                              <Grid x:Name="PART_DesignatedButtonWrapper" Width="6" Height="6">
                                                 <Ellipse x:Name="PART_DesignatedButtonCircle" />
 
-                                                <!--  A path that renders a cross.  -->
-                                                <Path x:Name="PART_DesignatedButtonPath"
-                                                                    Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                                                    Stretch="Uniform" Stroke="White" StrokeEndLineCap="Square"
-                                                                    StrokeStartLineCap="Square" StrokeThickness="1">
-                                                   <Path.Data>
-                                                      <PathGeometry>
-                                                         <PathGeometry.Figures>
-                                                            <PathFigure StartPoint="0,0">
-                                                               <LineSegment Point="10,10" />
-                                                            </PathFigure>
-                                                            <PathFigure StartPoint="0,10">
-                                                               <LineSegment Point="10,0" />
-                                                            </PathFigure>
-                                                         </PathGeometry.Figures>
-                                                      </PathGeometry>
-                                                   </Path.Data>
-                                                </Path>
+                                                <Grid Margin="2">
+                                                   <!--  A path that renders a cross.  -->
+                                                   <Path x:Name="PART_DesignatedButtonPath"
+                                                                        HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Fill"
+                                                                        Stroke="White" StrokeEndLineCap="Square" StrokeStartLineCap="Square"
+                                                                        StrokeThickness="0.5">
+                                                      <Path.Data>
+                                                         <PathGeometry>
+                                                            <PathGeometry.Figures>
+                                                               <PathFigure StartPoint="0,0">
+                                                                  <LineSegment Point="6,6" />
+                                                               </PathFigure>
+                                                               <PathFigure StartPoint="0,6">
+                                                                  <LineSegment Point="6,0" />
+                                                               </PathFigure>
+                                                            </PathGeometry.Figures>
+                                                         </PathGeometry>
+                                                      </Path.Data>
+                                                   </Path>
+                                                </Grid>
                                              </Grid>
                                              <ControlTemplate.Triggers>
                                                 <DataTrigger Binding="{Binding IsColoredTitle, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Value="True">
