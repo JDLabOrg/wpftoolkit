@@ -429,22 +429,24 @@
 
          <Rectangle x:Name="Rectangle" Margin="0,0,0,0" Fill="Transparent" />
          <Path x:Name="Up_Arrow"
-                HorizontalAlignment="Center" VerticalAlignment="Center" Data="M 0 0 L 4 4 L 8 0 Z"
-                Fill="{StaticResource GlyphBrush}"
-                RenderTransformOrigin="0.5,0.5">
+                HorizontalAlignment="Center" VerticalAlignment="Center" Data="M 0 0 L 4 0 L 4 4"
+                RenderTransformOrigin="0.5,0.5"
+                Stroke="{StaticResource GlyphBrush}"
+                StrokeThickness="1">
             <Path.RenderTransform>
                <TransformGroup>
                   <ScaleTransform ScaleX="1" ScaleY="1" />
                   <SkewTransform AngleX="0" AngleY="0" />
-                  <RotateTransform Angle="-90" />
+                  <RotateTransform Angle="45" />
                   <TranslateTransform X="0" Y="0" />
                </TransformGroup>
             </Path.RenderTransform>
          </Path>
          <Path x:Name="Down_Arrow"
-                HorizontalAlignment="Center" VerticalAlignment="Center" Data="M 0 4 L 4 0 L 8 4 Z"
-                Fill="{StaticResource GlyphBrush}"
-                RenderTransformOrigin="0.5,0.5" Visibility="Collapsed">
+                HorizontalAlignment="Center" VerticalAlignment="Center" Data="M 0 0 L 4 0 L 4 4"
+                RenderTransformOrigin="0.5,0.5"
+                Stroke="{StaticResource GlyphBrush}"
+                StrokeThickness="1" Visibility="Collapsed">
             <Path.RenderTransform>
                <TransformGroup>
                   <ScaleTransform ScaleX="1" ScaleY="1" />
@@ -724,7 +726,8 @@
 
 
                               <pg:TrimmedTextBlock x:Name="_text"
-                                            Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                                            Grid.Column="1" Margin="6,0,0,0" HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Center"
                                             IsEnabled="{Binding IsReadOnly, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pg:PropertyGrid}, Converter={StaticResource InverseBoolConverter}}"
                                             Text="{Binding DisplayName, RelativeSource={RelativeSource TemplatedParent}}"
                                             TextTrimming="CharacterEllipsis" />
