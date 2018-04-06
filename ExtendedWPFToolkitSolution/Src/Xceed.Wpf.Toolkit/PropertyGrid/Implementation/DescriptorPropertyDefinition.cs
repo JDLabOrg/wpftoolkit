@@ -102,60 +102,60 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
         Mode = PropertyDescriptor.IsReadOnly ? BindingMode.OneWay : BindingMode.TwoWay,
         ValidatesOnDataErrors = true,
         ValidatesOnExceptions = true,
-        ConverterCulture = CultureInfo.CurrentCulture 
+        ConverterCulture = CultureInfo.CurrentCulture
       };
 
       return binding;
     }
 
-        #region IUEditor
-        private const string IU_CONTEXT_POSTFIX = "Context"; // [PropertyName]Context
+    #region IUEditor
+    private const string IU_CONTEXT_POSTFIX = "Context"; // [PropertyName]Context
 
-        public override string ContextPropertyName()
-        {
-            var selectedObject = SelectedObject;
-            string contextPropertyName = PropertyDescriptor.Name + IU_CONTEXT_POSTFIX;
-            bool hasContextProperty = selectedObject.GetType().GetProperty(contextPropertyName) != null;
-            if (hasContextProperty)
-            {
-                return contextPropertyName;
-            }
-            return null;
-        }
-        
-        protected override void CreateContextBinding()
-        {
-            var selectedObject = SelectedObject;
-            string contextPropertyName = ContextPropertyName();
-            if (contextPropertyName == null)
-            {
-                return ;
-            }
+    public override string ContextPropertyName()
+    {
+      var selectedObject = SelectedObject;
+      string contextPropertyName = PropertyDescriptor.Name + IU_CONTEXT_POSTFIX;
+      bool hasContextProperty = selectedObject.GetType().GetProperty( contextPropertyName ) != null;
+      if (hasContextProperty)
+      {
+        return contextPropertyName;
+      }
+      return null;
+    }
 
-            var value = this.GetValueInstance(selectedObject);
+    protected override void CreateContextBinding()
+    {
+      var selectedObject = SelectedObject;
+      string contextPropertyName = ContextPropertyName();
+      if (contextPropertyName == null)
+      {
+        return;
+      }
 
-            // create isenabled binding
-            var enabledBinding = new Binding(contextPropertyName+ ".IsEnabled")
-            {
-                Source = value,
-                Mode = BindingMode.OneWay,
+      var value = this.GetValueInstance( selectedObject );
 
-            };
-            BindingOperations.SetBinding(this, DescriptorPropertyDefinitionBase.IsEnabledProperty, enabledBinding);
+      // create isenabled binding
+      var enabledBinding = new Binding( contextPropertyName + ".IsEnabled" )
+      {
+        Source = value,
+        Mode = BindingMode.OneWay,
 
-            // create iscolored binidng
-            var coloredBinding = new Binding(contextPropertyName + ".IsCascadingValue")
-            {
-                Source = value,
-                Mode = BindingMode.OneWay,
-            };
-            BindingOperations.SetBinding(this, DescriptorPropertyDefinitionBase.IsColoredTitleProperty, coloredBinding);
+      };
+      BindingOperations.SetBinding( this, DescriptorPropertyDefinitionBase.IsEnabledProperty, enabledBinding );
 
-        }
+      // create iscolored binidng
+      var coloredBinding = new Binding( contextPropertyName + ".IsCurrentValue" )
+      {
+        Source = value,
+        Mode = BindingMode.OneWay,
+      };
+      BindingOperations.SetBinding( this, DescriptorPropertyDefinitionBase.IsColoredTitleProperty, coloredBinding );
+
+    }
 
 
-        #endregion IUEditor
-    
+    #endregion IUEditor
+
     protected override bool ComputeIsReadOnly()
     {
       return PropertyDescriptor.IsReadOnly;
@@ -186,7 +186,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
         return PropertyDescriptor.Category;
 #else
       var displayAttribute = PropertyGridUtilities.GetAttribute<DisplayAttribute>( PropertyDescriptor );
-      return ( (displayAttribute != null) && (displayAttribute.GetGroupName() != null) ) ? displayAttribute.GetGroupName() : PropertyDescriptor.Category;
+      return ((displayAttribute != null) && (displayAttribute.GetGroupName() != null)) ? displayAttribute.GetGroupName() : PropertyDescriptor.Category;
 #endif
     }
 
@@ -196,21 +196,21 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     }
 
 
-        #region IUEditor
-        protected override bool ComputeHasDesignatedAttribute()
-        {
-            return (bool)this.ComputeHasDesignatedAttributeForItem(PropertyDescriptor);
-        }
+    #region IUEditor
+    protected override bool ComputeHasDesignatedAttribute()
+    {
+      return ( bool )this.ComputeHasDesignatedAttributeForItem( PropertyDescriptor );
+    }
 
-        protected override object ComputeDesignatedValueAttribute()
-        {
-            return (object)this.ComputeDesignatedAttributeValueForItem(PropertyDescriptor);
-        }
+    protected override object ComputeDesignatedValueAttribute()
+    {
+      return ( object )this.ComputeDesignatedAttributeValueForItem( PropertyDescriptor );
+    }
 
 
-        #endregion
+    #endregion
 
-        protected override bool ComputeExpandableAttribute()
+    protected override bool ComputeExpandableAttribute()
     {
       return ( bool )this.ComputeExpandableAttributeForItem( PropertyDescriptor );
     }
@@ -222,7 +222,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     protected override bool ComputeIsExpandable()
     {
-      return ( this.Value != null )
+      return (this.Value != null)
         ;
     }
 
@@ -249,7 +249,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     internal override ITypeEditor CreateAttributeEditor()
     {
       var editorAttribute = GetAttribute<EditorAttribute>();
-      if( editorAttribute != null )
+      if (editorAttribute != null)
       {
 #if VS2008
         var type = Type.GetType( editorAttribute.EditorTypeName );
@@ -258,18 +258,18 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 #endif
 
         // If the editor does not have any public parameterless constructor, forget it.
-        if( typeof( ITypeEditor ).IsAssignableFrom( type )
-          && ( type.GetConstructor( new Type[ 0 ] ) != null ) )
+        if (typeof( ITypeEditor ).IsAssignableFrom( type )
+          && (type.GetConstructor( new Type[0] ) != null))
         {
           var instance = Activator.CreateInstance( type ) as ITypeEditor;
           Debug.Assert( instance != null, "Type was expected to be ITypeEditor with public constructor." );
-          if( instance != null )
+          if (instance != null)
             return instance;
         }
       }
 
       var itemsSourceAttribute = GetAttribute<ItemsSourceAttribute>();
-      if( itemsSourceAttribute != null )
+      if (itemsSourceAttribute != null)
         return new ItemsSourceAttributeEditor( itemsSourceAttribute );
 
       return null;
@@ -286,10 +286,10 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     private void Init( PropertyDescriptor propertyDescriptor, object selectedObject )
     {
-      if( propertyDescriptor == null )
+      if (propertyDescriptor == null)
         throw new ArgumentNullException( "propertyDescriptor" );
 
-      if( selectedObject == null )
+      if (selectedObject == null)
         throw new ArgumentNullException( "selectedObject" );
 
       _propertyDescriptor = propertyDescriptor;

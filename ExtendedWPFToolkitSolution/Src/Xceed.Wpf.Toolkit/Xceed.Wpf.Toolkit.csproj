@@ -792,9 +792,6 @@
     <Resource Include="PropertyGrid\Images\IUClearFilter16.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="PropertyGrid\Images\IUDesignatedValue.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include=".editorconfig" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
