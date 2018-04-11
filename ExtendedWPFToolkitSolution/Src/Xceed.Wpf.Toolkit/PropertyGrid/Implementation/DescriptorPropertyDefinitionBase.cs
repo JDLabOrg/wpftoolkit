@@ -29,7 +29,6 @@ using System.ComponentModel;
 using System.Windows.Markup.Primitives;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
-using Xceed.Wpf.Toolkit.PropertyGrid.Implementation.Attributes;
 #if !VS2008
 using System.ComponentModel.DataAnnotations;
 #endif
@@ -37,7 +36,7 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace Xceed.Wpf.Toolkit.PropertyGrid
 {
-  internal abstract class DescriptorPropertyDefinitionBase : DependencyObject, INotifyPropertyChanged
+  internal abstract class DescriptorPropertyDefinitionBase : DependencyObject
   {
     #region Members
 
@@ -52,14 +51,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     private IList<Type> _newItemTypes;
     private IEnumerable<CommandBinding> _commandBindings;
 
-        #region IUEditor
-        // IUEditor
-        private bool _hasDesignatedAttribute;
-        private object _designatedValue;
-        #endregion
-
-
-        #endregion
+    #endregion
 
     internal abstract PropertyDescriptor PropertyDescriptor
     {
@@ -98,18 +90,6 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     {
       return int.MaxValue;
     }
-        #region IUEditor
-
-        protected virtual bool ComputeHasDesignatedAttribute()
-        {
-            return false;
-        }
-
-        protected virtual object ComputeDesignatedValueAttribute()
-        {
-            return null;
-        }
-        #endregion
 
     protected virtual bool ComputeExpandableAttribute()
     {
@@ -149,12 +129,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     protected abstract BindingBase CreateValueBinding();
 
-        #region IUEditor
-        protected abstract void CreateContextBinding();
-        public abstract string ContextPropertyName();
-        #endregion // IUEditor
-
-    #endregion // Virtual Methods
+    #endregion
 
     #region Internal Methods
 
@@ -162,7 +137,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     internal void RaiseContainerHelperInvalidated()
     {
-      if( this.ContainerHelperInvalidated != null )
+      if (this.ContainerHelperInvalidated != null)
       {
         this.ContainerHelperInvalidated( this, EventArgs.Empty );
       }
@@ -187,22 +162,22 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       bool isDynamicResource = false;
 
       var markupProperty = markupObject.Properties.FirstOrDefault( p => p.Name == PropertyName );
-      if( markupProperty != null )
+      if (markupProperty != null)
       {
         //TODO: need to find a better way to determine if a StaticResource has been applied to any property not just a style(maybe with StaticResourceExtension)
         isResource = typeof( Style ).IsAssignableFrom( markupProperty.PropertyType );
         isDynamicResource = typeof( DynamicResourceExtension ).IsAssignableFrom( markupProperty.PropertyType );
       }
 
-      if( isResource || isDynamicResource )
+      if (isResource || isDynamicResource)
       {
         tooltip = StringConstants.Resource;
       }
       else
       {
-        if( (dependencyObject != null) && (dpDescriptor != null) )
+        if ((dependencyObject != null) && (dpDescriptor != null))
         {
-          if( BindingOperations.GetBindingExpressionBase( dependencyObject, dpDescriptor.DependencyProperty ) != null )
+          if (BindingOperations.GetBindingExpressionBase( dependencyObject, dpDescriptor.DependencyProperty ) != null)
           {
             tooltip = StringConstants.Databinding;
           }
@@ -213,7 +188,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
               .GetValueSource( dependencyObject, dpDescriptor.DependencyProperty )
               .BaseValueSource;
 
-            switch( bvs )
+            switch (bvs)
             {
               case BaseValueSource.Inherited:
               case BaseValueSource.DefaultStyle:
@@ -251,11 +226,15 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     internal void UpdateValueFromSource()
     {
       var bindingExpr = BindingOperations.GetBindingExpressionBase( this, DescriptorPropertyDefinitionBase.ValueProperty );
-      if( bindingExpr != null )
+      if (bindingExpr != null)
       {
         bindingExpr.UpdateTarget();
       }
     }
+
+
+
+
 
     internal object ComputeDescriptionForItem( object item )
     {
@@ -266,7 +245,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       //(e.g., LocalizedDescriptionAttribute) value can dynamicaly change.
 #if !VS2008
       var displayAttribute = PropertyGridUtilities.GetAttribute<DisplayAttribute>( pd );
-      if( displayAttribute != null )
+      if (displayAttribute != null)
       {
         return displayAttribute.GetDescription();
       }
@@ -297,32 +276,32 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       PropertyDescriptor pd = item as PropertyDescriptor;
 #if !VS2008
       var displayAttribute = PropertyGridUtilities.GetAttribute<DisplayAttribute>( PropertyDescriptor );
-      if( displayAttribute != null )
+      if (displayAttribute != null)
       {
         var order = displayAttribute.GetOrder();
-        if( order.HasValue )
+        if (order.HasValue)
           return displayAttribute.GetOrder();
       }
 #endif
 
       List<PropertyOrderAttribute> list = pd.Attributes.OfType<PropertyOrderAttribute>().ToList();
 
-      if( list.Count > 0 )
+      if (list.Count > 0)
       {
         this.ValidatePropertyOrderAttributes( list );
 
-        if( this.IsPropertyGridCategorized )
+        if (this.IsPropertyGridCategorized)
         {
           var attribute = list.FirstOrDefault( x => ((x.UsageContext == UsageContextEnum.Categorized)
                                                     || (x.UsageContext == UsageContextEnum.Both)) );
-          if( attribute != null )
+          if (attribute != null)
             return attribute.Order;
         }
         else
         {
           var attribute = list.FirstOrDefault( x => ((x.UsageContext == UsageContextEnum.Alphabetical)
                                                     || (x.UsageContext == UsageContextEnum.Both)) );
-          if( attribute != null )
+          if (attribute != null)
             return attribute.Order;
         }
       }
@@ -333,29 +312,13 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     internal object ComputeExpandableAttributeForItem( object item )
     {
-      var pd = (PropertyDescriptor)item;
+      var pd = ( PropertyDescriptor )item;
 
       var attribute = PropertyGridUtilities.GetAttribute<ExpandableObjectAttribute>( pd );
       return (attribute != null);
     }
 
-        internal object ComputeHasDesignatedAttributeForItem(object item)
-        {
-            var pd = (PropertyDescriptor)item;
-
-            var attribute = PropertyGridUtilities.GetAttribute<DesignatedObjectAttribute>(pd);
-            return (attribute != null);
-        }
-
-        internal object ComputeDesignatedAttributeValueForItem(object item)
-        {
-            var pd = (PropertyDescriptor)item;
-
-            var attribute = PropertyGridUtilities.GetAttribute<DesignatedObjectAttribute>(pd);
-            return (attribute != null) ? attribute.Value : null;
-        }
-
-        internal int ComputeDisplayOrderInternal( bool isPropertyGridCategorized )
+    internal int ComputeDisplayOrderInternal( bool isPropertyGridCategorized )
     {
       return this.ComputeDisplayOrder( isPropertyGridCategorized );
     }
@@ -363,7 +326,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     internal object GetValueInstance( object sourceObject )
     {
       ICustomTypeDescriptor customTypeDescriptor = sourceObject as ICustomTypeDescriptor;
-      if( customTypeDescriptor != null )
+      if (customTypeDescriptor != null)
         sourceObject = customTypeDescriptor.GetPropertyOwner( PropertyDescriptor );
 
       return sourceObject;
@@ -374,7 +337,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       var pd = ( PropertyDescriptor )item;
 
       var defaultValue = PropertyGridUtilities.GetAttribute<DefaultValueAttribute>( pd );
-      return ( defaultValue != null ) ? defaultValue.Value : null;
+      return (defaultValue != null) ? defaultValue.Value : null;
     }
 
     #endregion
@@ -383,7 +346,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     private void ExecuteResetValueCommand( object sender, ExecutedRoutedEventArgs e )
     {
-      if( ComputeCanResetValue() )
+      if (ComputeCanResetValue())
         ResetValue();
     }
 
@@ -402,7 +365,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 #endif
 
       var attribute = PropertyGridUtilities.GetAttribute<ParenthesizePropertyNameAttribute>( PropertyDescriptor );
-      if( (attribute != null) && attribute.NeedParenthesis )
+      if ((attribute != null) && attribute.NeedParenthesis)
       {
         displayName = "(" + displayName + ")";
       }
@@ -412,10 +375,10 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     private void ValidatePropertyOrderAttributes( List<PropertyOrderAttribute> list )
     {
-      if( list.Count > 0 )
+      if (list.Count > 0)
       {
         PropertyOrderAttribute both = list.FirstOrDefault( x => x.UsageContext == UsageContextEnum.Both );
-        if( (both != null) && (list.Count > 1) )
+        if ((both != null) && (list.Count > 1))
           Debug.Assert( false, "A PropertyItem can't have more than 1 PropertyOrderAttribute when it has UsageContext : Both" );
       }
     }
@@ -425,7 +388,6 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     #region Events
 
     public event EventHandler ContainerHelperInvalidated;
-        public event PropertyChangedEventHandler PropertyChanged;
 
     #endregion
 
@@ -438,7 +400,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     {
       get
       {
-        return (ImageSource)GetValue( AdvancedOptionsIconProperty );
+        return ( ImageSource )GetValue( AdvancedOptionsIconProperty );
       }
       set
       {
@@ -457,7 +419,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     {
       get
       {
-        return (object)GetValue( AdvancedOptionsTooltipProperty );
+        return ( object )GetValue( AdvancedOptionsTooltipProperty );
       }
       set
       {
@@ -476,7 +438,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     {
       get
       {
-        return (bool)GetValue( IsExpandableProperty );
+        return ( bool )GetValue( IsExpandableProperty );
       }
       set
       {
@@ -486,53 +448,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     #endregion //IsExpandable
 
-    
-        #region IUEditor - Enabled Property (DP)
-        public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.Register("IsEnabled", typeof(bool),
-            typeof(DescriptorPropertyDefinitionBase), new FrameworkPropertyMetadata(true, OnIsEnabledChanged));
-        public bool IsEnabled
-        {
-            get => (bool)GetValue(IsEnabledProperty);
-            set => SetValue(IsEnabledProperty, value);
-        }
-
-        private static void OnIsEnabledChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
-        {
-            DescriptorPropertyDefinitionBase b = o as DescriptorPropertyDefinitionBase;
-            if (b != null)
-            {
-                b.OnPropertyChanged(nameof(IsEnabled));
-            }
-
-        }
-
-        public static readonly DependencyProperty IsColoredTitleProperty = DependencyProperty.Register("IsColoredTitleProperty",
-            typeof(bool), typeof(DescriptorPropertyDefinitionBase), new FrameworkPropertyMetadata(false, OnIsColoredTitle));
-        public bool IsColoredTitle
-        {
-            get => (bool)GetValue(IsColoredTitleProperty);
-            set => SetValue(IsColoredTitleProperty, value);
-        }
-
-        private static void OnIsColoredTitle(DependencyObject o, DependencyPropertyChangedEventArgs e)
-        {
-            DescriptorPropertyDefinitionBase b = o as DescriptorPropertyDefinitionBase;
-            if (b != null)
-            {
-                b.OnPropertyChanged(nameof(IsColoredTitle));
-            }
-
-        }
-
-        protected void OnPropertyChanged(string name)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
-
-
-        #endregion // IUEditor Enabled Property
-
-        public string Category
+    public string Category
     {
       get
       {
@@ -622,29 +538,6 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       }
     }
 
-        #region IUEditor 
-        public bool HasDesignatedAttribute
-        {
-            get
-            {
-                return _hasDesignatedAttribute;
-            }
-        }
-
-        public object DesignatedValue
-        {
-            get
-            {
-                return _designatedValue;
-            }
-        }
-
-        #endregion IUEditor
-
-
-
-
-
     public IList<Type> NewItemTypes
     {
       get
@@ -707,7 +600,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     private static void OnValueChanged( DependencyObject o, DependencyPropertyChangedEventArgs e )
     {
-      ((DescriptorPropertyDefinitionBase)o).OnValueChanged( e.OldValue, e.NewValue );
+      (( DescriptorPropertyDefinitionBase )o).OnValueChanged( e.OldValue, e.NewValue );
     }
 
     internal virtual void OnValueChanged( object oldValue, object newValue )
@@ -721,9 +614,6 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     #endregion //Value Property
 
-
-      
-
     public virtual void InitProperties()
     {
       // Do "IsReadOnly" and PropertyName first since the others may need that value.
@@ -734,12 +624,9 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       _displayName = ComputeDisplayName();
       _defaultValue = ComputeDefaultValueAttribute();
       _displayOrder = ComputeDisplayOrder( this.IsPropertyGridCategorized );
+
       _expandableAttribute = ComputeExpandableAttribute();
 
-            // IUEditor
-            _hasDesignatedAttribute = ComputeHasDesignatedAttribute();
-            _designatedValue = ComputeDesignatedValueAttribute();
-            // end of IUEditor
 
       _newItemTypes = ComputeNewItemTypes();
       _commandBindings = new CommandBinding[] { new CommandBinding( PropertyItemCommands.ResetValue, ExecuteResetValueCommand, CanExecuteResetValueCommand ) };
@@ -749,12 +636,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
       BindingBase valueBinding = this.CreateValueBinding();
       BindingOperations.SetBinding( this, DescriptorPropertyDefinitionBase.ValueProperty, valueBinding );
-
-            #region IUEditor
-            // UpdateContext();
-            CreateContextBinding();
-            #endregion // IUEditor
-        }
+    }
 
 
 
