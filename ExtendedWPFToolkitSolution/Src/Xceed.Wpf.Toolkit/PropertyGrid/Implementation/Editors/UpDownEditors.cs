@@ -29,44 +29,44 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
   {
     protected override void SetControlProperties( PropertyItem propertyItem )
     {
-        Editor.TextAlignment = System.Windows.TextAlignment.Left;
+      Editor.TextAlignment = System.Windows.TextAlignment.Left;
 
-            #region IUEditor
-            // format string
-            var displayFormatAttribute = PropertyGridUtilities.GetAttribute<DisplayFormatAttribute>(propertyItem.DescriptorDefinition.PropertyDescriptor);
-            if (displayFormatAttribute != null)
-            {
-                var formatStringProperty = Editor.GetType().GetProperty("FormatString");
-                if (formatStringProperty != null)
-                {
-                    formatStringProperty.SetValue(Editor, displayFormatAttribute.DataFormatString, null);
-                }
-            }
-
-            // wartermark
-            var displayAttribute = PropertyGridUtilities.GetAttribute<DisplayAttribute>(propertyItem.PropertyDescriptor);
-            if (displayAttribute != null)
-            {
-                Editor.Watermark = displayAttribute.GetPrompt();
-            }
-
-            // Increment
-            var numericUpDown = Editor as NumericUpDown<TType>;
-            if (numericUpDown != null)
-            {
-                var incrementAttribute = PropertyGridUtilities.GetAttribute<IncrementAttribute>(propertyItem.PropertyDescriptor);
-                if (incrementAttribute != null)
-                {
-                    var increment = (TType)incrementAttribute.Increment;
-                    if (increment != null)
-                    {
-                        numericUpDown.Increment = increment;
-                    }
-                }
-            }
-
-            #endregion // IUEditor
+      #region IUEditor
+      // format string
+      var displayFormatAttribute = PropertyGridUtilities.GetAttribute<DisplayFormatAttribute>( propertyItem.DescriptorDefinition.PropertyDescriptor );
+      if (displayFormatAttribute != null)
+      {
+        var formatStringProperty = Editor.GetType().GetProperty( "FormatString" );
+        if (formatStringProperty != null)
+        {
+          formatStringProperty.SetValue( Editor, displayFormatAttribute.DataFormatString, null );
         }
+      }
+
+      // wartermark
+      var displayAttribute = PropertyGridUtilities.GetAttribute<DisplayAttribute>( propertyItem.PropertyDescriptor );
+      if (displayAttribute != null)
+      {
+        Editor.Watermark = displayAttribute.GetPrompt();
+      }
+
+      // Increment
+      var numericUpDown = Editor as NumericUpDown<TType>;
+      if (numericUpDown != null)
+      {
+        var incrementAttribute = PropertyGridUtilities.GetAttribute<IncrementAttribute>( propertyItem.PropertyDescriptor );
+        if (incrementAttribute != null)
+        {
+          var increment = ( TType )incrementAttribute.Increment;
+          if (increment != null)
+          {
+            numericUpDown.Increment = increment;
+          }
+        }
+      }
+
+      #endregion // IUEditor
+    }
     protected override void SetValueDependencyProperty()
     {
       ValueProperty = UpDownBase<TType>.ValueProperty;
@@ -75,14 +75,14 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
 #if !VS2008
     internal void SetMinMaxFromRangeAttribute( PropertyDescriptor propertyDescriptor, TypeConverter converter )
     {
-      if( propertyDescriptor == null )
+      if (propertyDescriptor == null)
         return;
 
       var rangeAttribute = PropertyGridUtilities.GetAttribute<RangeAttribute>( propertyDescriptor );
-      if( rangeAttribute != null )
+      if (rangeAttribute != null)
       {
-        Editor.Maximum = ((TType)converter.ConvertFrom( rangeAttribute.Maximum.ToString() ));
-        Editor.Minimum = ((TType)converter.ConvertFrom( rangeAttribute.Minimum.ToString() ));
+        Editor.Maximum = (( TType )converter.ConvertFrom( rangeAttribute.Maximum.ToString() ));
+        Editor.Minimum = (( TType )converter.ConvertFrom( rangeAttribute.Minimum.ToString() ));
       }
     }
 #endif
@@ -120,7 +120,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
     }
   }
 
-  public class DoubleUpDownEditor : UpDownEditor<DoubleUpDown, double?> 
+  public class DoubleUpDownEditor : UpDownEditor<DoubleUpDown, double?>
   {
     protected override DoubleUpDown CreateEditor()
     {
@@ -132,7 +132,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
       base.SetControlProperties( propertyItem );
       Editor.AllowInputSpecialValues = AllowedSpecialValues.Any;
 #if !VS2008
-      this.SetMinMaxFromRangeAttribute( propertyItem.PropertyDescriptor, TypeDescriptor.GetConverter( typeof( double ) ) );      
+      this.SetMinMaxFromRangeAttribute( propertyItem.PropertyDescriptor, TypeDescriptor.GetConverter( typeof( double ) ) );
 #endif
     }
   }
@@ -185,7 +185,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
     }
   }
 
-  public class SingleUpDownEditor : UpDownEditor<SingleUpDown, float?> 
+  public class SingleUpDownEditor : UpDownEditor<SingleUpDown, float?>
   {
     protected override SingleUpDown CreateEditor()
     {
