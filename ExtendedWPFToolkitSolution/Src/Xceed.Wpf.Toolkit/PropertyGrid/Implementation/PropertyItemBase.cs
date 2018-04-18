@@ -120,7 +120,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     private static void OnEditorChanged( DependencyObject o, DependencyPropertyChangedEventArgs e )
     {
       PropertyItemBase propertyItem = o as PropertyItemBase;
-      if( propertyItem != null )
+      if (propertyItem != null)
         propertyItem.OnEditorChanged( ( FrameworkElement )e.OldValue, ( FrameworkElement )e.NewValue );
     }
 
@@ -148,7 +148,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     private static void OnIsExpandedChanged( DependencyObject o, DependencyPropertyChangedEventArgs e )
     {
       PropertyItemBase propertyItem = o as PropertyItemBase;
-      if( propertyItem != null )
+      if (propertyItem != null)
         propertyItem.OnIsExpandedChanged( ( bool )e.OldValue, ( bool )e.NewValue );
     }
 
@@ -171,29 +171,44 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     #endregion //IsExpandable
 
-        #region IUEditor
-        #region IsColoredTitle
+    #region IUEditor
 
-        public static readonly DependencyProperty IsColoredTitleProperty =
-            DependencyProperty.Register("IsColoredTitle", typeof(bool), typeof(PropertyItemBase), new UIPropertyMetadata(false, OnIsColoredTitle));
+    #region HasDesignatedValue
 
-        public bool IsColoredTitle
-        {
-            get { return (bool)GetValue(IsColoredTitleProperty); }
-            set { SetValue(IsColoredTitleProperty, value); }
-        }
 
-        private static void OnIsColoredTitle(DependencyObject o, DependencyPropertyChangedEventArgs e)
-        {
+    public static readonly DependencyProperty HasDesignatedValueProperty =
+       DependencyProperty.Register( "HasDesignatedValue", typeof( bool ), typeof( PropertyItemBase ), new UIPropertyMetadata( false ) );
 
-        }
+    public bool HasDesignatedValue
+    {
+      get { return ( bool )GetValue( HasDesignatedValueProperty ); }
+      set { SetValue( HasDesignatedValueProperty, value ); }
+    }
 
-        #endregion //IsColoredTitle
-        #endregion // IUEditor
+    #endregion
 
-        #region IsSelected
+    #region IsColoredTitle
 
-        public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register( "IsSelected", typeof( bool ), typeof( PropertyItemBase ), new UIPropertyMetadata( false, OnIsSelectedChanged ) );
+    public static readonly DependencyProperty IsColoredTitleProperty =
+        DependencyProperty.Register( "IsColoredTitle", typeof( bool ), typeof( PropertyItemBase ), new UIPropertyMetadata( false, OnIsColoredTitle ) );
+
+    public bool IsColoredTitle
+    {
+      get { return ( bool )GetValue( IsColoredTitleProperty ); }
+      set { SetValue( IsColoredTitleProperty, value ); }
+    }
+
+    private static void OnIsColoredTitle( DependencyObject o, DependencyPropertyChangedEventArgs e )
+    {
+
+    }
+
+    #endregion //IsColoredTitle
+    #endregion // IUEditor
+
+    #region IsSelected
+
+    public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register( "IsSelected", typeof( bool ), typeof( PropertyItemBase ), new UIPropertyMetadata( false, OnIsSelectedChanged ) );
     public bool IsSelected
     {
       get
@@ -209,7 +224,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     private static void OnIsSelectedChanged( DependencyObject o, DependencyPropertyChangedEventArgs e )
     {
       PropertyItemBase propertyItem = o as PropertyItemBase;
-      if( propertyItem != null )
+      if (propertyItem != null)
         propertyItem.OnIsSelectedChanged( ( bool )e.OldValue, ( bool )e.NewValue );
     }
 
@@ -275,7 +290,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     {
       get
       {
-        if( _containerHelper == null )
+        if (_containerHelper == null)
         {
           _containerHelper = new ObjectContainerHelper( this, null );
         }
@@ -290,11 +305,11 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     /// Get the PropertyContainerStyle for sub items of this property.
     /// It return the value defined on PropertyGrid.PropertyContainerStyle.
     /// </summary>
-    public Style PropertyContainerStyle 
+    public Style PropertyContainerStyle
     {
       get
       {
-        return ( ParentNode != null )
+        return (ParentNode != null)
         ? ParentNode.PropertyContainerStyle
         : null;
       }
@@ -311,7 +326,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       }
       set
       {
-        if( value == null )
+        if (value == null)
           throw new ArgumentNullException( "value" );
 
         _containerHelper = value;
@@ -440,7 +455,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     protected override void OnMouseDown( MouseButtonEventArgs e )
     {
       IsSelected = true;
-      if( !this.IsKeyboardFocusWithin )
+      if (!this.IsKeyboardFocusWithin)
       {
         this.Focus();
       }
@@ -450,7 +465,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     }
 
     private void PropertyItemBase_GotFocus( object sender, RoutedEventArgs e )
-    { 
+    {
       IsSelected = true;
       // Handle the event; otherwise, the possible 
       // parent property item will select itself too.
@@ -463,9 +478,9 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
       // First check that the raised property is actually a real CLR property.
       // This could be something else like an Attached DP.
-      if( ReflectionHelper.IsPublicInstanceProperty( GetType(), e.Property.Name ) 
-        && this.IsLoaded 
-        && (_parentNode != null) 
+      if (ReflectionHelper.IsPublicInstanceProperty( GetType(), e.Property.Name )
+        && this.IsLoaded
+        && (_parentNode != null)
         && !_parentNode.ContainerHelper.IsCleaning)
       {
         this.RaisePropertyChanged( e.Property.Name );
@@ -474,12 +489,12 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     private PropertyDefinitionCollection GetPropertItemPropertyDefinitions()
     {
-      if( (this.ParentNode != null) && (this.ParentNode.PropertyDefinitions != null) )
+      if ((this.ParentNode != null) && (this.ParentNode.PropertyDefinitions != null))
       {
         var name = this.GetPropertyItemName();
-        foreach( var pd in this.ParentNode.PropertyDefinitions )
+        foreach (var pd in this.ParentNode.PropertyDefinitions)
         {
-          if( pd.TargetProperties.Contains( name ) )
+          if (pd.TargetProperties.Contains( name ))
           {
             // PropertyDefinitions contains a PropertyDefinition for this PropertyItem Name => return its PropertyDefinitions.
             return pd.PropertyDefinitions;
@@ -487,13 +502,13 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
           else
           {
             var type = this.GetPropertyItemType();
-            if( type != null )
+            if (type != null)
             {
-              foreach( var targetProperty in pd.TargetProperties )
+              foreach (var targetProperty in pd.TargetProperties)
               {
                 var targetPropertyType = targetProperty as Type;
                 // PropertyDefinitions contains a PropertyDefinition for this PropertyItem Type => return its PropertyDefinitions.
-                if( (targetPropertyType != null) && targetPropertyType.IsAssignableFrom( type ) )
+                if ((targetPropertyType != null) && targetPropertyType.IsAssignableFrom( type ))
                   return pd.PropertyDefinitions;
               }
             }
@@ -533,7 +548,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       }
     }
 
-    ContainerHelperBase IPropertyContainer.ContainerHelper 
+    ContainerHelperBase IPropertyContainer.ContainerHelper
     {
       get
       {
@@ -541,7 +556,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       }
     }
 
-    bool IPropertyContainer.IsCategorized 
+    bool IPropertyContainer.IsCategorized
     {
       get
       {
@@ -561,11 +576,11 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     {
       get
       {
-        if( this.ParentNode != null )
+        if (this.ParentNode != null)
         {
           var propertyItemPropertyDefinitions = this.GetPropertItemPropertyDefinitions();
           // No PropertyDefinitions specified : show all properties of this PropertyItem.
-          if( (propertyItemPropertyDefinitions == null) || (propertyItemPropertyDefinitions.Count == 0) )
+          if ((propertyItemPropertyDefinitions == null) || (propertyItemPropertyDefinitions.Count == 0))
             return true;
 
           // A PropertyDefinitions is specified : show only the properties of the PropertyDefinitions from this PropertyItem.
@@ -590,7 +605,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     bool? IPropertyContainer.IsPropertyVisible( PropertyDescriptor pd )
     {
-      if( _parentNode != null )
+      if (_parentNode != null)
       {
         return _parentNode.IsPropertyVisible( pd );
       }

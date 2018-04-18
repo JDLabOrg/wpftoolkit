@@ -638,7 +638,7 @@
                                         VerticalAlignment="Stretch" Background="Transparent" BorderBrush="Transparent"
                                         BorderThickness="1"
                                         Command="{Binding DesignatedValueCommand, RelativeSource={RelativeSource TemplatedParent}}"
-                                        Visibility="{Binding IsEnabled, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        Visibility="{Binding HasDesignatedValue, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}">
                               <Button.Style>
                                  <Style TargetType="{x:Type Button}">
                                     <Setter Property="Template">

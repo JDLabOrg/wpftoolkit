@@ -181,7 +181,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     private bool DesignatedValueCommand_CanExecute()
     {
       // Verify command can be executed here
-      if (IsColoredTitle)
+      if (HasDesignatedValue && IsColoredTitle)
       {
         return true;
       }
