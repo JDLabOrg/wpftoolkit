@@ -108,54 +108,6 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       return binding;
     }
 
-    #region IUEditor
-    private const string IU_CONTEXT_POSTFIX = "Context"; // [PropertyName]Context
-
-    public override string ContextPropertyName()
-    {
-      var selectedObject = SelectedObject;
-      string contextPropertyName = PropertyDescriptor.Name + IU_CONTEXT_POSTFIX;
-      bool hasContextProperty = selectedObject.GetType().GetProperty( contextPropertyName ) != null;
-      if (hasContextProperty)
-      {
-        return contextPropertyName;
-      }
-      return null;
-    }
-
-    protected override void CreateContextBinding()
-    {
-      var selectedObject = SelectedObject;
-      string contextPropertyName = ContextPropertyName();
-      if (contextPropertyName == null)
-      {
-        return;
-      }
-
-      var value = this.GetValueInstance( selectedObject );
-
-      // create isenabled binding
-      var enabledBinding = new Binding( contextPropertyName + ".IsEnabled" )
-      {
-        Source = value,
-        Mode = BindingMode.OneWay,
-
-      };
-      BindingOperations.SetBinding( this, DescriptorPropertyDefinitionBase.IsEnabledProperty, enabledBinding );
-
-      // create iscolored binidng
-      var coloredBinding = new Binding( contextPropertyName + ".IsCurrentValue" )
-      {
-        Source = value,
-        Mode = BindingMode.OneWay,
-      };
-      BindingOperations.SetBinding( this, DescriptorPropertyDefinitionBase.IsColoredTitleProperty, coloredBinding );
-
-    }
-
-
-    #endregion IUEditor
-
     protected override bool ComputeIsReadOnly()
     {
       return PropertyDescriptor.IsReadOnly;
@@ -194,21 +146,6 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     {
       return PropertyDescriptor.Category;
     }
-
-
-    #region IUEditor
-    protected override bool ComputeHasDesignatedAttribute()
-    {
-      return ( bool )this.ComputeHasDesignatedAttributeForItem( PropertyDescriptor );
-    }
-
-    protected override object ComputeDesignatedValueAttribute()
-    {
-      return ( object )this.ComputeDesignatedAttributeValueForItem( PropertyDescriptor );
-    }
-
-
-    #endregion
 
     protected override bool ComputeExpandableAttribute()
     {
