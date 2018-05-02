@@ -398,20 +398,14 @@
                   </Border>
                </Grid>
                <ControlTemplate.Triggers>
-                  <Trigger Property="IsMouseOver" Value="True">
-                     <Setter TargetName="OuterBorder" Property="Background" Value="{DynamicResource {x:Static themes:ResourceKeys.ButtonMouseOverBackgroundKey}}" />
-                     <Setter TargetName="OuterBorder" Property="BorderBrush" Value="{DynamicResource {x:Static themes:ResourceKeys.ButtonMouseOverOuterBorderKey}}" />
-                  </Trigger>
+                  <Trigger Property="IsMouseOver" Value="True" />
 
                   <Trigger Property="IsEnabled" Value="False">
                      <Setter TargetName="Content" Property="Opacity" Value="0.5" />
-                     <Setter TargetName="OuterBorder" Property="TextElement.Foreground" Value="#FF9E9E9E" />
+                     <Setter TargetName="OuterBorder" Property="TextElement.Foreground" Value="#a2a2a2" />
                   </Trigger>
 
-                  <Trigger Property="IsPressed" Value="True">
-                     <Setter TargetName="OuterBorder" Property="Background" Value="{DynamicResource {x:Static themes:ResourceKeys.ButtonPressedBackgroundKey}}" />
-                     <Setter TargetName="OuterBorder" Property="BorderBrush" Value="{DynamicResource {x:Static themes:ResourceKeys.ButtonPressedOuterBorderKey}}" />
-                  </Trigger>
+                  <Trigger Property="IsPressed" Value="True" />
                </ControlTemplate.Triggers>
             </ControlTemplate>
          </Setter.Value>
@@ -929,8 +923,8 @@
                         </Grid>
 
                         <Border x:Name="searchBoxContainer"
-                                    Grid.Column="1" Margin="4,4,0,4" Background="#F0F0F0"
-                                    BorderBrush="#979797" BorderThickness="1"
+                                    Grid.Column="1" Margin="4,4,0,4" Background="#fafafa"
+                                    BorderBrush="Transparent" BorderThickness="0"
                                     Visibility="{Binding ShowSearchBox, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}">
                            <Grid>
                               <Grid.ColumnDefinitions>
@@ -938,7 +932,7 @@
                                  <ColumnDefinition Width="Auto" />
                               </Grid.ColumnDefinitions>
                               <local:WatermarkTextBox x:Name="_txtFilter"
-                                            Background="Transparent" BorderThickness="1"
+                                            Background="Transparent" BorderThickness="0"
                                             Text="{Binding Filter, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
                                             Watermark="{TemplateBinding FilterWatermark}">
                                  <local:WatermarkTextBox.Style>
@@ -955,9 +949,21 @@
                               </local:WatermarkTextBox>
 
                               <Button
-                                            Grid.Column="1" HorizontalAlignment="Left" Command="commands:PropertyGridCommands.ClearFilter"
+                                            Grid.Column="1" HorizontalAlignment="Left" HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center" Command="commands:PropertyGridCommands.ClearFilter"
                                             Style="{StaticResource ClearFilterButtonStyle}">
-                                 <Image Width="16" Height="16" Source="./../Images/IUClearFilter16.png" />
+                                 <Image>
+                                    <Image.Style>
+                                       <Style TargetType="{x:Type Image}">
+                                          <Setter Property="Source" Value="../Images/remove.png" />
+                                          <Style.Triggers>
+                                             <DataTrigger Binding="{Binding Path=Text.Length, ElementName=_txtFilter, Mode=OneWay}" Value="0">
+                                                <Setter Property="Source" Value="../Images/search.png" />
+                                             </DataTrigger>
+                                          </Style.Triggers>
+                                       </Style>
+                                    </Image.Style>
+                                 </Image>
                               </Button>
                            </Grid>
                         </Border>
