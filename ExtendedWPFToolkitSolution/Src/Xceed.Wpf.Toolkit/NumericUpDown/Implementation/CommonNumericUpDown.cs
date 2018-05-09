@@ -158,49 +158,71 @@ namespace Xceed.Wpf.Toolkit
 
     protected override void OnIncrement()
     {
-      if( !HandleNullSpin() )
+      /*
+       *  20180509 IUEditor HandleNullSpin comment 처리
+       *  HandleNullSpin을 내부에서 Value가 set되고 OnIncrement 마지막에 한번더 Value를 set하면서 Undo stack에 두번이 쌓이게된다.   
+       */
+      //if( !HandleNullSpin() )
+      //{
+
+      /*
+      * if UpdateValueOnEnterKey is true, 
+      * Sync Value on Text only when Enter Key is pressed.
+      * 20171017 IUEditor (UpdateValue_ -> Spinner update : format string not working / )
+      */
+      //if( this.UpdateValueOnEnterKey )
+      //{
+      //  var currentValue = this.ConvertTextToValue( this.TextBox.Text );
+      //  var result = this.IncrementValue( currentValue.Value, Increment.Value );
+      //  var newValue = this.CoerceValueMinMax( result );
+      // this.TextBox.Text = newValue.Value.ToString( this.FormatString, this.CultureInfo );
+      //}
+      //else 
+      // {
+      var value = default( T );
+      if (Value != null)
       {
-        // if UpdateValueOnEnterKey is true, 
-        // Sync Value on Text only when Enter Key is pressed.
-        // 20171017 IUEditor (UpdateValue_ -> Spinner update : format string not working / )
-        /*
-        if( this.UpdateValueOnEnterKey )
-        {
-          var currentValue = this.ConvertTextToValue( this.TextBox.Text );
-          var result = this.IncrementValue( currentValue.Value, Increment.Value );
-          var newValue = this.CoerceValueMinMax( result );
-          this.TextBox.Text = newValue.Value.ToString( this.FormatString, this.CultureInfo );
-        }
-        */
-        //else 
-        // {
-          var result = this.IncrementValue( Value.Value, Increment.Value );
-          this.Value = this.CoerceValueMinMax( result );
-       // }
+        value = Value.Value;
       }
+
+      var result = this.IncrementValue( value, Increment.Value );
+      this.Value = this.CoerceValueMinMax( result );
+      // }
+      //}
     }
 
     protected override void OnDecrement()
     {
-      if( !HandleNullSpin() )
+      /*
+       *  20180509 IUEditor HandleNullSpin comment 처리
+       *  HandleNullSpin을 내부에서 Value가 set되고 OnDecrement 마지막에 한번더 Value를 set하면서 Undo stack에 두번이 쌓이게된다.   
+       */
+      //if( !HandleNullSpin() )
+      //{
+
+      /* if UpdateValueOnEnterKey is true, 
+       * Sync Value on Text only when Enter Key is pressed.
+       */
+      //if( this.UpdateValueOnEnterKey )
+      //{
+      //  var currentValue = this.ConvertTextToValue( this.TextBox.Text );
+      //  var result = this.DecrementValue( currentValue.Value, Increment.Value );
+      //  var newValue = this.CoerceValueMinMax( result );
+      //  this.TextBox.Text = newValue.Value.ToString( this.FormatString, this.CultureInfo );
+      //}
+      // else
+      // {
+
+      var value = default( T );
+      if (Value != null)
       {
-        // if UpdateValueOnEnterKey is true, 
-        // Sync Value on Text only when Enter Key is pressed.
-        /*
-        if( this.UpdateValueOnEnterKey )
-        {
-          var currentValue = this.ConvertTextToValue( this.TextBox.Text );
-          var result = this.DecrementValue( currentValue.Value, Increment.Value );
-          var newValue = this.CoerceValueMinMax( result );
-          this.TextBox.Text = newValue.Value.ToString( this.FormatString, this.CultureInfo );
-        }
-        */
-        // else
-        // {
-          var result = this.DecrementValue( Value.Value, Increment.Value );
-          this.Value = this.CoerceValueMinMax( result );
-        // {
+        value = Value.Value;
       }
+
+      var result = this.DecrementValue( value, Increment.Value );
+      this.Value = this.CoerceValueMinMax( result );
+      // {
+      //}
     }
 
     protected override void OnMinimumChanged( T? oldValue, T? newValue )
