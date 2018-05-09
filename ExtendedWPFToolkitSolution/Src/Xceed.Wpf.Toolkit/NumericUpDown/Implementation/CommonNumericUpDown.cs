@@ -118,22 +118,19 @@ namespace Xceed.Wpf.Toolkit
 
     private bool HandleNullSpin()
     {
-      if( !Increment.HasValue )
+      if (!Value.HasValue)
       {
-        return true;
-      }
-
-      ///@note IUEditor 2018.01.23
-      /// if value is null, set default value or T's default value
-      /// and continue to increase or decrease a value <-- changed algorithm from xceed -->
-      /// original : stop to increase or decrease
-      if( !Value.HasValue )
-      {
-        T forcedValue = ( DefaultValue.HasValue )
+        T forcedValue = (DefaultValue.HasValue)
           ? DefaultValue.Value
           : default( T );
 
         Value = CoerceValueMinMax( forcedValue );
+
+        return true;
+      }
+      else if (!Increment.HasValue)
+      {
+        return true;
       }
 
       return false;
@@ -158,71 +155,61 @@ namespace Xceed.Wpf.Toolkit
 
     protected override void OnIncrement()
     {
-      /*
-       *  20180509 IUEditor HandleNullSpin comment 처리
-       *  HandleNullSpin을 내부에서 Value가 set되고 OnIncrement 마지막에 한번더 Value를 set하면서 Undo stack에 두번이 쌓이게된다.   
-       */
-      //if( !HandleNullSpin() )
-      //{
-
-      /*
-      * if UpdateValueOnEnterKey is true, 
-      * Sync Value on Text only when Enter Key is pressed.
-      * 20171017 IUEditor (UpdateValue_ -> Spinner update : format string not working / )
-      */
-      //if( this.UpdateValueOnEnterKey )
-      //{
-      //  var currentValue = this.ConvertTextToValue( this.TextBox.Text );
-      //  var result = this.IncrementValue( currentValue.Value, Increment.Value );
-      //  var newValue = this.CoerceValueMinMax( result );
-      // this.TextBox.Text = newValue.Value.ToString( this.FormatString, this.CultureInfo );
-      //}
-      //else 
-      // {
-      var value = default( T );
-      if (Value != null)
+      if (!HandleNullSpin())
       {
-        value = Value.Value;
-      }
+        /*
+        * if UpdateValueOnEnterKey is true, 
+        * Sync Value on Text only when Enter Key is pressed.
+        * 20171017 IUEditor (UpdateValue_ -> Spinner update : format string not working / )
+        */
+        //if( this.UpdateValueOnEnterKey )
+        //{
+        //  var currentValue = this.ConvertTextToValue( this.TextBox.Text );
+        //  var result = this.IncrementValue( currentValue.Value, Increment.Value );
+        //  var newValue = this.CoerceValueMinMax( result );
+        // this.TextBox.Text = newValue.Value.ToString( this.FormatString, this.CultureInfo );
+        //}
+        //else 
+        // {
+        var value = default( T );
+        if (Value != null)
+        {
+          value = Value.Value;
+        }
 
-      var result = this.IncrementValue( value, Increment.Value );
-      this.Value = this.CoerceValueMinMax( result );
-      // }
-      //}
+        var result = this.IncrementValue( value, Increment.Value );
+        this.Value = this.CoerceValueMinMax( result );
+        // }
+      }
     }
 
     protected override void OnDecrement()
     {
-      /*
-       *  20180509 IUEditor HandleNullSpin comment 처리
-       *  HandleNullSpin을 내부에서 Value가 set되고 OnDecrement 마지막에 한번더 Value를 set하면서 Undo stack에 두번이 쌓이게된다.   
-       */
-      //if( !HandleNullSpin() )
-      //{
-
-      /* if UpdateValueOnEnterKey is true, 
-       * Sync Value on Text only when Enter Key is pressed.
-       */
-      //if( this.UpdateValueOnEnterKey )
-      //{
-      //  var currentValue = this.ConvertTextToValue( this.TextBox.Text );
-      //  var result = this.DecrementValue( currentValue.Value, Increment.Value );
-      //  var newValue = this.CoerceValueMinMax( result );
-      //  this.TextBox.Text = newValue.Value.ToString( this.FormatString, this.CultureInfo );
-      //}
-      // else
-      // {
-
-      var value = default( T );
-      if (Value != null)
+      if (!HandleNullSpin())
       {
-        value = Value.Value;
-      }
+        /* if UpdateValueOnEnterKey is true, 
+         * Sync Value on Text only when Enter Key is pressed.
+         */
+        //if( this.UpdateValueOnEnterKey )
+        //{
+        //  var currentValue = this.ConvertTextToValue( this.TextBox.Text );
+        //  var result = this.DecrementValue( currentValue.Value, Increment.Value );
+        //  var newValue = this.CoerceValueMinMax( result );
+        //  this.TextBox.Text = newValue.Value.ToString( this.FormatString, this.CultureInfo );
+        //}
+        // else
+        // {
 
-      var result = this.DecrementValue( value, Increment.Value );
-      this.Value = this.CoerceValueMinMax( result );
-      // {
-      //}
+        var value = default( T );
+        if (Value != null)
+        {
+          value = Value.Value;
+        }
+
+        var result = this.DecrementValue( value, Increment.Value );
+        this.Value = this.CoerceValueMinMax( result );
+        // {
+      }
     }
 
     protected override void OnMinimumChanged( T? oldValue, T? newValue )
