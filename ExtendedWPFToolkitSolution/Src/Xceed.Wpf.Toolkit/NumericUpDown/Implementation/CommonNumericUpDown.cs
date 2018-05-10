@@ -171,13 +171,7 @@ namespace Xceed.Wpf.Toolkit
         //}
         //else 
         // {
-        var value = default( T );
-        if (Value != null)
-        {
-          value = Value.Value;
-        }
-
-        var result = this.IncrementValue( value, Increment.Value );
+        var result = this.IncrementValue( Value.Value, Increment.Value );
         this.Value = this.CoerceValueMinMax( result );
         // }
       }
@@ -199,14 +193,7 @@ namespace Xceed.Wpf.Toolkit
         //}
         // else
         // {
-
-        var value = default( T );
-        if (Value != null)
-        {
-          value = Value.Value;
-        }
-
-        var result = this.DecrementValue( value, Increment.Value );
+        var result = this.DecrementValue( Value.Value, Increment.Value );
         this.Value = this.CoerceValueMinMax( result );
         // {
       }
