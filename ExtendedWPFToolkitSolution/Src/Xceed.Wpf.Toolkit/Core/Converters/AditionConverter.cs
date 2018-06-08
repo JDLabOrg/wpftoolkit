@@ -27,12 +27,14 @@ namespace Xceed.Wpf.Toolkit.Core.Converters
   {
     public object Convert( object value, Type targetType, object parameter, CultureInfo culture )
     {
-      if( ( value != null ) && ( parameter != null ) )
+      if ((value != null) && (parameter != null))
       {
         var firstValue = ( double )value;
         var secondValue = double.Parse( parameter as string );
 
-        return firstValue + secondValue;
+        var result = firstValue + secondValue;
+        return result < 0 ? 0d : result;
+
       }
 
       return 0d;
