@@ -385,11 +385,16 @@ namespace Xceed.Wpf.AvalonDock.Controls
                 yield return new AnchorablePaneDropTarget( dropAreaAnchorablePane.AreaElement, dropAreaTitle.GetScreenArea(), DropTargetType.AnchorablePaneDockInside );
             }
             break;
+                        #region IUEditor
+                        // DocumentPane은 DragEnter 이벤트를 받지않아야하므로 주석처리
+                        /*
           case DropAreaType.DocumentPane:
             {
+
               bool isDraggingAnchorables = _floatingWindow.Model is LayoutAnchorableFloatingWindow;
               if( isDraggingAnchorables && _gridDocumentPaneFullDropTargets != null )
               {
+
                 var dropAreaDocumentPane = visibleArea as DropArea<LayoutDocumentPaneControl>;
                 if( _documentPaneFullDropTargetLeft.IsVisible )
                   yield return new DocumentPaneDropTarget( dropAreaDocumentPane.AreaElement, _documentPaneFullDropTargetLeft.GetScreenArea(), DropTargetType.DocumentPaneDockLeft );
@@ -420,7 +425,6 @@ namespace Xceed.Wpf.AvalonDock.Controls
                   if( newAreaTabItemScreenArea.Right < dropAreaDocumentPane.AreaElement.GetScreenArea().Right )
                     yield return new DocumentPaneDropTarget( dropAreaDocumentPane.AreaElement, newAreaTabItemScreenArea, DropTargetType.DocumentPaneDockInside, parentPaneModel.Children.Count );
                 }
-
                 if( _documentPaneDropTargetLeftAsAnchorablePane.IsVisible )
                   yield return new DocumentPaneDropAsAnchorableTarget( dropAreaDocumentPane.AreaElement, _documentPaneDropTargetLeftAsAnchorablePane.GetScreenArea(), DropTargetType.DocumentPaneDockAsAnchorableLeft );
                 if( _documentPaneDropTargetTopAsAnchorablePane.IsVisible )
@@ -432,7 +436,6 @@ namespace Xceed.Wpf.AvalonDock.Controls
               }
               else
               {
-
                 var dropAreaDocumentPane = visibleArea as DropArea<LayoutDocumentPaneControl>;
                 if( _documentPaneDropTargetLeft.IsVisible )
                   yield return new DocumentPaneDropTarget( dropAreaDocumentPane.AreaElement, _documentPaneDropTargetLeft.GetScreenArea(), DropTargetType.DocumentPaneDockLeft );
@@ -473,6 +476,8 @@ namespace Xceed.Wpf.AvalonDock.Controls
                 yield return new DocumentPaneGroupDropTarget( dropAreaDocumentPane.AreaElement, _documentPaneDropTargetInto.GetScreenArea(), DropTargetType.DocumentPaneGroupDockInside );
             }
             break;
+                    */
+                        #endregion
         }
 
       }
@@ -495,7 +500,7 @@ namespace Xceed.Wpf.AvalonDock.Controls
     {
       _visibleAreas.Add( area );
 
-      FrameworkElement areaElement;
+            FrameworkElement areaElement = null;
       switch( area.Type )
       {
         case DropAreaType.DockingManager:
@@ -508,6 +513,9 @@ namespace Xceed.Wpf.AvalonDock.Controls
           var layoutAnchorablePane = dropAreaAnchorablePaneGroup.AreaElement.Model as LayoutAnchorablePane;
           SetDropTargetIntoVisibility( layoutAnchorablePane );
           break;
+                    #region IUEditor
+                    // DocumentPane & DocuemntPaneGroup은 DragEnter 이벤트를 받지않아야하므로 주석처리
+                    /*
         case DropAreaType.DocumentPaneGroup:
           {
             areaElement = _gridDocumentPaneDropTargets;
@@ -521,6 +529,7 @@ namespace Xceed.Wpf.AvalonDock.Controls
             _documentPaneDropTargetBottom.Visibility = Visibility.Hidden;
           }
           break;
+                    
         case DropAreaType.DocumentPane:
         default:
           {
@@ -664,8 +673,11 @@ namespace Xceed.Wpf.AvalonDock.Controls
             }
           }
           break;
+                    */
       }
-
+            if (areaElement == null)
+                return;
+#endregion
       Canvas.SetLeft( areaElement, area.DetectionRect.Left - Left );
       Canvas.SetTop( areaElement, area.DetectionRect.Top - Top );
       areaElement.Width = area.DetectionRect.Width;

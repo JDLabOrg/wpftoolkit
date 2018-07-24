@@ -29,12 +29,16 @@ namespace Xceed.Wpf.Toolkit
   [TemplatePart( Name = PART_ColorShadeSelector, Type = typeof( Canvas ) )]
   [TemplatePart( Name = PART_SpectrumSlider, Type = typeof( ColorSpectrumSlider ) )]
   [TemplatePart( Name = PART_HexadecimalTextBox, Type = typeof( TextBox ) )]
+  [TemplatePart(Name = PART_NullColorButton, Type = typeof(Button))]
+  [TemplatePart(Name = PART_AlphaSlider, Type = typeof(AlphaSpectrumSlider))]
   public class ColorCanvas : Control
   {
     private const string PART_ColorShadingCanvas = "PART_ColorShadingCanvas";
     private const string PART_ColorShadeSelector = "PART_ColorShadeSelector";
     private const string PART_SpectrumSlider = "PART_SpectrumSlider";
     private const string PART_HexadecimalTextBox = "PART_HexadecimalTextBox";
+    private const string PART_NullColorButton = "PART_NullColorButton";
+    private const string PART_AlphaSlider= "PART_AlphaSlider";
 
     #region Private Members
 
@@ -46,6 +50,11 @@ namespace Xceed.Wpf.Toolkit
     private Point? _currentColorPosition;
     private bool _surpressPropertyChanged;
     private bool _updateSpectrumSliderValue = true;
+
+    // created by iueditor
+    private Button _nullColorButton;
+    private AlphaSpectrumSlider _alphaSlider;
+    private bool _updateAlphaSliderColor = true;
 
     #endregion //Private Members
 
@@ -289,7 +298,8 @@ namespace Xceed.Wpf.Toolkit
 
     #region UsingAlphaChannel
 
-    public static readonly DependencyProperty UsingAlphaChannelProperty = DependencyProperty.Register( "UsingAlphaChannel", typeof( bool ), typeof( ColorCanvas ), new FrameworkPropertyMetadata( true, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, new PropertyChangedCallback( OnUsingAlphaChannelPropertyChanged ) ) );
+    public static readonly DependencyProperty UsingAlphaChannelProperty = DependencyProperty.Register( "UsingAlphaChannel", typeof( bool ), 
+      typeof( ColorCanvas ), new FrameworkPropertyMetadata( true, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, new PropertyChangedCallback( OnUsingAlphaChannelPropertyChanged ) ) );
     public bool UsingAlphaChannel
     {
       get
@@ -360,9 +370,6 @@ namespace Xceed.Wpf.Toolkit
       if( _colorShadeSelector != null )
         _colorShadeSelector.RenderTransform = _colorShadeSelectorTransform;
 
-      if( _spectrumSlider != null )
-        _spectrumSlider.ValueChanged -= SpectrumSlider_ValueChanged;
-
       _spectrumSlider = GetTemplateChild( PART_SpectrumSlider ) as ColorSpectrumSlider;
 
       if( _spectrumSlider != null )
@@ -376,6 +383,20 @@ namespace Xceed.Wpf.Toolkit
       if( _hexadecimalTextBox != null )
         _hexadecimalTextBox.LostFocus += new RoutedEventHandler( HexadecimalTextBox_LostFocus );
 
+
+      // IUEditor added
+      _nullColorButton = GetTemplateChild(PART_NullColorButton) as Button;
+
+      if (_nullColorButton != null)
+        _nullColorButton.Click += NullColorButton_Click; ;
+
+      _alphaSlider = GetTemplateChild(PART_AlphaSlider) as AlphaSpectrumSlider;
+      if (_alphaSlider != null)
+        _alphaSlider.ValueChanged += AlphaSlider_ValueChanged;
+
+
+
+
       UpdateRGBValues( SelectedColor );
       UpdateColorShadeSelectorPosition( SelectedColor );
 
@@ -383,6 +404,7 @@ namespace Xceed.Wpf.Toolkit
       SetHexadecimalTextBoxTextProperty( GetFormatedColorString( SelectedColor ) );
     }
 
+ 
     protected override void OnKeyDown( KeyEventArgs e )
     {
       base.OnKeyDown( e );
@@ -458,11 +480,26 @@ namespace Xceed.Wpf.Toolkit
       }
     }
 
+    private void AlphaSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+    {
+      if ((_currentColorPosition != null) && (this.SelectedColor != null))
+      {
+        CalculateColor((Point)_currentColorPosition);
+      }
+    }
+
+
     void HexadecimalTextBox_LostFocus( object sender, RoutedEventArgs e )
     {
       TextBox textbox = sender as TextBox;
       SetHexadecimalStringProperty( textbox.Text, true );
     }
+
+    private void NullColorButton_Click(object sender, RoutedEventArgs e)
+    {
+      SetNullColor();
+    }
+
 
     #endregion //Event Handlers
 
@@ -543,7 +580,8 @@ namespace Xceed.Wpf.Toolkit
 
     private void UpdateColorShadeSelectorPosition( Color? color )
     {
-      if( (_spectrumSlider == null) || (_colorShadingCanvas == null) || (color == null) || !color.HasValue)
+      if( (_spectrumSlider == null) || (_colorShadingCanvas == null) || (color == null) || !color.HasValue
+        || (_alphaSlider == null))
         return;
 
       _currentColorPosition = null;
@@ -553,6 +591,11 @@ namespace Xceed.Wpf.Toolkit
       if( _updateSpectrumSliderValue )
       {
         _spectrumSlider.Value = 360 - hsv.H;
+      }
+
+      if (_updateAlphaSliderColor)
+      {
+        _alphaSlider.SelectedColor = color;
       }
 
       Point p = new Point( hsv.S, 1 - hsv.V );
@@ -574,23 +617,39 @@ namespace Xceed.Wpf.Toolkit
         V = 1 - p.Y
       };
       var currentColor = ColorUtilities.ConvertHsvToRgb( hsv.H, hsv.S, hsv.V );
-      currentColor.A = A;
+
+      // alpha update
+      var alpha = _alphaSlider != null ? _alphaSlider.Value : A;
+      currentColor.A = (byte)alpha;
+
       _updateSpectrumSliderValue = false;
       SelectedColor = currentColor;
       _updateSpectrumSliderValue = true;
       SetHexadecimalStringProperty( GetFormatedColorString( SelectedColor ), false );
     }
 
+
+    private void SetNullColor()
+    {
+      _updateAlphaSliderColor = false;
+      SelectedColor = null;
+      _updateAlphaSliderColor = true;
+      SetHexadecimalStringProperty(GetFormatedColorString(SelectedColor), false);
+    }
+
     private string GetFormatedColorString( Color? colorToFormat )
     {
       if( ( colorToFormat == null ) || !colorToFormat.HasValue )
         return string.Empty;
-      return ColorUtilities.FormatColorString( colorToFormat.ToString(), UsingAlphaChannel );
+
+      ///@note 
+      // do not use alpha string in IUEditor
+      return ColorUtilities.FormatColorString( colorToFormat.ToString(), false);
     }
 
     private string GetFormatedColorString( string stringToFormat )
     {
-      return ColorUtilities.FormatColorString( stringToFormat, UsingAlphaChannel );
+      return ColorUtilities.FormatColorString( stringToFormat, false);
     }
 
     private void SetHexadecimalStringProperty( string newValue, bool modifyFromUI )
@@ -623,6 +682,7 @@ namespace Xceed.Wpf.Toolkit
         HexadecimalString = newValue;
       }
     }
+
 
     private void SetHexadecimalTextBoxTextProperty( string newValue )
     {

@@ -186,6 +186,41 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     #endregion //IsExpandable
 
+    #region IUEditor
+
+    #region HasDesignatedValue
+
+
+    public static readonly DependencyProperty HasDesignatedValueProperty =
+       DependencyProperty.Register( "HasDesignatedValue", typeof( bool ), typeof( PropertyItemBase ), new UIPropertyMetadata( false ) );
+
+    public bool HasDesignatedValue
+    {
+      get { return ( bool )GetValue( HasDesignatedValueProperty ); }
+      set { SetValue( HasDesignatedValueProperty, value ); }
+    }
+
+    #endregion
+
+    #region IsColoredTitle
+
+    public static readonly DependencyProperty IsColoredTitleProperty =
+        DependencyProperty.Register( "IsColoredTitle", typeof( bool ), typeof( PropertyItemBase ), new UIPropertyMetadata( false, OnIsColoredTitle ) );
+
+    public bool IsColoredTitle
+    {
+      get { return ( bool )GetValue( IsColoredTitleProperty ); }
+      set { SetValue( IsColoredTitleProperty, value ); }
+    }
+
+    private static void OnIsColoredTitle( DependencyObject o, DependencyPropertyChangedEventArgs e )
+    {
+
+    }
+
+    #endregion //IsColoredTitle
+    #endregion // IUEditor
+
     #region IsSelected
 
     public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register( "IsSelected", typeof( bool ), typeof( PropertyItemBase ), new UIPropertyMetadata( false, OnIsSelectedChanged ) );

@@ -14,9 +14,11 @@
 
   ***********************************************************************************/
 
+using System;
 using System.Windows;
 using System.Windows.Data;
 using Xceed.Wpf.Toolkit.Primitives;
+using Xceed.Wpf.Toolkit.PropertyGrid.Implementation.Attributes;
 
 namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
 {
@@ -45,6 +47,9 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
       SetValueDependencyProperty();
       SetControlProperties( propertyItem );
       ResolveValueBinding( propertyItem );
+            #region IUEditor
+            ResolveContextBinding(propertyItem);
+            #endregion // IUEditor
       return Editor;
     }
 
@@ -57,9 +62,17 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
       return new T();
     }
 
-    protected virtual IValueConverter CreateValueConverter()
+    protected virtual IValueConverter CreateValueConverter(PropertyItem propertyItem)
     {
-      return null;
+        #region IUEditor
+        var valueConverterAttribute = PropertyGridUtilities.GetAttribute<ValueConverterAttribute>(propertyItem.DescriptorDefinition.PropertyDescriptor);
+        if (valueConverterAttribute != null)
+        {
+            return (IValueConverter)Activator.CreateInstance(valueConverterAttribute.ConverterType);
+        }
+
+        #endregion // IUEditor
+        return null;
     }
 
     protected virtual void ResolveValueBinding( PropertyItem propertyItem )
@@ -68,9 +81,22 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
       _binding.Source = propertyItem;
       _binding.UpdateSourceTrigger = (Editor is InputBase) ? UpdateSourceTrigger.PropertyChanged : UpdateSourceTrigger.Default;
       _binding.Mode = propertyItem.IsReadOnly ? BindingMode.OneWay : BindingMode.TwoWay;
-      _binding.Converter = CreateValueConverter();
-      BindingOperations.SetBinding( Editor, ValueProperty, _binding );
+      _binding.Converter = CreateValueConverter(propertyItem);
+       BindingOperations.SetBinding( Editor, ValueProperty, _binding );
     }
+
+        #region IUEditor
+        protected void ResolveContextBinding(PropertyItem propertyItem)
+        {
+            var _EnabledBinding = new Binding("IsEnabled")
+            {
+                Source = propertyItem,
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+                Mode = BindingMode.OneWay
+            };
+            BindingOperations.SetBinding(Editor, UIElement.IsEnabledProperty, _EnabledBinding);
+        }
+        #endregion // IUEditor
 
     protected virtual void SetControlProperties( PropertyItem propertyItem )
     {

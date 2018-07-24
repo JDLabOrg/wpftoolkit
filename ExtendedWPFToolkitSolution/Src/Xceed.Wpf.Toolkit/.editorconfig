@@ -1,0 +1,20 @@
+﻿# 
+# formatting document
+# https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#formatting-conventions
+#
+
+
+# Code files
+[*.xaml]
+indent_size = 3
+
+[*.cs]
+indent_size = 2
+csharp_prefer_braces = true 
+
+# spacing options
+csharp_space_after_cast = false 
+csharp_space_after_keywords_in_control_flow_statements = true
+csharp_space_between_method_declaration_parameter_list_parentheses = true
+csharp_space_between_method_call_parameter_list_parentheses = true
+csharp_space_between_parentheses = type_casts 

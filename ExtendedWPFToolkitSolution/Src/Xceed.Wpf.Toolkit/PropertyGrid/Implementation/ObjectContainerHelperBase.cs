@@ -122,6 +122,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       }
     }
 
+
     public void GenerateProperties()
     {
       if( (PropertyItems.Count == 0)
@@ -450,6 +451,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
       propertyItem.SetBinding( itemProperty, binding );
     }
+
 
     internal FrameworkElement GenerateChildrenEditorElement( PropertyItem propertyItem )
     {

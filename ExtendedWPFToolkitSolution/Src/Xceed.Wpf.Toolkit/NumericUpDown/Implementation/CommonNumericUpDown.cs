@@ -188,20 +188,23 @@ namespace Xceed.Wpf.Toolkit
     {
       if( !HandleNullSpin() )
       {
-        // if UpdateValueOnEnterKey is true, 
-        // Sync Value on Text only when Enter Key is pressed.
-        if( this.UpdateValueOnEnterKey )
-        {
-          var currentValue = this.ConvertTextToValue( this.TextBox.Text );
-          var result = this.IncrementValue( currentValue.Value, Increment.Value );
-          var newValue = this.CoerceValueMinMax( result );
-          this.TextBox.Text = newValue.Value.ToString( this.FormatString, this.CultureInfo );
-        }
-        else
-        {
+        /*
+        * if UpdateValueOnEnterKey is true, 
+        * Sync Value on Text only when Enter Key is pressed.
+        * 20171017 IUEditor (UpdateValue_ -> Spinner update : format string not working / )
+        */
+        //if( this.UpdateValueOnEnterKey )
+        //{
+        //  var currentValue = this.ConvertTextToValue( this.TextBox.Text );
+        //  var result = this.IncrementValue( currentValue.Value, Increment.Value );
+        //  var newValue = this.CoerceValueMinMax( result );
+        // this.TextBox.Text = newValue.Value.ToString( this.FormatString, this.CultureInfo );
+        //}
+        //else 
+        // {
           var result = this.IncrementValue( Value.Value, Increment.Value );
           this.Value = this.CoerceValueMinMax( result );
-        }
+        // }
       }
     }
 
@@ -209,20 +212,21 @@ namespace Xceed.Wpf.Toolkit
     {
       if( !HandleNullSpin() )
       {
-        // if UpdateValueOnEnterKey is true, 
-        // Sync Value on Text only when Enter Key is pressed.
-        if( this.UpdateValueOnEnterKey )
-        {
-          var currentValue = this.ConvertTextToValue( this.TextBox.Text );
-          var result = this.DecrementValue( currentValue.Value, Increment.Value );
-          var newValue = this.CoerceValueMinMax( result );
-          this.TextBox.Text = newValue.Value.ToString( this.FormatString, this.CultureInfo );
-        }
-        else
-        {
+        /* if UpdateValueOnEnterKey is true, 
+         * Sync Value on Text only when Enter Key is pressed.
+         */
+        //if( this.UpdateValueOnEnterKey )
+        //{
+        //  var currentValue = this.ConvertTextToValue( this.TextBox.Text );
+        //  var result = this.DecrementValue( currentValue.Value, Increment.Value );
+        //  var newValue = this.CoerceValueMinMax( result );
+        //  this.TextBox.Text = newValue.Value.ToString( this.FormatString, this.CultureInfo );
+        //}
+        // else
+        // {
           var result = this.DecrementValue( Value.Value, Increment.Value );
           this.Value = this.CoerceValueMinMax( result );
-        }
+        // {
       }
     }
 

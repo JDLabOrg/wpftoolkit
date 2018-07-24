@@ -240,6 +240,18 @@ namespace Xceed.Wpf.Toolkit
       }
     }
 
+
+        // IUEditor. 2017.10-20 / add finish button style
+        public static DependencyProperty FinishButtonStyleProperty = DependencyProperty.Register("FinishButtonStyle",
+                                        typeof(Style),
+                                        typeof(Wizard));
+        public Style FinishButtonStyle
+        {
+            get { return (Style)GetValue(FinishButtonStyleProperty); }
+            set { SetValue(FinishButtonStyleProperty, value); }
+        }
+
+
     public static readonly DependencyProperty HelpButtonContentProperty = DependencyProperty.Register( "HelpButtonContent", typeof( object ), typeof( Wizard ), new UIPropertyMetadata( "Help" ) );
     public object HelpButtonContent
     {

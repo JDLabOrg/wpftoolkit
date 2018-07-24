@@ -16,13 +16,18 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Input;
 
 namespace Xceed.Wpf.Toolkit.PropertyGrid
 {
+
+  public delegate void Event_DesignatedValueExecuted();
+
   /// <summary>
   /// Used when properties are provided using a list source of items (eg. Properties or PropertiesSource). 
   /// 
@@ -70,7 +75,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       }
       set
       {
-        if( _categoryOrder != value )
+        if (_categoryOrder != value)
         {
           _categoryOrder = value;
           // Notify the parent helper since this property may affect ordering.
@@ -124,7 +129,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     private static object OnCoerceValueChanged( DependencyObject o, object baseValue )
     {
       CustomPropertyItem prop = o as CustomPropertyItem;
-      if( prop != null )
+      if (prop != null)
         return prop.OnCoerceValueChanged( baseValue );
 
       return baseValue;
@@ -138,7 +143,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     private static void OnValueChanged( DependencyObject o, DependencyPropertyChangedEventArgs e )
     {
       CustomPropertyItem propertyItem = o as CustomPropertyItem;
-      if( propertyItem != null )
+      if (propertyItem != null)
       {
         propertyItem.OnValueChanged( ( object )e.OldValue, ( object )e.NewValue );
       }
@@ -146,7 +151,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     protected virtual void OnValueChanged( object oldValue, object newValue )
     {
-      if( IsInitialized )
+      if (IsInitialized)
       {
         RaiseEvent( new PropertyValueChangedEventArgs( PropertyGrid.PropertyValueChangedEvent, this, oldValue, newValue ) );
       }
@@ -154,7 +159,47 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     #endregion //Value
 
-    #endregion
+    #region IUEditor
+
+
+    private RelayCommand _designatedValueCommand;
+    public ICommand DesignatedValueCommand
+    {
+      get
+      {
+        if (_designatedValueCommand == null)
+        {
+          _designatedValueCommand = new RelayCommand(
+              param => this.DesignatedValueCommand_Execute(),
+              param => this.DesignatedValueCommand_CanExecute()
+          );
+        }
+        return _designatedValueCommand;
+      }
+    }
+
+    private bool DesignatedValueCommand_CanExecute()
+    {
+      // Verify command can be executed here
+      if (HasDesignatedValue && IsColoredTitle)
+      {
+        return true;
+      }
+      return false;
+    }
+
+    private void DesignatedValueCommand_Execute()
+    {
+      DesignatedExecuted();
+    }
+
+    public event Event_DesignatedValueExecuted DesignatedExecuted;
+
+
+    #endregion // Designed Value
+    #endregion // IUEditor
+
+
 
     #region Overrides
 
@@ -165,18 +210,49 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     protected override void OnEditorChanged( FrameworkElement oldValue, FrameworkElement newValue )
     {
-      if( oldValue != null )
+      if (oldValue != null)
       {
         oldValue.DataContext = null;
       }
 
       //case 166547 : Do not overwrite a custom Editor's DataContext set by the user.
-      if( ( newValue != null ) && ( newValue.DataContext == null ) )
+      if ((newValue != null) && (newValue.DataContext == null))
       {
         newValue.DataContext = this;
       }
     }
 
     #endregion
+  }
+
+
+  public class RelayCommand : ICommand
+  {
+    #region Fields 
+    readonly Action<object> _execute;
+    readonly Predicate<object> _canExecute;
+    #endregion // Fields 
+    #region Constructors 
+    public RelayCommand( Action<object> execute ) : this( execute, null ) { }
+    public RelayCommand( Action<object> execute, Predicate<object> canExecute )
+    {
+      if (execute == null)
+        throw new ArgumentNullException( "execute" );
+      _execute = execute; _canExecute = canExecute;
+    }
+    #endregion // Constructors 
+    #region ICommand Members 
+    [DebuggerStepThrough]
+    public bool CanExecute( object parameter )
+    {
+      return _canExecute == null ? true : _canExecute( parameter );
+    }
+    public event EventHandler CanExecuteChanged
+    {
+      add { CommandManager.RequerySuggested += value; }
+      remove { CommandManager.RequerySuggested -= value; }
+    }
+    public void Execute( object parameter ) { _execute( parameter ); }
+    #endregion // ICommand Members 
   }
 }
