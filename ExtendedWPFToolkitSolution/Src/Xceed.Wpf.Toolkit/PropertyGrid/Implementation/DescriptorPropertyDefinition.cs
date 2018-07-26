@@ -49,12 +49,13 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     #region Constructor
 
-
-    internal DescriptorPropertyDefinition( PropertyDescriptor propertyDescriptor, object selectedObject, bool isPropertyGridCategorized )
-      : base( isPropertyGridCategorized )
+    internal DescriptorPropertyDefinition( PropertyDescriptor propertyDescriptor, object selectedObject, IPropertyContainer propertyContainer )
+       : base( propertyContainer.IsCategorized
+             )
     {
       this.Init( propertyDescriptor, selectedObject );
     }
+
     #endregion
 
     #region Custom Properties
@@ -102,7 +103,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
         Mode = PropertyDescriptor.IsReadOnly ? BindingMode.OneWay : BindingMode.TwoWay,
         ValidatesOnDataErrors = true,
         ValidatesOnExceptions = true,
-        ConverterCulture = CultureInfo.CurrentCulture
+        ConverterCulture = CultureInfo.CurrentCulture 
       };
 
       return binding;
@@ -120,8 +121,16 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     protected override bool ComputeCanResetValue()
     {
-      return PropertyDescriptor.CanResetValue( SelectedObject )
-        && !PropertyDescriptor.IsReadOnly;
+      if( !PropertyDescriptor.IsReadOnly )
+      {
+        var defaultValue = this.ComputeDefaultValueAttribute();
+        if( defaultValue != null)
+          return !defaultValue.Equals( this.Value ); // can Reset if different from defaultValue.
+
+        return PropertyDescriptor.CanResetValue( SelectedObject );
+      }
+
+      return false;
     }
 
     protected override object ComputeAdvancedOptionsTooltip()
@@ -138,7 +147,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
         return PropertyDescriptor.Category;
 #else
       var displayAttribute = PropertyGridUtilities.GetAttribute<DisplayAttribute>( PropertyDescriptor );
-      return ((displayAttribute != null) && (displayAttribute.GetGroupName() != null)) ? displayAttribute.GetGroupName() : PropertyDescriptor.Category;
+      return ( (displayAttribute != null) && (displayAttribute.GetGroupName() != null) ) ? displayAttribute.GetGroupName() : PropertyDescriptor.Category;
 #endif
     }
 
@@ -159,7 +168,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     protected override bool ComputeIsExpandable()
     {
-      return (this.Value != null)
+      return ( this.Value != null )
         ;
     }
 
@@ -180,33 +189,46 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     protected override void ResetValue()
     {
-      PropertyDescriptor.ResetValue( SelectedObject );
+      this.PropertyDescriptor.ResetValue( this.SelectedObject );
+      base.ResetValue();
     }
 
     internal override ITypeEditor CreateAttributeEditor()
     {
       var editorAttribute = GetAttribute<EditorAttribute>();
-      if (editorAttribute != null)
+      if( editorAttribute != null )
       {
+        Type type = null;
 #if VS2008
-        var type = Type.GetType( editorAttribute.EditorTypeName );
+        type = Type.GetType( editorAttribute.EditorTypeName );
 #else
-        var type = Type.GetType( editorAttribute.EditorTypeName, ( name ) => { return AppDomain.CurrentDomain.GetAssemblies().Where( l => l.FullName == name.FullName ).FirstOrDefault(); }, null, true );
+        try
+        {
+          type = Type.GetType( editorAttribute.EditorTypeName, ( name ) =>
+          {
+            return AppDomain.CurrentDomain.GetAssemblies().Where( l => l.FullName == name.FullName ).FirstOrDefault();
+          }
+          , null, true );
+        }
+        catch( Exception )
+        {
+          type = Type.GetType( editorAttribute.EditorTypeName );
+        }       
 #endif
 
         // If the editor does not have any public parameterless constructor, forget it.
-        if (typeof( ITypeEditor ).IsAssignableFrom( type )
-          && (type.GetConstructor( new Type[0] ) != null))
+        if( typeof( ITypeEditor ).IsAssignableFrom( type )
+          && ( type.GetConstructor( new Type[ 0 ] ) != null ) )
         {
           var instance = Activator.CreateInstance( type ) as ITypeEditor;
           Debug.Assert( instance != null, "Type was expected to be ITypeEditor with public constructor." );
-          if (instance != null)
+          if( instance != null )
             return instance;
         }
       }
 
       var itemsSourceAttribute = GetAttribute<ItemsSourceAttribute>();
-      if (itemsSourceAttribute != null)
+      if( itemsSourceAttribute != null )
         return new ItemsSourceAttributeEditor( itemsSourceAttribute );
 
       return null;
@@ -223,10 +245,10 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     private void Init( PropertyDescriptor propertyDescriptor, object selectedObject )
     {
-      if (propertyDescriptor == null)
+      if( propertyDescriptor == null )
         throw new ArgumentNullException( "propertyDescriptor" );
 
-      if (selectedObject == null)
+      if( selectedObject == null )
         throw new ArgumentNullException( "selectedObject" );
 
       _propertyDescriptor = propertyDescriptor;

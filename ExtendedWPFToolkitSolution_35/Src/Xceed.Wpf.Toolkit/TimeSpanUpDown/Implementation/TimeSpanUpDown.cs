@@ -15,13 +15,9 @@
   ***********************************************************************************/
 
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
 using Xceed.Wpf.Toolkit.Primitives;
 
@@ -227,7 +223,7 @@ namespace Xceed.Wpf.Toolkit
         // Validate when more than 60 seconds (or more than 60 minutes, or more than 24 hours) are entered.
         var separators = currentValue.Where( x => x == ':' || x == '.' ).ToList();
         var values = currentValue.Split( new char[] { ':', '.' } );
-        if( values.Count() >= 2 )
+        if( ( values.Count() >= 2 ) && !values.Any( x => string.IsNullOrEmpty( x ) ) )
         {
           bool haveDays = separators.First() == '.';
           bool haveMS = ( separators.Count() > 1 ) && ( separators.Last() == '.' );
@@ -235,7 +231,7 @@ namespace Xceed.Wpf.Toolkit
           result = new TimeSpan( haveDays ? int.Parse( values[ 0 ] ) : 0,  //Days
                                  haveDays ? int.Parse( values[ 1 ] ) : int.Parse( values[ 0 ] ),  //Hours
                                  haveDays ? int.Parse( values[ 2 ] ) : int.Parse( values[ 1 ] ),  //Minutes
-                                 (haveDays && this.ShowSeconds) ? int.Parse( values[ 3 ] ) : this.ShowSeconds ? int.Parse( values[ 2 ] ) : 0,  //Seconds
+                                 ( haveDays && this.ShowSeconds ) ? int.Parse( values[ 3 ] ) : this.ShowSeconds ? int.Parse( values[ 2 ] ) : 0,  //Seconds
                                  haveMS ? int.Parse( values.Last() ) : 0 );  //Milliseconds
         }
       }
@@ -369,6 +365,7 @@ namespace Xceed.Wpf.Toolkit
 
       return (value1.Value > value2.Value);
     }
+
 
     #endregion
 

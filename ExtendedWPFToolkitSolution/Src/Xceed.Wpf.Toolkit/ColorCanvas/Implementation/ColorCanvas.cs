@@ -16,7 +16,6 @@
 
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using Xceed.Wpf.Toolkit.Core.Utilities;
@@ -277,7 +276,13 @@ namespace Xceed.Wpf.Toolkit
       {
         if( !string.IsNullOrEmpty( retValue ) )
         {
-          ColorConverter.ConvertFromString( value );
+          int outValue;
+          // User has entered an hexadecimal value (without the "#" character)... add it.
+          if( Int32.TryParse( retValue, System.Globalization.NumberStyles.HexNumber, null, out outValue ) )
+          {
+            retValue = "#" + retValue;
+          }
+          ColorConverter.ConvertFromString( retValue );
         }
       }
       catch
@@ -328,6 +333,10 @@ namespace Xceed.Wpf.Toolkit
     static ColorCanvas()
     {
       DefaultStyleKeyProperty.OverrideMetadata( typeof( ColorCanvas ), new FrameworkPropertyMetadata( typeof( ColorCanvas ) ) );
+    }
+
+    public ColorCanvas()
+    {
     }
 
     #endregion //Constructors
@@ -409,6 +418,9 @@ namespace Xceed.Wpf.Toolkit
       }
     }
 
+
+
+
     #endregion //Base Class Overrides
 
     #region Event Handlers
@@ -477,10 +489,10 @@ namespace Xceed.Wpf.Toolkit
     }
 
 
-    void HexadecimalTextBox_LostFocus(object sender, RoutedEventArgs e)
+    void HexadecimalTextBox_LostFocus( object sender, RoutedEventArgs e )
     {
       TextBox textbox = sender as TextBox;
-      SetHexadecimalStringProperty(textbox.Text, true);
+      SetHexadecimalStringProperty( textbox.Text, true );
     }
 
     private void NullColorButton_Click(object sender, RoutedEventArgs e)
@@ -574,11 +586,11 @@ namespace Xceed.Wpf.Toolkit
 
       _currentColorPosition = null;
 
-      HsvColor hsv = ColorUtilities.ConvertRgbToHsv( color.Value.R, color.Value.G, color.Value.B );
+      var hsv = ColorUtilities.ConvertRgbToHsv( color.Value.R, color.Value.G, color.Value.B );
 
       if( _updateSpectrumSliderValue )
       {
-        _spectrumSlider.Value = hsv.H;
+        _spectrumSlider.Value = 360 - hsv.H;
       }
 
       if (_updateAlphaSliderColor)
@@ -586,11 +598,11 @@ namespace Xceed.Wpf.Toolkit
         _alphaSlider.SelectedColor = color;
       }
 
-      Point p = new Point(hsv.S, 1 - hsv.V);
+      Point p = new Point( hsv.S, 1 - hsv.V );
 
       _currentColorPosition = p;
 
-      _colorShadeSelectorTransform.X = (p.X * _colorShadingCanvas.Width) - 5;
+      _colorShadeSelectorTransform.X = ( p.X * _colorShadingCanvas.Width ) - 5;
       _colorShadeSelectorTransform.Y = ( p.Y * _colorShadingCanvas.Height ) - 5;
     }
 
@@ -625,9 +637,9 @@ namespace Xceed.Wpf.Toolkit
       SetHexadecimalStringProperty(GetFormatedColorString(SelectedColor), false);
     }
 
-    private string GetFormatedColorString(Color? colorToFormat)
+    private string GetFormatedColorString( Color? colorToFormat )
     {
-      if ((colorToFormat == null) || !colorToFormat.HasValue)
+      if( ( colorToFormat == null ) || !colorToFormat.HasValue )
         return string.Empty;
 
       ///@note 
@@ -648,6 +660,12 @@ namespace Xceed.Wpf.Toolkit
         {
           if( !string.IsNullOrEmpty( newValue ) )
           {
+            int outValue;
+            // User has entered an hexadecimal value (without the "#" character)... add it.
+            if( Int32.TryParse( newValue, System.Globalization.NumberStyles.HexNumber, null, out outValue ) )
+            {
+              newValue = "#" + newValue;
+            }
             ColorConverter.ConvertFromString( newValue );
           }
           HexadecimalString = newValue;

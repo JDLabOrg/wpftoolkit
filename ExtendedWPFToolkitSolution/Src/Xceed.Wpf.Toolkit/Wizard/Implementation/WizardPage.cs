@@ -181,7 +181,7 @@ namespace Xceed.Wpf.Toolkit
         }
 
 
-        public static readonly DependencyProperty HeaderBackgroundProperty = DependencyProperty.Register( "HeaderBackground", typeof( Brush ), typeof( WizardPage ), new UIPropertyMetadata( Brushes.White ) );
+    public static readonly DependencyProperty HeaderBackgroundProperty = DependencyProperty.Register( "HeaderBackground", typeof( Brush ), typeof( WizardPage ), new UIPropertyMetadata( Brushes.White ) );
     public Brush HeaderBackground
     {
       get
@@ -329,6 +329,9 @@ namespace Xceed.Wpf.Toolkit
         CommandManager.InvalidateRequerySuggested();
       }
     }
+
+
+
 
     #endregion
 

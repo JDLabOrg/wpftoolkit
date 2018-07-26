@@ -19,7 +19,6 @@ using System.Windows;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using Xceed.Wpf.Toolkit.Primitives;
 
 namespace Xceed.Wpf.Toolkit
 {
@@ -28,11 +27,33 @@ namespace Xceed.Wpf.Toolkit
     protected delegate bool FromText( string s, NumberStyles style, IFormatProvider provider, out T result );
     protected delegate T FromDecimal( decimal d );
 
+    #region Private Members
+
     private FromText _fromText;
     private FromDecimal _fromDecimal;
     private Func<T, T, bool> _fromLowerThan;
     private Func<T, T, bool> _fromGreaterThan;
 
+    #endregion
+
+    #region Properties
+
+    #region IsInvalid
+
+    internal static readonly DependencyProperty IsInvalidProperty = DependencyProperty.Register( "IsInvalid", typeof( bool ), typeof( CommonNumericUpDown<T> ), new UIPropertyMetadata( false ) );
+    internal bool IsInvalid
+    {
+      get
+      {
+        return ( bool )GetValue( IsInvalidProperty );
+      }
+      private set
+      {
+        SetValue( IsInvalidProperty, value );
+      }
+    }
+
+    #endregion //IsInvalid
 
     #region ParsingNumberStyle
 
@@ -46,6 +67,8 @@ namespace Xceed.Wpf.Toolkit
     }
 
     #endregion //ParsingNumberStyle
+
+    #endregion
 
     #region Constructors
 
@@ -71,17 +94,12 @@ namespace Xceed.Wpf.Toolkit
 
     #endregion
 
+    #region Internal Methods
+
     protected static void UpdateMetadata( Type type, T? increment, T? minValue, T? maxValue )
     {
       DefaultStyleKeyProperty.OverrideMetadata( type, new FrameworkPropertyMetadata( type ) );
       UpdateMetadataCommon( type, increment, minValue, maxValue );
-    }
-
-    private static void UpdateMetadataCommon( Type type, T? increment, T? minValue, T? maxValue )
-    {
-      IncrementProperty.OverrideMetadata( type, new FrameworkPropertyMetadata( increment ) );
-      MaximumProperty.OverrideMetadata( type, new FrameworkPropertyMetadata( maxValue ) );
-      MinimumProperty.OverrideMetadata( type, new FrameworkPropertyMetadata( minValue ) );
     }
 
     protected void TestInputSpecialValue( AllowedSpecialValues allowedValues, AllowedSpecialValues valueToCompare )
@@ -90,7 +108,7 @@ namespace Xceed.Wpf.Toolkit
       {
         switch( valueToCompare )
         {
-          case AllowedSpecialValues.NaN :
+          case AllowedSpecialValues.NaN:
             throw new InvalidDataException( "Value to parse shouldn't be NaN." );
           case AllowedSpecialValues.PositiveInfinity:
             throw new InvalidDataException( "Value to parse shouldn't be Positive Infinity." );
@@ -98,6 +116,22 @@ namespace Xceed.Wpf.Toolkit
             throw new InvalidDataException( "Value to parse shouldn't be Negative Infinity." );
         }
       }
+    }
+
+    internal bool IsBetweenMinMax( T? value )
+    {
+      return !IsLowerThan( value, Minimum ) && !IsGreaterThan( value, Maximum );
+    }
+
+    #endregion
+
+    #region Private Methods
+
+    private static void UpdateMetadataCommon( Type type, T? increment, T? minValue, T? maxValue )
+    {
+      IncrementProperty.OverrideMetadata( type, new FrameworkPropertyMetadata( increment ) );
+      MaximumProperty.OverrideMetadata( type, new FrameworkPropertyMetadata( maxValue ) );
+      MinimumProperty.OverrideMetadata( type, new FrameworkPropertyMetadata( minValue ) );
     }
 
     private bool IsLowerThan( T? value1, T? value2 )
@@ -118,9 +152,9 @@ namespace Xceed.Wpf.Toolkit
 
     private bool HandleNullSpin()
     {
-      if (!Value.HasValue)
+      if( !Value.HasValue )
       {
-        T forcedValue = (DefaultValue.HasValue)
+        T forcedValue = ( DefaultValue.HasValue )
           ? DefaultValue.Value
           : default( T );
 
@@ -128,17 +162,12 @@ namespace Xceed.Wpf.Toolkit
 
         return true;
       }
-      else if (!Increment.HasValue)
+      else if( !Increment.HasValue )
       {
         return true;
       }
 
       return false;
-    }
-
-    internal bool IsValid( T? value )
-    {
-      return !IsLowerThan( value, Minimum ) && !IsGreaterThan( value, Maximum );
     }
 
     private T? CoerceValueMinMax( T value )
@@ -151,11 +180,13 @@ namespace Xceed.Wpf.Toolkit
         return value;
     }
 
+    #endregion
+
     #region Base Class Overrides
 
     protected override void OnIncrement()
     {
-      if (!HandleNullSpin())
+      if( !HandleNullSpin() )
       {
         /*
         * if UpdateValueOnEnterKey is true, 
@@ -171,15 +202,15 @@ namespace Xceed.Wpf.Toolkit
         //}
         //else 
         // {
-        var result = this.IncrementValue( Value.Value, Increment.Value );
-        this.Value = this.CoerceValueMinMax( result );
+          var result = this.IncrementValue( Value.Value, Increment.Value );
+          this.Value = this.CoerceValueMinMax( result );
         // }
       }
     }
 
     protected override void OnDecrement()
     {
-      if (!HandleNullSpin())
+      if( !HandleNullSpin() )
       {
         /* if UpdateValueOnEnterKey is true, 
          * Sync Value on Text only when Enter Key is pressed.
@@ -193,8 +224,8 @@ namespace Xceed.Wpf.Toolkit
         //}
         // else
         // {
-        var result = this.DecrementValue( Value.Value, Increment.Value );
-        this.Value = this.CoerceValueMinMax( result );
+          var result = this.DecrementValue( Value.Value, Increment.Value );
+          this.Value = this.CoerceValueMinMax( result );
         // {
       }
     }
@@ -230,7 +261,10 @@ namespace Xceed.Wpf.Toolkit
       // we verify that the already existing text is not the exact same value.
       string currentValueText = ConvertValueToText();
       if( object.Equals( currentValueText, text ) )
+      {
+        this.IsInvalid = false;
         return this.Value;
+      }
 
       result = this.ConvertTextToValueCore( currentValueText, text );
 
@@ -248,6 +282,8 @@ namespace Xceed.Wpf.Toolkit
     {
       if( Value == null )
         return string.Empty;
+
+      this.IsInvalid = false;
 
       //Manage FormatString of type "{}{0:N2} °" (in xaml) or "{0:N2} °" in code-behind.
       if( FormatString.Contains( "{0" ) )
@@ -311,24 +347,30 @@ namespace Xceed.Wpf.Toolkit
           {
             // extract non-digit characters
             var currentValueTextSpecialCharacters = currentValueText.Where( c => !Char.IsDigit( c ) );
-            var textSpecialCharacters = text.Where( c => !Char.IsDigit( c ) );
-            // same non-digit characters on currentValueText and new text => remove them on new Text to parse it again.
-            if( currentValueTextSpecialCharacters.Except( textSpecialCharacters ).ToList().Count == 0 )
+            if( currentValueTextSpecialCharacters.Count() > 0 )
             {
-              foreach( var character in textSpecialCharacters )
+              var textSpecialCharacters = text.Where( c => !Char.IsDigit( c ) );
+              // same non-digit characters on currentValueText and new text => remove them on new Text to parse it again.
+              if( currentValueTextSpecialCharacters.Except( textSpecialCharacters ).ToList().Count == 0 )
               {
-                text = text.Replace( character.ToString(), string.Empty );
-              }
-              // if without the special characters, parsing is good, do not throw
-              if( _fromText( text, this.ParsingNumberStyle, CultureInfo, out outputValue ) )
-              {
-                shouldThrow = false;
+                foreach( var character in textSpecialCharacters )
+                {
+                  text = text.Replace( character.ToString(), string.Empty );
+                }
+                // if without the special characters, parsing is good, do not throw
+                if( _fromText( text, this.ParsingNumberStyle, CultureInfo, out outputValue ) )
+                {
+                  shouldThrow = false;
+                }
               }
             }
           }
 
           if( shouldThrow )
+          {
+            this.IsInvalid = true;
             throw new InvalidDataException( "Input string was not in a correct format." );
+          }
         }
         result = outputValue;
       }
@@ -357,7 +399,6 @@ namespace Xceed.Wpf.Toolkit
     }
 
     #endregion //Base Class Overrides
-
 
     #region Abstract Methods
 

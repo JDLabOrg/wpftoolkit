@@ -25,6 +25,7 @@
     xmlns:local="clr-namespace:Xceed.Wpf.Toolkit"
     xmlns:pg="clr-namespace:Xceed.Wpf.Toolkit.PropertyGrid"
     xmlns:pgconv="clr-namespace:Xceed.Wpf.Toolkit.PropertyGrid.Converters"
+    xmlns:prim="clr-namespace:Xceed.Wpf.Toolkit.Primitives"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:themes="clr-namespace:Xceed.Wpf.Toolkit.Themes"
     xmlns:utilities="clr-namespace:Xceed.Wpf.Toolkit.Core.Utilities">
@@ -48,18 +49,34 @@
    <conv:HalfConverter x:Key="HalfConverter" />
    <conv:NullToBoolConverter x:Key="NullToBoolConverter" />
    <conv:AdditionConverter x:Key="AdditionConverter" />
+
    <pgconv:ExpandableObjectMarginConverter x:Key="ExpandableObjectMarginConverter" />
    <pgconv:ObjectToUIElementConverter x:Key="ObjectToUIElementConverter" />
    <pgconv:IsStringEmptyConverter x:Key="IsStringEmptyConverter" />
    <pgconv:IsDefaultCategoryConverter x:Key="IsDefaultCategoryConverter" />
    <pgconv:SelectedObjectConverter x:Key="objectConverter" />
+   <pgconv:PropertyItemEditorConverter x:Key="PropertyItemEditorConverter" />
 
    <x:Static x:Key="EmptyString" Member="sys:String.Empty" />
    <SolidColorBrush x:Key="BorderColorKey" Color="#d8d8d8" />
 
-
    <!--  PropertyGrid numeric Editors  -->
-   <Style BasedOn="{StaticResource NumericUpDown}" TargetType="{x:Type editor:PropertyGridEditorByteUpDown}">
+   <Style x:Key="PropertyGridNumericUpDown" BasedOn="{StaticResource NumericUpDown}" TargetType="{x:Type prim:InputBase}" />
+
+   <Style BasedOn="{StaticResource PropertyGridNumericUpDown}" TargetType="{x:Type editor:PropertyGridEditorByteUpDown}">
+      <Style.Triggers>
+         <MultiTrigger>
+            <MultiTrigger.Conditions>
+               <Condition Property="IsKeyboardFocusWithin" Value="False" />
+               <Condition Property="IsMouseOver" Value="False" />
+            </MultiTrigger.Conditions>
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="ShowButtonSpinner" Value="False" />
+         </MultiTrigger>
+      </Style.Triggers>
+   </Style>
+
+   <Style BasedOn="{StaticResource PropertyGridNumericUpDown}" TargetType="{x:Type editor:PropertyGridEditorDecimalUpDown}">
       <Style.Triggers>
          <MultiTrigger>
             <MultiTrigger.Conditions>
@@ -71,7 +88,7 @@
       </Style.Triggers>
    </Style>
 
-   <Style BasedOn="{StaticResource NumericUpDown}" TargetType="{x:Type editor:PropertyGridEditorDecimalUpDown}">
+   <Style BasedOn="{StaticResource PropertyGridNumericUpDown}" TargetType="{x:Type editor:PropertyGridEditorDoubleUpDown}">
       <Style.Triggers>
          <MultiTrigger>
             <MultiTrigger.Conditions>
@@ -83,19 +100,7 @@
       </Style.Triggers>
    </Style>
 
-   <Style BasedOn="{StaticResource NumericUpDown}" TargetType="{x:Type editor:PropertyGridEditorDoubleUpDown}">
-      <Style.Triggers>
-         <MultiTrigger>
-            <MultiTrigger.Conditions>
-               <Condition Property="IsKeyboardFocusWithin" Value="False" />
-               <Condition Property="IsMouseOver" Value="False" />
-            </MultiTrigger.Conditions>
-            <Setter Property="BorderBrush" Value="{StaticResource BorderColorKey}" />
-         </MultiTrigger>
-      </Style.Triggers>
-   </Style>
-
-   <Style BasedOn="{StaticResource NumericUpDown}" TargetType="{x:Type editor:PropertyGridEditorIntegerUpDown}">
+   <Style BasedOn="{StaticResource PropertyGridNumericUpDown}" TargetType="{x:Type editor:PropertyGridEditorIntegerUpDown}">
       <Style.Triggers>
          <MultiTrigger>
             <MultiTrigger.Conditions>
@@ -119,7 +124,7 @@
       </Style.Triggers>
    </Style>
 
-   <Style BasedOn="{StaticResource NumericUpDown}" TargetType="{x:Type editor:PropertyGridEditorShortUpDown}">
+   <Style BasedOn="{StaticResource PropertyGridNumericUpDown}" TargetType="{x:Type editor:PropertyGridEditorShortUpDown}">
       <Style.Triggers>
          <MultiTrigger>
             <MultiTrigger.Conditions>
@@ -131,7 +136,7 @@
       </Style.Triggers>
    </Style>
 
-   <Style BasedOn="{StaticResource NumericUpDown}" TargetType="{x:Type editor:PropertyGridEditorSingleUpDown}">
+   <Style BasedOn="{StaticResource PropertyGridNumericUpDown}" TargetType="{x:Type editor:PropertyGridEditorSingleUpDown}">
       <Style.Triggers>
          <MultiTrigger>
             <MultiTrigger.Conditions>
@@ -209,6 +214,8 @@
       <Setter Property="Foreground" Value="Gray" />
    </Style>
 
+   <!--  PropertyGrid MaskedTextBox Editors  -->
+   <Style BasedOn="{StaticResource {x:Type TextBox}}" TargetType="{x:Type editor:PropertyGridEditorMaskedTextBox}" />
    <!--  PropertyGrid ColorPicker Editors  -->
    <Style BasedOn="{StaticResource ColorPicker}" TargetType="{x:Type editor:PropertyGridEditorColorPicker}">
       <Setter Property="BorderBrush" Value="{StaticResource BorderColorKey}" />
@@ -423,8 +430,8 @@
 
          <Rectangle x:Name="Rectangle" Margin="0,0,0,0" Fill="Transparent" />
          <Path x:Name="Up_Arrow"
-                HorizontalAlignment="Center" VerticalAlignment="Center" Data="M 0 0 L 4 0 L 4 4"
-                RenderTransformOrigin="0.5,0.5"
+                HorizontalAlignment="Center" VerticalAlignment="Center"
+                Data="M 0 0 L 4 0 L 4 4" RenderTransformOrigin="0.5,0.5"
                 Stroke="{StaticResource GlyphBrush}"
                 StrokeThickness="1">
             <Path.RenderTransform>
@@ -437,8 +444,8 @@
             </Path.RenderTransform>
          </Path>
          <Path x:Name="Down_Arrow"
-                HorizontalAlignment="Center" VerticalAlignment="Center" Data="M 0 0 L 4 0 L 4 4"
-                RenderTransformOrigin="0.5,0.5"
+                HorizontalAlignment="Center" VerticalAlignment="Center"
+                Data="M 0 0 L 4 0 L 4 4" RenderTransformOrigin="0.5,0.5"
                 Stroke="{StaticResource GlyphBrush}"
                 StrokeThickness="1" Visibility="Collapsed">
             <Path.RenderTransform>
@@ -476,17 +483,19 @@
                   <Border x:Name="Border" Background="{TemplateBinding Background}" BorderBrush="#FFF0F0F0">
                      <ToggleButton IsChecked="{Binding Path=IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" OverridesDefaultStyle="True" Template="{StaticResource ExpanderToggleButton}">
                         <ContentPresenter
-                                    Margin="1" ContentSource="Header" RecognizesAccessKey="True"
-                                    TextElement.FontWeight="Bold" />
+                                    Margin="1,3"
+                                    ContentSource="Header" RecognizesAccessKey="True" TextElement.FontWeight="Bold" />
                      </ToggleButton>
                   </Border>
                   <Border x:Name="ExpandSite"
-                            Grid.Row="1" Padding="10,0,0,0"
+                            Grid.Row="1"
+                            Padding="3,0,0,0"
                             Background="{x:Static SystemColors.ControlBrush}"
                             Visibility="Collapsed">
                      <Border
                                 Margin="0" Padding="0" HorizontalAlignment="Stretch"
-                                VerticalAlignment="Stretch" BorderThickness="0">
+                                VerticalAlignment="Stretch"
+                                BorderThickness="0">
                         <ContentPresenter
                                     Margin="{TemplateBinding Padding}"
                                     HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
@@ -512,10 +521,13 @@
             <ControlTemplate TargetType="{x:Type Expander}">
                <Grid>
                   <Border x:Name="ExpandSite"
-                            Grid.Row="1" Padding="0,0,0,0" Visibility="Collapsed">
+                            Grid.Row="1"
+                            Padding="0,0,0,0"
+                            Visibility="Collapsed">
                      <Border
                                 Margin="0" Padding="0" HorizontalAlignment="Stretch"
-                                VerticalAlignment="Stretch" BorderThickness="0">
+                                VerticalAlignment="Stretch"
+                                BorderThickness="0">
                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Focusable="false" />
                      </Border>
                   </Border>
@@ -626,11 +638,12 @@
                            <Border x:Name="PART_FocusBorder"
                                         Grid.Column="0"
                                         Height="{Binding ActualHeight, ElementName=PART_Editor}"
-                                        Margin="-2,-2,0,-2" BorderBrush="Transparent" BorderThickness="2,0,0,0" />
+                                        Margin="-2,-2,0,-2"
+                                        BorderBrush="Transparent" BorderThickness="2,0,0,0" />
                            <Button x:Name="PART_DesignatedButton"
-                                        Grid.Column="1" Margin="-1,0" HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Stretch" Background="Transparent" BorderBrush="Transparent"
-                                        BorderThickness="1"
+                                        Grid.Column="1"
+                                        Margin="-1,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                        Background="Transparent" BorderBrush="Transparent" BorderThickness="1"
                                         Command="{Binding DesignatedValueCommand, RelativeSource={RelativeSource TemplatedParent}}"
                                         Visibility="{Binding HasDesignatedValue, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}">
                               <Button.Style>
@@ -644,9 +657,9 @@
                                                 <Grid Margin="2">
                                                    <!--  A path that renders a cross.  -->
                                                    <Path x:Name="PART_DesignatedButtonPath"
-                                                                        HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Fill"
-                                                                        Stroke="White" StrokeEndLineCap="Square" StrokeStartLineCap="Square"
-                                                                        StrokeThickness="0.5">
+                                                                        HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                                        Stretch="Fill" Stroke="White" StrokeEndLineCap="Square"
+                                                                        StrokeStartLineCap="Square" StrokeThickness="0.5">
                                                       <Path.Data>
                                                          <PathGeometry>
                                                             <PathGeometry.Figures>
@@ -720,18 +733,22 @@
 
 
                               <pg:TrimmedTextBlock x:Name="_text"
-                                            Grid.Column="1" Margin="6,0,0,0" HorizontalAlignment="Stretch"
-                                            VerticalAlignment="Center"
+                                            Grid.Column="1"
+                                            Margin="6,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Center"
                                             IsEnabled="{Binding IsReadOnly, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pg:PropertyGrid}, Converter={StaticResource InverseBoolConverter}}"
                                             Text="{Binding DisplayName, RelativeSource={RelativeSource TemplatedParent}}"
                                             TextTrimming="CharacterEllipsis" />
                            </Grid>
 
                            <Grid
-                                        Grid.Column="4" Margin="5,0,5,0" HorizontalAlignment="Right"
+                                        Grid.Column="4"
+                                        Margin="5,0,5,0" HorizontalAlignment="Right"
                                         utilities:ContextMenuUtilities.OpenOnMouseLeftButtonClick="True"
                                         ContextMenu="{Binding AdvancedOptionsMenu, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pg:PropertyGrid}}"
                                         Visibility="{Binding ShowAdvancedOptions, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pg:PropertyGrid}, Converter={StaticResource BooleanToVisibilityConverter}}">
+
+
+                              <!--  ImageSource is set in Triggers for others Themes to set their proper icons  -->
 
                               <Image x:Name="_optionsImage"
                                             Width="11" Height="11"
@@ -741,7 +758,8 @@
                      </Border>
 
                      <Border x:Name="PART_Editor"
-                                Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                Grid.Column="1"
+                                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
@@ -749,17 +767,25 @@
                         <Border.ToolTip>
                            <ToolTip Visibility="Collapsed" />
                         </Border.ToolTip>
+                        <!--
+                                    IsEnabled="{Binding IsReadOnly, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pg:PropertyGrid}, Converter={StaticResource InverseBoolConverter}}"
+                                -->
                         <ContentControl x:Name="PART_ValueContainer"
                                     Margin="2,1"
                                     VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                    Content="{TemplateBinding Editor}"
-                                    Focusable="False"
-                                    IsEnabled="{Binding IsReadOnly, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pg:PropertyGrid}, Converter={StaticResource InverseBoolConverter}}"
-                                    IsTabStop="False" />
+                                    Focusable="False" IsTabStop="False">
+                           <ContentControl.Content>
+                              <MultiBinding Converter="{StaticResource PropertyItemEditorConverter}">
+                                 <Binding Path="Editor" RelativeSource="{RelativeSource TemplatedParent}" />
+                                 <Binding Path="IsReadOnly" RelativeSource="{RelativeSource AncestorType={x:Type pg:PropertyGrid}}" />
+                              </MultiBinding>
+                           </ContentControl.Content>
+                        </ContentControl>
                      </Border>
 
                      <Expander x:Name="_propertyExpander"
-                                Grid.Row="1" Grid.ColumnSpan="2" IsEnabled="True"
+                                Grid.Row="1" Grid.ColumnSpan="2"
+                                IsEnabled="True"
                                 IsExpanded="{TemplateBinding IsExpanded}"
                                 Style="{StaticResource PropertyExpanderStyle}">
                         <pg:PropertyItemsControl x:Name="PART_PropertyItemsControl"
@@ -843,7 +869,7 @@
                   <DataTrigger Binding="{Binding ElementName=_optionsImage, Path=ToolTip}" Value="{x:Static pg:StringConstants.StyleSetter}">
                      <Setter TargetName="_optionsImage" Property="Source" Value="../Images/Style11.png" />
                   </DataTrigger>
-                  <DataTrigger Binding="{Binding ElementName=_optionsImage, Path=ToolTip}" Value="{x:Static pg:StringConstants.AdvancedProperties}">
+                  <DataTrigger Binding="{Binding ElementName=_optionsImage, Path=ToolTip}" Value="{x:Static pg:StringConstants.Default}">
                      <Setter TargetName="_optionsImage" Property="Source" Value="../Images/AdvancedProperties11.png" />
                   </DataTrigger>
                </ControlTemplate.Triggers>
@@ -875,9 +901,9 @@
 
                      <StackPanel x:Name="selectObjectNamePanel" Orientation="Horizontal">
                         <Border
-                                    Width="44" Height="44" Margin="6,4,0,4"
-                                    Padding="2" Background="White" BorderBrush="Black"
-                                    BorderThickness="1"
+                                    Width="44" Height="44"
+                                    Margin="6,4,0,4" Padding="2"
+                                    Background="White" BorderBrush="Black" BorderThickness="1"
                                     Visibility="{Binding ShowPreview, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}">
                            <Rectangle>
                               <Rectangle.Fill>
@@ -886,7 +912,8 @@
                            </Rectangle>
                         </Border>
                         <StackPanel
-                                    Margin="6,2,6,4" VerticalAlignment="Center" Orientation="Horizontal"
+                                    Margin="6,2,6,4" VerticalAlignment="Center"
+                                    Orientation="Horizontal"
                                     Visibility="{Binding ShowTitle, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}">
                            <Grid MaxWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource HalfConverter}, ConverterParameter=17}">
                               <pg:TrimmedTextBlock FontWeight="Bold" Text="{TemplateBinding SelectedObjectTypeName}" TextTrimming="CharacterEllipsis" />
@@ -923,8 +950,9 @@
                         </Grid>
 
                         <Border x:Name="searchBoxContainer"
-                                    Grid.Column="1" Margin="4,4,0,4" Background="#fafafa"
-                                    BorderBrush="Transparent" BorderThickness="0"
+                                    Grid.Column="1"
+                                    Margin="4,4,0,4"
+                                    Background="#fafafa" BorderBrush="Transparent" BorderThickness="0"
                                     Visibility="{Binding ShowSearchBox, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}">
                            <Grid>
                               <Grid.ColumnDefinitions>
@@ -949,8 +977,9 @@
                               </local:WatermarkTextBox>
 
                               <Button
-                                            Grid.Column="1" HorizontalAlignment="Left" HorizontalContentAlignment="Center"
-                                            VerticalContentAlignment="Center" Command="commands:PropertyGridCommands.ClearFilter"
+                                            Grid.Column="1"
+                                            HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                            Command="commands:PropertyGridCommands.ClearFilter"
                                             Style="{StaticResource ClearFilterButtonStyle}">
                                  <Image>
                                     <Image.Style>
@@ -1009,7 +1038,8 @@
                         </pg:PropertyItemsControl>
 
                         <Thumb x:Name="PART_DragThumb"
-                                    Width="5" Margin="6,0,0,0" HorizontalAlignment="Left"
+                                    Width="5"
+                                    Margin="6,0,0,0" HorizontalAlignment="Left"
                                     Cursor="SizeWE">
                            <Thumb.Template>
                               <ControlTemplate>
@@ -1021,25 +1051,14 @@
                      </Grid>
 
                      <GridSplitter
-                                Grid.Row="3" Height="3" HorizontalAlignment="Stretch"
+                                Grid.Row="3"
+                                Height="3"
+                                HorizontalAlignment="Stretch"
                                 Visibility="{Binding ShowSummary, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                     <Grid x:Name="_descriptionContainer"
-                                Grid.Row="4" Margin="0,0,0,5"
-                                Visibility="{Binding ShowSummary, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}">
-                        <Grid.RowDefinitions>
-                           <RowDefinition Height="22" />
-                           <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <TextBlock
-                                    Grid.Row="0" Padding="2,2,2,0" FontWeight="Bold"
-                                    Text="{Binding SelectedPropertyItem.DisplayName, RelativeSource={RelativeSource TemplatedParent}}" />
-                        <TextBlock
-                                    Grid.Row="1"
-                                    Height="{Binding Path=ActualHeight, ElementName=_descriptionContainer, Converter={StaticResource AdditionConverter}, ConverterParameter=-23}"
-                                    Padding="5,2,2,0"
-                                    Text="{Binding SelectedPropertyItem.Description, RelativeSource={RelativeSource TemplatedParent}}"
-                                    TextTrimming="CharacterEllipsis" TextWrapping="Wrap" />
-                     </Grid>
+                     <StackPanel Grid.Row="4" Margin="0,0,0,5" Visibility="{Binding ShowSummary, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <TextBlock Padding="2,2,2,0" FontWeight="Bold" Text="{Binding SelectedPropertyItem.DisplayName, RelativeSource={RelativeSource TemplatedParent}}" />
+                        <TextBlock Padding="5,2,2,0" Text="{Binding SelectedPropertyItem.Description, RelativeSource={RelativeSource TemplatedParent}}" TextWrapping="WrapWithOverflow" />
+                     </StackPanel>
                   </Grid>
                </Border>
                <ControlTemplate.Triggers>

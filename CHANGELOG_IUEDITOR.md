@@ -11,6 +11,16 @@ The "Master" Branch will always be synced to the official Codeplex Version.
 
 ## History
 
+* 2018-07-25
+	* merged from [original repository](https://github.com/xceedsoftware/wpftoolkit.git)
+	* (if failed to datagrid)
+		* https://stackoverflow.com/questions/36190601/your-project-is-not-referencing-the-netframework-version-v4-5-framework/41154960
+		* remove file : wpftoolkit directory obj\project.assets.json
+    * rollback avalon dock (fixed in original)
+    * wpf toolkit theme
+    	* stayed aero2 theme
+    	* rollback generic theme
+
 * 2018-03-06
 	* color picker (recent property -> static)
 	* editor config added
