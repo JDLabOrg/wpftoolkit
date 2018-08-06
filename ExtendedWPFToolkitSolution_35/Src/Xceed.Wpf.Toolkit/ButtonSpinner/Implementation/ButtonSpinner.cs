@@ -197,6 +197,10 @@ namespace Xceed.Wpf.Toolkit
       DefaultStyleKeyProperty.OverrideMetadata( typeof( ButtonSpinner ), new FrameworkPropertyMetadata( typeof( ButtonSpinner ) ) );
     }
 
+    public ButtonSpinner()
+    {
+    }
+
     #endregion //Constructors
 
     #region Base Class Overrides
@@ -303,6 +307,7 @@ namespace Xceed.Wpf.Toolkit
     {
       SetButtonUsage();
     }
+
 
     #endregion //Base Class Overrides
 

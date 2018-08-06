@@ -19,6 +19,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using Xceed.Wpf.Toolkit.PropertyGrid;
 
 namespace Xceed.Wpf.Toolkit
 {
@@ -39,6 +41,23 @@ namespace Xceed.Wpf.Toolkit
     #endregion //Constructors
 
     #region Properties
+
+    #region EditorDefinitions Property
+
+    public static readonly DependencyProperty EditorDefinitionsProperty = DependencyProperty.Register( "EditorDefinitions", typeof( EditorDefinitionCollection ), typeof( CollectionControlButton ), new UIPropertyMetadata( null ) );
+    public EditorDefinitionCollection EditorDefinitions
+    {
+      get
+      {
+        return ( EditorDefinitionCollection )GetValue( EditorDefinitionsProperty );
+      }
+      set
+      {
+        SetValue( EditorDefinitionsProperty, value );
+      }
+    }
+
+    #endregion  //EditorDefinitions
 
     #region IsReadOnly Property
 
@@ -64,7 +83,7 @@ namespace Xceed.Wpf.Toolkit
     {
       get
       {
-        return (IEnumerable)GetValue( ItemsSourceProperty );
+        return ( IEnumerable )GetValue( ItemsSourceProperty );
       }
       set
       {
@@ -110,15 +129,22 @@ namespace Xceed.Wpf.Toolkit
 
     #endregion
 
+    #region Base Class Overrides
+
+
+    #endregion
+
     #region Methods
 
     private void CollectionControlButton_Click( object sender, RoutedEventArgs e )
     {
       var collectionControlDialog = new CollectionControlDialog();
-      collectionControlDialog.ItemsSource = this.ItemsSource;
+      var binding = new Binding( "ItemsSource" ) { Source = this, Mode = BindingMode.TwoWay };
+      BindingOperations.SetBinding( collectionControlDialog, CollectionControlDialog.ItemsSourceProperty, binding );
       collectionControlDialog.NewItemTypes = this.NewItemTypes;
       collectionControlDialog.ItemsSourceType = this.ItemsSourceType;
       collectionControlDialog.IsReadOnly = this.IsReadOnly;
+      collectionControlDialog.EditorDefinitions = this.EditorDefinitions;
       collectionControlDialog.ShowDialog();
     }
 

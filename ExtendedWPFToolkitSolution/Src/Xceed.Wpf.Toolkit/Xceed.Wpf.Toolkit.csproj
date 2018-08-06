@@ -49,6 +49,7 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="UIAutomationProvider" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -393,6 +394,9 @@
     <Compile Include="BusyIndicator\Implementation\Converters\ProgressBarWidthConverter.cs" />
     <Compile Include="ColorPicker\Implementation\ColorPickerTabItem.cs" />
     <Compile Include="Core\Converters\ColorModeToTabItemSelectedConverter.cs" />
+    <Compile Include="Primitives\SelectAllSelectorItem.cs" />
+    <Compile Include="Primitives\SelectAllSelector.cs" />
+    <Compile Include="PropertyGrid\Implementation\Converters\PropertyItemEditorConverter.cs" />
     <Compile Include="Core\LocationEnum.cs" />
     <Compile Include="IconButton\Implementation\IconButton.cs" />
     <Compile Include="ButtonSpinner\Implementation\ButtonSpinner.cs" />
@@ -779,6 +783,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PropertyGrid\Implementation\Definitions\DefinitionBase.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="CollectionControl\Images\Duplicate.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

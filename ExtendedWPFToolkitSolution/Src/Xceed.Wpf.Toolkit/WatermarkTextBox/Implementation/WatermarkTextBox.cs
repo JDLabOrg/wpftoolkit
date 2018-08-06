@@ -15,9 +15,6 @@
   ***********************************************************************************/
 
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System;
 
 namespace Xceed.Wpf.Toolkit
 {
@@ -87,7 +84,18 @@ namespace Xceed.Wpf.Toolkit
       DefaultStyleKeyProperty.OverrideMetadata( typeof( WatermarkTextBox ), new FrameworkPropertyMetadata( typeof( WatermarkTextBox ) ) );
     }
 
+    public WatermarkTextBox()
+    {
+    }
+
     #endregion //Constructors
+
+    #region Base Class Overrides
+
+
+
+
+    #endregion
   }
 
 #pragma warning restore 0618

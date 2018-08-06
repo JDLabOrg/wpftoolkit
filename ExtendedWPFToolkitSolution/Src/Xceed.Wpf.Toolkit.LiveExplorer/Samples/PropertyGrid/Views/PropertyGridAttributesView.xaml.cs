@@ -2,7 +2,7 @@
 
    Toolkit for WPF
 
-   Copyright (C) 2007-2016 Xceed Software Inc.
+   Copyright (C) 2007-2017 Xceed Software Inc.
 
    This program is provided to you under the terms of the Microsoft Public
    License (Ms-PL) as published at http://wpftoolkit.codeplex.com/license 
@@ -76,6 +76,7 @@ namespace Xceed.Wpf.Toolkit.LiveExplorer.Samples.PropertyGrid.Views
     [Category( "Information" )]
     [Description( "This property uses the [Editor(..)] attribute to provide a custom editor using the 'LastNameUserControlEditor' user control." )]
     [Editor( typeof( LastNameUserControlEditor ), typeof( LastNameUserControlEditor ) )]
+    [DefaultValue("Friend")]
     public string LastName
     {
       get{ return _lastName; }
