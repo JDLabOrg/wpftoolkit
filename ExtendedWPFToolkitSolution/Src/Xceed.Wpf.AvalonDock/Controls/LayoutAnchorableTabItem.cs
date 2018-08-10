@@ -14,6 +14,7 @@
 
   ***********************************************************************************/
 
+using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -184,22 +185,31 @@ namespace Xceed.Wpf.AvalonDock.Controls
       //@2018-08-06 bugfix dragging item is null
       if (_draggingItem == null) return;
 
-      if (_draggingItem != this &&
-          e.LeftButton == MouseButtonState.Pressed)
+      try
       {
-        var model = Model;
-        var container = model.Parent as ILayoutContainer;
-        var containerPane = model.Parent as ILayoutPane;
+        if (_draggingItem != this &&
+            e.LeftButton == MouseButtonState.Pressed)
+        {
+          var model = Model;
+          var container = model.Parent as ILayoutContainer;
+          var containerPane = model.Parent as ILayoutPane;
 
-        if ((containerPane is LayoutAnchorablePane) && !(( LayoutAnchorablePane )containerPane).CanRepositionItems)
-          return;
-        if ((containerPane.Parent != null) && (containerPane.Parent is LayoutAnchorablePaneGroup) && !(( LayoutAnchorablePaneGroup )containerPane.Parent).CanRepositionItems)
-          return;
+          if ((containerPane is LayoutAnchorablePane) && !(( LayoutAnchorablePane )containerPane).CanRepositionItems)
+            return;
+          if ((containerPane.Parent != null) && (containerPane.Parent is LayoutAnchorablePaneGroup) && !(( LayoutAnchorablePaneGroup )containerPane.Parent).CanRepositionItems)
+            return;
 
-        var childrenList = container.Children.ToList();
-        containerPane.MoveChild( childrenList.IndexOf( _draggingItem.Model ), childrenList.IndexOf( model ) );
+          var childrenList = container.Children.ToList();
+          containerPane.MoveChild( childrenList.IndexOf( _draggingItem.Model ), childrenList.IndexOf( model ) );
+        }
+      }
+      catch (NullReferenceException nullEx)
+      {
+        //@2018-08-10 null exception stil exists
+        Console.WriteLine( "[Exception] : " + nullEx.Message );
       }
     }
+
 
     protected override void OnPreviewGotKeyboardFocus( KeyboardFocusChangedEventArgs e )
     {
