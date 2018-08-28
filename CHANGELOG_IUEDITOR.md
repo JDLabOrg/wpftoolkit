@@ -11,6 +11,9 @@ The "Master" Branch will always be synced to the official Codeplex Version.
 
 ## History
 
+* 2018-08-24
+	* change range slider design (thumb : rectangle -> circle)
+
 * 2018-07-25
 	* merged from [original repository](https://github.com/xceedsoftware/wpftoolkit.git)
 	* (if failed to datagrid)
