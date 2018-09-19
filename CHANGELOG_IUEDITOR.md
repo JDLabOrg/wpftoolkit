@@ -10,6 +10,8 @@ The "Master" Branch will always be synced to the official Codeplex Version.
 ---
 
 ## History
+* 2018-09-19
+	* fixed anchorable dock -> auto hide (getSide)
 
 * 2018-08-24
 	* change range slider design (thumb : rectangle -> circle)
