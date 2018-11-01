@@ -25,12 +25,15 @@ using System;
 
 namespace Xceed.Wpf.Toolkit
 {
+  public delegate void ColorOutsideClickStartedHandler( object sender );
+
   [TemplatePart( Name = PART_ColorShadingCanvas, Type = typeof( Canvas ) )]
   [TemplatePart( Name = PART_ColorShadeSelector, Type = typeof( Canvas ) )]
   [TemplatePart( Name = PART_SpectrumSlider, Type = typeof( ColorSpectrumSlider ) )]
   [TemplatePart( Name = PART_HexadecimalTextBox, Type = typeof( TextBox ) )]
-  [TemplatePart(Name = PART_NullColorButton, Type = typeof(Button))]
-  [TemplatePart(Name = PART_AlphaSlider, Type = typeof(AlphaSpectrumSlider))]
+  [TemplatePart( Name = PART_NullColorButton, Type = typeof( Button ) )]
+  [TemplatePart( Name = PART_SpoidButton, Type = typeof( Button ) )]
+  [TemplatePart( Name = PART_AlphaSlider, Type = typeof( AlphaSpectrumSlider ) )]
   public class ColorCanvas : Control
   {
     private const string PART_ColorShadingCanvas = "PART_ColorShadingCanvas";
@@ -38,7 +41,9 @@ namespace Xceed.Wpf.Toolkit
     private const string PART_SpectrumSlider = "PART_SpectrumSlider";
     private const string PART_HexadecimalTextBox = "PART_HexadecimalTextBox";
     private const string PART_NullColorButton = "PART_NullColorButton";
-    private const string PART_AlphaSlider= "PART_AlphaSlider";
+    //@IUEditor 20181101
+    private const string PART_SpoidButton = "PART_SpoidButton";
+    private const string PART_AlphaSlider = "PART_AlphaSlider";
 
     #region Private Members
 
@@ -52,7 +57,7 @@ namespace Xceed.Wpf.Toolkit
     private bool _updateSpectrumSliderValue = true;
 
     // created by iueditor
-    private Button _nullColorButton;
+    private Button _nullColorButton, _spoidButton;
     private AlphaSpectrumSlider _alphaSlider;
     private bool _updateAlphaSliderColor = true;
 
@@ -78,7 +83,7 @@ namespace Xceed.Wpf.Toolkit
     private static void OnSelectedColorChanged( DependencyObject o, DependencyPropertyChangedEventArgs e )
     {
       ColorCanvas colorCanvas = o as ColorCanvas;
-      if( colorCanvas != null )
+      if (colorCanvas != null)
         colorCanvas.OnSelectedColorChanged( ( Color? )e.OldValue, ( Color? )e.NewValue );
     }
 
@@ -115,13 +120,13 @@ namespace Xceed.Wpf.Toolkit
     private static void OnAChanged( DependencyObject o, DependencyPropertyChangedEventArgs e )
     {
       ColorCanvas colorCanvas = o as ColorCanvas;
-      if( colorCanvas != null )
+      if (colorCanvas != null)
         colorCanvas.OnAChanged( ( byte )e.OldValue, ( byte )e.NewValue );
     }
 
     protected virtual void OnAChanged( byte oldValue, byte newValue )
     {
-      if( !_surpressPropertyChanged )
+      if (!_surpressPropertyChanged)
         UpdateSelectedColor();
     }
 
@@ -145,13 +150,13 @@ namespace Xceed.Wpf.Toolkit
     private static void OnRChanged( DependencyObject o, DependencyPropertyChangedEventArgs e )
     {
       ColorCanvas colorCanvas = o as ColorCanvas;
-      if( colorCanvas != null )
+      if (colorCanvas != null)
         colorCanvas.OnRChanged( ( byte )e.OldValue, ( byte )e.NewValue );
     }
 
     protected virtual void OnRChanged( byte oldValue, byte newValue )
     {
-      if( !_surpressPropertyChanged )
+      if (!_surpressPropertyChanged)
         UpdateSelectedColor();
     }
 
@@ -175,13 +180,13 @@ namespace Xceed.Wpf.Toolkit
     private static void OnGChanged( DependencyObject o, DependencyPropertyChangedEventArgs e )
     {
       ColorCanvas colorCanvas = o as ColorCanvas;
-      if( colorCanvas != null )
+      if (colorCanvas != null)
         colorCanvas.OnGChanged( ( byte )e.OldValue, ( byte )e.NewValue );
     }
 
     protected virtual void OnGChanged( byte oldValue, byte newValue )
     {
-      if( !_surpressPropertyChanged )
+      if (!_surpressPropertyChanged)
         UpdateSelectedColor();
     }
 
@@ -205,13 +210,13 @@ namespace Xceed.Wpf.Toolkit
     private static void OnBChanged( DependencyObject o, DependencyPropertyChangedEventArgs e )
     {
       ColorCanvas colorCanvas = o as ColorCanvas;
-      if( colorCanvas != null )
+      if (colorCanvas != null)
         colorCanvas.OnBChanged( ( byte )e.OldValue, ( byte )e.NewValue );
     }
 
     protected virtual void OnBChanged( byte oldValue, byte newValue )
     {
-      if( !_surpressPropertyChanged )
+      if (!_surpressPropertyChanged)
         UpdateSelectedColor();
     }
 
@@ -237,7 +242,7 @@ namespace Xceed.Wpf.Toolkit
     private static void OnHexadecimalStringChanged( DependencyObject o, DependencyPropertyChangedEventArgs e )
     {
       ColorCanvas colorCanvas = o as ColorCanvas;
-      if( colorCanvas != null )
+      if (colorCanvas != null)
         colorCanvas.OnHexadecimalStringChanged( ( string )e.OldValue, ( string )e.NewValue );
     }
 
@@ -245,12 +250,12 @@ namespace Xceed.Wpf.Toolkit
     {
       string newColorString = GetFormatedColorString( newValue );
       string currentColorString = GetFormatedColorString( SelectedColor );
-      if( !currentColorString.Equals( newColorString ) )
+      if (!currentColorString.Equals( newColorString ))
       {
         Color? col = null;
-        if( !string.IsNullOrEmpty( newColorString ) )
+        if (!string.IsNullOrEmpty( newColorString ))
         {
-          col = ( Color )ColorConverter.ConvertFromString( newColorString );      
+          col = ( Color )ColorConverter.ConvertFromString( newColorString );
         }
         UpdateSelectedColor( col );
       }
@@ -261,7 +266,7 @@ namespace Xceed.Wpf.Toolkit
     private static object OnCoerceHexadecimalString( DependencyObject d, object basevalue )
     {
       var colorCanvas = ( ColorCanvas )d;
-      if( colorCanvas == null )
+      if (colorCanvas == null)
         return basevalue;
 
       return colorCanvas.OnCoerceHexadecimalString( basevalue );
@@ -274,11 +279,11 @@ namespace Xceed.Wpf.Toolkit
 
       try
       {
-        if( !string.IsNullOrEmpty( retValue ) )
+        if (!string.IsNullOrEmpty( retValue ))
         {
           int outValue;
           // User has entered an hexadecimal value (without the "#" character)... add it.
-          if( Int32.TryParse( retValue, System.Globalization.NumberStyles.HexNumber, null, out outValue ) )
+          if (Int32.TryParse( retValue, System.Globalization.NumberStyles.HexNumber, null, out outValue ))
           {
             retValue = "#" + retValue;
           }
@@ -298,7 +303,7 @@ namespace Xceed.Wpf.Toolkit
 
     #region UsingAlphaChannel
 
-    public static readonly DependencyProperty UsingAlphaChannelProperty = DependencyProperty.Register( "UsingAlphaChannel", typeof( bool ), 
+    public static readonly DependencyProperty UsingAlphaChannelProperty = DependencyProperty.Register( "UsingAlphaChannel", typeof( bool ),
       typeof( ColorCanvas ), new FrameworkPropertyMetadata( true, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, new PropertyChangedCallback( OnUsingAlphaChannelPropertyChanged ) ) );
     public bool UsingAlphaChannel
     {
@@ -315,7 +320,7 @@ namespace Xceed.Wpf.Toolkit
     private static void OnUsingAlphaChannelPropertyChanged( DependencyObject o, DependencyPropertyChangedEventArgs e )
     {
       ColorCanvas colorCanvas = o as ColorCanvas;
-      if( colorCanvas != null )
+      if (colorCanvas != null)
         colorCanvas.OnUsingAlphaChannelChanged();
     }
 
@@ -337,6 +342,7 @@ namespace Xceed.Wpf.Toolkit
 
     public ColorCanvas()
     {
+      Mouse.AddPreviewMouseDownOutsideCapturedElementHandler( this, OnPreviewMouseDownOutsideCapturedElement );
     }
 
     #endregion //Constructors
@@ -347,7 +353,7 @@ namespace Xceed.Wpf.Toolkit
     {
       base.OnApplyTemplate();
 
-      if( _colorShadingCanvas != null )
+      if (_colorShadingCanvas != null)
       {
         _colorShadingCanvas.MouseLeftButtonDown -= ColorShadingCanvas_MouseLeftButtonDown;
         _colorShadingCanvas.MouseLeftButtonUp -= ColorShadingCanvas_MouseLeftButtonUp;
@@ -357,7 +363,7 @@ namespace Xceed.Wpf.Toolkit
 
       _colorShadingCanvas = GetTemplateChild( PART_ColorShadingCanvas ) as Canvas;
 
-      if( _colorShadingCanvas != null )
+      if (_colorShadingCanvas != null)
       {
         _colorShadingCanvas.MouseLeftButtonDown += ColorShadingCanvas_MouseLeftButtonDown;
         _colorShadingCanvas.MouseLeftButtonUp += ColorShadingCanvas_MouseLeftButtonUp;
@@ -367,30 +373,38 @@ namespace Xceed.Wpf.Toolkit
 
       _colorShadeSelector = GetTemplateChild( PART_ColorShadeSelector ) as Canvas;
 
-      if( _colorShadeSelector != null )
+      if (_colorShadeSelector != null)
         _colorShadeSelector.RenderTransform = _colorShadeSelectorTransform;
 
       _spectrumSlider = GetTemplateChild( PART_SpectrumSlider ) as ColorSpectrumSlider;
 
-      if( _spectrumSlider != null )
+      if (_spectrumSlider != null)
         _spectrumSlider.ValueChanged += SpectrumSlider_ValueChanged;
 
-      if( _hexadecimalTextBox != null )
+      if (_hexadecimalTextBox != null)
         _hexadecimalTextBox.LostFocus -= new RoutedEventHandler( HexadecimalTextBox_LostFocus );
 
       _hexadecimalTextBox = GetTemplateChild( PART_HexadecimalTextBox ) as TextBox;
 
-      if( _hexadecimalTextBox != null )
+      if (_hexadecimalTextBox != null)
         _hexadecimalTextBox.LostFocus += new RoutedEventHandler( HexadecimalTextBox_LostFocus );
 
 
+      #region IUEditor custom button
       // IUEditor added
-      _nullColorButton = GetTemplateChild(PART_NullColorButton) as Button;
+      _nullColorButton = GetTemplateChild( PART_NullColorButton ) as Button;
 
       if (_nullColorButton != null)
         _nullColorButton.Click += NullColorButton_Click; ;
 
-      _alphaSlider = GetTemplateChild(PART_AlphaSlider) as AlphaSpectrumSlider;
+      _spoidButton = GetTemplateChild( PART_SpoidButton ) as Button;
+      if (_spoidButton != null)
+      {
+        _spoidButton.Click += SpoidButton_Click;
+      }
+      #endregion
+
+      _alphaSlider = GetTemplateChild( PART_AlphaSlider ) as AlphaSpectrumSlider;
       if (_alphaSlider != null)
         _alphaSlider.ValueChanged += AlphaSlider_ValueChanged;
 
@@ -404,16 +418,17 @@ namespace Xceed.Wpf.Toolkit
       SetHexadecimalTextBoxTextProperty( GetFormatedColorString( SelectedColor ) );
     }
 
- 
+
+
     protected override void OnKeyDown( KeyEventArgs e )
     {
       base.OnKeyDown( e );
 
       //hitting enter on textbox will update Hexadecimal string
-      if( e.Key == Key.Enter && e.OriginalSource is TextBox )
+      if (e.Key == Key.Enter && e.OriginalSource is TextBox)
       {
         TextBox textBox = ( TextBox )e.OriginalSource;
-        if( textBox.Name == PART_HexadecimalTextBox )
+        if (textBox.Name == PART_HexadecimalTextBox)
           SetHexadecimalStringProperty( textBox.Text, true );
       }
     }
@@ -427,7 +442,7 @@ namespace Xceed.Wpf.Toolkit
 
     void ColorShadingCanvas_MouseLeftButtonDown( object sender, MouseButtonEventArgs e )
     {
-      if( _colorShadingCanvas != null )
+      if (_colorShadingCanvas != null)
       {
         Point p = e.GetPosition( _colorShadingCanvas );
         UpdateColorShadeSelectorPositionAndCalculateColor( p, true );
@@ -439,7 +454,7 @@ namespace Xceed.Wpf.Toolkit
 
     void ColorShadingCanvas_MouseLeftButtonUp( object sender, MouseButtonEventArgs e )
     {
-      if( _colorShadingCanvas != null )
+      if (_colorShadingCanvas != null)
       {
         _colorShadingCanvas.ReleaseMouseCapture();
       }
@@ -447,9 +462,9 @@ namespace Xceed.Wpf.Toolkit
 
     void ColorShadingCanvas_MouseMove( object sender, MouseEventArgs e )
     {
-      if( _colorShadingCanvas != null )
+      if (_colorShadingCanvas != null)
       {
-        if( e.LeftButton == MouseButtonState.Pressed )
+        if (e.LeftButton == MouseButtonState.Pressed)
         {
           Point p = e.GetPosition( _colorShadingCanvas );
           UpdateColorShadeSelectorPositionAndCalculateColor( p, true );
@@ -460,12 +475,12 @@ namespace Xceed.Wpf.Toolkit
 
     void ColorShadingCanvas_SizeChanged( object sender, SizeChangedEventArgs e )
     {
-      if( _currentColorPosition != null )
+      if (_currentColorPosition != null)
       {
         Point _newPoint = new Point
         {
-          X = ( ( Point )_currentColorPosition ).X * e.NewSize.Width,
-          Y = ( ( Point )_currentColorPosition ).Y * e.NewSize.Height
+          X = (( Point )_currentColorPosition).X * e.NewSize.Width,
+          Y = (( Point )_currentColorPosition).Y * e.NewSize.Height
         };
 
         UpdateColorShadeSelectorPositionAndCalculateColor( _newPoint, false );
@@ -474,17 +489,17 @@ namespace Xceed.Wpf.Toolkit
 
     void SpectrumSlider_ValueChanged( object sender, RoutedPropertyChangedEventArgs<double> e )
     {
-      if( (_currentColorPosition != null) && (this.SelectedColor != null) )
+      if ((_currentColorPosition != null) && (this.SelectedColor != null))
       {
         CalculateColor( ( Point )_currentColorPosition );
       }
     }
 
-    private void AlphaSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+    private void AlphaSlider_ValueChanged( object sender, RoutedPropertyChangedEventArgs<double> e )
     {
       if ((_currentColorPosition != null) && (this.SelectedColor != null))
       {
-        CalculateColor((Point)_currentColorPosition);
+        CalculateColor( ( Point )_currentColorPosition );
       }
     }
 
@@ -495,11 +510,60 @@ namespace Xceed.Wpf.Toolkit
       SetHexadecimalStringProperty( textbox.Text, true );
     }
 
-    private void NullColorButton_Click(object sender, RoutedEventArgs e)
+
+
+    #region IUEditor
+
+    private void NullColorButton_Click( object sender, RoutedEventArgs e )
     {
-      SetNullColor();
+      SetColor( null );
     }
 
+    public static readonly DependencyProperty IsActivatedSpoidProperty = DependencyProperty.Register( "IsActivatedSpoid", typeof( bool ), typeof( ColorCanvas ),
+      new FrameworkPropertyMetadata( false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault ) );
+    public bool IsActivatedSpoid
+    {
+      get
+      {
+        return ( bool )GetValue( IsActivatedSpoidProperty );
+      }
+      set
+      {
+        SetValue( IsActivatedSpoidProperty, value );
+      }
+    }
+
+
+    private void SpoidButton_Click( object sender, RoutedEventArgs e )
+    {
+      IsActivatedSpoid = true;
+      CaptureMouse();
+      Mouse.OverrideCursor = Cursors.Cross;
+    }
+
+    private bool TryAndSetSpoidColorFromPoint( Point point )
+    {
+      if (IsActivatedSpoid)
+      {
+        Point pointToScreen = PointToScreen( point );
+
+        var color = ColorSpoid.GetPixel( pointToScreen );
+        SetColor( color );
+        ReleaseMouseCapture();
+        Mouse.OverrideCursor = null;
+        return true;
+      }
+      return false;
+    }
+
+    private void OnPreviewMouseDownOutsideCapturedElement( object sender, MouseButtonEventArgs e )
+    {
+      e.Handled = TryAndSetSpoidColorFromPoint( e.GetPosition( this ) );
+    }
+
+
+
+    #endregion
 
     #endregion //Event Handlers
 
@@ -529,14 +593,14 @@ namespace Xceed.Wpf.Toolkit
 
     private void UpdateSelectedColor( Color? color )
     {
-      SelectedColor = ( ( color != null ) && color.HasValue ) 
-                      ? (Color?)Color.FromArgb( color.Value.A, color.Value.R, color.Value.G, color.Value.B )
+      SelectedColor = ((color != null) && color.HasValue)
+                      ? ( Color? )Color.FromArgb( color.Value.A, color.Value.R, color.Value.G, color.Value.B )
                       : null;
     }
 
     private void UpdateRGBValues( Color? color )
     {
-      if( ( color == null ) || !color.HasValue )
+      if ((color == null) || !color.HasValue)
         return;
 
       _surpressPropertyChanged = true;
@@ -551,36 +615,36 @@ namespace Xceed.Wpf.Toolkit
 
     private void UpdateColorShadeSelectorPositionAndCalculateColor( Point p, bool calculateColor )
     {
-      if( (_colorShadingCanvas == null) || ( _colorShadeSelector == null) )
+      if ((_colorShadingCanvas == null) || (_colorShadeSelector == null))
         return;
 
-        if( p.Y < 0 )
+      if (p.Y < 0)
         p.Y = 0;
 
-      if( p.X < 0 )
+      if (p.X < 0)
         p.X = 0;
 
-      if( p.X > _colorShadingCanvas.ActualWidth )
+      if (p.X > _colorShadingCanvas.ActualWidth)
         p.X = _colorShadingCanvas.ActualWidth;
 
-      if( p.Y > _colorShadingCanvas.ActualHeight )
+      if (p.Y > _colorShadingCanvas.ActualHeight)
         p.Y = _colorShadingCanvas.ActualHeight;
 
-      _colorShadeSelectorTransform.X = p.X - ( _colorShadeSelector.Width / 2 );
-      _colorShadeSelectorTransform.Y = p.Y - ( _colorShadeSelector.Height / 2 );
+      _colorShadeSelectorTransform.X = p.X - (_colorShadeSelector.Width / 2);
+      _colorShadeSelectorTransform.Y = p.Y - (_colorShadeSelector.Height / 2);
 
       p.X = p.X / _colorShadingCanvas.ActualWidth;
       p.Y = p.Y / _colorShadingCanvas.ActualHeight;
 
       _currentColorPosition = p;
 
-      if( calculateColor )
+      if (calculateColor)
         CalculateColor( p );
     }
 
     private void UpdateColorShadeSelectorPosition( Color? color )
     {
-      if( (_spectrumSlider == null) || (_colorShadingCanvas == null) || (color == null) || !color.HasValue
+      if ((_spectrumSlider == null) || (_colorShadingCanvas == null) || (color == null) || !color.HasValue
         || (_alphaSlider == null))
         return;
 
@@ -588,7 +652,7 @@ namespace Xceed.Wpf.Toolkit
 
       var hsv = ColorUtilities.ConvertRgbToHsv( color.Value.R, color.Value.G, color.Value.B );
 
-      if( _updateSpectrumSliderValue )
+      if (_updateSpectrumSliderValue)
       {
         _spectrumSlider.Value = 360 - hsv.H;
       }
@@ -602,13 +666,13 @@ namespace Xceed.Wpf.Toolkit
 
       _currentColorPosition = p;
 
-      _colorShadeSelectorTransform.X = ( p.X * _colorShadingCanvas.Width ) - 5;
-      _colorShadeSelectorTransform.Y = ( p.Y * _colorShadingCanvas.Height ) - 5;
+      _colorShadeSelectorTransform.X = (p.X * _colorShadingCanvas.Width) - 5;
+      _colorShadeSelectorTransform.Y = (p.Y * _colorShadingCanvas.Height) - 5;
     }
 
     private void CalculateColor( Point p )
     {
-      if( _spectrumSlider == null )
+      if (_spectrumSlider == null)
         return;
 
       HsvColor hsv = new HsvColor( 360 - _spectrumSlider.Value, 1, 1 )
@@ -620,49 +684,45 @@ namespace Xceed.Wpf.Toolkit
 
       // alpha update
       var alpha = _alphaSlider != null ? _alphaSlider.Value : A;
-      currentColor.A = (byte)alpha;
+      currentColor.A = ( byte )alpha;
 
-      _updateSpectrumSliderValue = false;
-      SelectedColor = currentColor;
-      _updateSpectrumSliderValue = true;
-      SetHexadecimalStringProperty( GetFormatedColorString( SelectedColor ), false );
+      SetColor( currentColor );
     }
 
-
-    private void SetNullColor()
+    private void SetColor( Color? color )
     {
       _updateAlphaSliderColor = false;
-      SelectedColor = null;
+      SelectedColor = color;
       _updateAlphaSliderColor = true;
-      SetHexadecimalStringProperty(GetFormatedColorString(SelectedColor), false);
+      SetHexadecimalStringProperty( GetFormatedColorString( SelectedColor ), false );
     }
 
     private string GetFormatedColorString( Color? colorToFormat )
     {
-      if( ( colorToFormat == null ) || !colorToFormat.HasValue )
+      if ((colorToFormat == null) || !colorToFormat.HasValue)
         return string.Empty;
 
       ///@note 
       // do not use alpha string in IUEditor
-      return ColorUtilities.FormatColorString( colorToFormat.ToString(), false);
+      return ColorUtilities.FormatColorString( colorToFormat.ToString(), false );
     }
 
     private string GetFormatedColorString( string stringToFormat )
     {
-      return ColorUtilities.FormatColorString( stringToFormat, false);
+      return ColorUtilities.FormatColorString( stringToFormat, false );
     }
 
     private void SetHexadecimalStringProperty( string newValue, bool modifyFromUI )
     {
-      if( modifyFromUI )
+      if (modifyFromUI)
       {
         try
         {
-          if( !string.IsNullOrEmpty( newValue ) )
+          if (!string.IsNullOrEmpty( newValue ))
           {
             int outValue;
             // User has entered an hexadecimal value (without the "#" character)... add it.
-            if( Int32.TryParse( newValue, System.Globalization.NumberStyles.HexNumber, null, out outValue ) )
+            if (Int32.TryParse( newValue, System.Globalization.NumberStyles.HexNumber, null, out outValue ))
             {
               newValue = "#" + newValue;
             }
@@ -686,7 +746,7 @@ namespace Xceed.Wpf.Toolkit
 
     private void SetHexadecimalTextBoxTextProperty( string newValue )
     {
-      if( _hexadecimalTextBox != null )
+      if (_hexadecimalTextBox != null)
         _hexadecimalTextBox.Text = newValue;
     }
 
