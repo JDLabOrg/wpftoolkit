@@ -538,7 +538,7 @@ namespace Xceed.Wpf.Toolkit
     {
       IsActivatedSpoid = true;
       CaptureMouse();
-      Mouse.OverrideCursor = Cursors.Cross;
+      Mouse.OverrideCursor = new Cursor( new System.IO.MemoryStream( Properties.Resources.ColorPickerCursor ) );
     }
 
     private bool TryAndSetSpoidColorFromPoint( Point point )
