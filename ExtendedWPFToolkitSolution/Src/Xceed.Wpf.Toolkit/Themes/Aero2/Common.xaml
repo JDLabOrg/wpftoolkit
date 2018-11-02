@@ -148,17 +148,36 @@
 
    <!--  IUEditor edited by DH 2017.06.15  -->
    <!--  빨간색 대각선 추가  -->
-   <DrawingBrush x:Key="RedDiagonalLineBrush" Stretch="Fill" ViewboxUnits="RelativeToBoundingBox">
+   <DrawingBrush x:Key="Square_RedDiagonalLineBrush" Stretch="Fill" ViewboxUnits="RelativeToBoundingBox">
       <DrawingBrush.Drawing>
          <DrawingGroup>
             <GeometryDrawing Brush="White">
                <GeometryDrawing.Geometry>
-                  <RectangleGeometry Rect="0,0 20,20" />
+                  <RectangleGeometry Rect="0,0 22,22" />
                </GeometryDrawing.Geometry>
             </GeometryDrawing>
             <GeometryDrawing>
                <GeometryDrawing.Geometry>
-                  <LineGeometry StartPoint="0,0" EndPoint="20,20" />
+                  <LineGeometry StartPoint="0,0" EndPoint="22,22" />
+               </GeometryDrawing.Geometry>
+               <GeometryDrawing.Pen>
+                  <Pen Brush="Red" Thickness="1" />
+               </GeometryDrawing.Pen>
+            </GeometryDrawing>
+         </DrawingGroup>
+      </DrawingBrush.Drawing>
+   </DrawingBrush>
+   <DrawingBrush x:Key="Rectangle_RedDiagonalLineBrush" Stretch="Fill" ViewboxUnits="RelativeToBoundingBox">
+      <DrawingBrush.Drawing>
+         <DrawingGroup>
+            <GeometryDrawing Brush="White">
+               <GeometryDrawing.Geometry>
+                  <RectangleGeometry Rect="0,0 80,22" />
+               </GeometryDrawing.Geometry>
+            </GeometryDrawing>
+            <GeometryDrawing>
+               <GeometryDrawing.Geometry>
+                  <LineGeometry StartPoint="0,0" EndPoint="80,22" />
                </GeometryDrawing.Geometry>
                <GeometryDrawing.Pen>
                   <Pen Brush="Red" Thickness="1" />
