@@ -203,7 +203,8 @@
                         Height="{TemplateBinding Height}"
                         Background="{StaticResource RedDiagonalLineBrush}"
                         BorderBrush="Black" BorderThickness="1"
-                        Cursor="{TemplateBinding Cursor}">
+                        Cursor="{TemplateBinding Cursor}"
+                        SnapsToDevicePixels="True">
                   <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                </Border>
                <ControlTemplate.Triggers>
@@ -221,14 +222,21 @@
       <Setter Property="OverridesDefaultStyle" Value="True" />
       <Setter Property="Width" Value="22" />
       <Setter Property="Height" Value="22" />
+      <Setter Property="BorderBrush" Value="#c0c0c0" />
+      <Setter Property="Background" Value="#d0d0d0" />
+      <Setter Property="BorderThickness" Value="1,1,0,1" />
       <Setter Property="Template">
          <Setter.Value>
             <ControlTemplate TargetType="Button">
                <Border Name="border"
                         Width="{TemplateBinding Width}"
                         Height="{TemplateBinding Height}"
-                        Background="Black" BorderBrush="Black" BorderThickness="1">
-                  <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                  <Image
+                            Width="16" Height="16"
+                            RenderOptions.BitmapScalingMode="NearestNeighbor" SnapsToDevicePixels="True" Source="../Images/ic_eye_dropper.png" />
                </Border>
                <ControlTemplate.Triggers>
                   <Trigger Property="IsMouseOver" Value="True">
@@ -267,7 +275,7 @@
 
                <Border
                         Background="{StaticResource CheckerBrush}"
-                        BorderBrush="DarkGray" BorderThickness="1" ClipToBounds="True">
+                        BorderBrush="Black" BorderThickness="1" ClipToBounds="True">
                   <Canvas x:Name="PART_ColorShadingCanvas"
                             Width="200" Height="100"
                             HorizontalAlignment="Left" VerticalAlignment="Top">
@@ -308,25 +316,24 @@
                   <Grid>
                      <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
                      </Grid.ColumnDefinitions>
                      <Button x:Name="PART_SpoidButton" Grid.Column="0" Style="{StaticResource SpoidButtonStyle}" />
-                     <Button x:Name="PART_NullColorButton" Grid.Column="1" Style="{StaticResource NullButtonStyle}" />
-                     <Border x:Name="SelectedColorBorder"
+                     <TextBox x:Name="PART_HexadecimalTextBox"
                                 Grid.Column="1"
                                 Height="22"
-                                Margin="2,0,2,0"
-                                Background="{StaticResource CheckerBrush}"
-                                BorderBrush="#FFC9CACA" BorderThickness="1">
-                        <Rectangle x:Name="SelectedColor" Fill="{Binding SelectedColor, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ColorToSolidColorBrushConverter}, TargetNullValue={StaticResource RedDiagonalLineBrush}}" />
-                     </Border>
-                     <TextBox x:Name="PART_HexadecimalTextBox"
+                                Margin="0,0,2,0" VerticalAlignment="Center"
+                                Style="{StaticResource ColorCanvasTextBoxStyle}" />
+                     <Border x:Name="SelectedColorBorder"
                                 Grid.Column="2"
                                 Height="22"
-                                Margin="2,0,2,0" VerticalAlignment="Center"
-                                Style="{StaticResource ColorCanvasTextBoxStyle}" />
+                                Background="{StaticResource CheckerBrush}"
+                                BorderBrush="Black" BorderThickness="1,1,0,1" SnapsToDevicePixels="True">
+                        <Rectangle x:Name="SelectedColor" Fill="{Binding SelectedColor, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ColorToSolidColorBrushConverter}, TargetNullValue={StaticResource RedDiagonalLineBrush}}" />
+                     </Border>
+                     <Button x:Name="PART_NullColorButton" Grid.Column="3" Style="{StaticResource NullButtonStyle}" />
                   </Grid>
                </Border>
 
@@ -357,13 +364,13 @@
                      <RowDefinition Height="0" />
                   </Grid.RowDefinitions>
                   <Grid.ColumnDefinitions>
-                     <ColumnDefinition Width="58" />
+                     <ColumnDefinition Width="*" />
                      <ColumnDefinition Width="4" />
-                     <ColumnDefinition Width="58" />
+                     <ColumnDefinition Width="*" />
                      <ColumnDefinition Width="4" />
-                     <ColumnDefinition Width="58" />
+                     <ColumnDefinition Width="*" />
                      <ColumnDefinition Width="4" />
-                     <ColumnDefinition Width="58" />
+                     <ColumnDefinition Width="*" />
                   </Grid.ColumnDefinitions>
 
                   <TextBlock
