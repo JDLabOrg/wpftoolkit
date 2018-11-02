@@ -162,7 +162,7 @@
          <Setter.Value>
             <DataTemplate>
                <Border Margin="0" Padding="0" Background="{StaticResource CheckerBrush}">
-                  <Rectangle Margin="0" Fill="{Binding SelectedColor, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:ColorPicker}, Converter={StaticResource ColorToSolidColorBrushConverter}, TargetNullValue={StaticResource Square_RedDiagonalLineBrush}, FallbackValue={StaticResource Square_RedDiagonalLineBrush}}" />
+                  <Rectangle Fill="{Binding SelectedColor, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:ColorPicker}, Converter={StaticResource ColorToSolidColorBrushConverter}, TargetNullValue={StaticResource Rectangle_RedDiagonalLineBrush}, FallbackValue={StaticResource Rectangle_RedDiagonalLineBrush}}" />
                </Border>
             </DataTemplate>
          </Setter.Value>

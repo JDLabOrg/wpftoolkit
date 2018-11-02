@@ -111,7 +111,7 @@
    <!--  ===============================================================================  -->
 
    <ControlTemplate x:Key="ColorSpectrumSliderTemplate" TargetType="{x:Type local:ColorSpectrumSlider}">
-      <Grid>
+      <Grid SnapsToDevicePixels="True">
          <Border Margin="0,8,0,0" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
             <Border x:Name="PART_TrackBackground" Width="15">
                <Rectangle x:Name="PART_SpectrumDisplay" VerticalAlignment="Stretch" Stretch="Fill" />
@@ -150,7 +150,7 @@
 
    <!--  Alpah slider  -->
    <ControlTemplate x:Key="AlphaSpectrumSliderTemplate" TargetType="{x:Type local:AlphaSpectrumSlider}">
-      <Grid>
+      <Grid SnapsToDevicePixels="True">
          <Border Margin="0,8,0,0" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
             <Border x:Name="PART_TrackBackground" Width="15" Background="{StaticResource CheckerBrush}">
                <Rectangle x:Name="PART_SpectrumDisplay" VerticalAlignment="Stretch" Stretch="Fill" />
@@ -201,7 +201,7 @@
                <Border Name="border"
                         Width="{TemplateBinding Width}"
                         Height="{TemplateBinding Height}"
-                        Background="{StaticResource RedDiagonalLineBrush}"
+                        Background="{StaticResource Square_RedDiagonalLineBrush}"
                         BorderBrush="Black" BorderThickness="1"
                         Cursor="{TemplateBinding Cursor}"
                         SnapsToDevicePixels="True">
@@ -265,24 +265,24 @@
             </Grid.RowDefinitions>
             <Grid>
                <Grid.ColumnDefinitions>
-                  <ColumnDefinition Width="200" />
+                  <ColumnDefinition Width="*" />
                   <ColumnDefinition Width="Auto" />
                </Grid.ColumnDefinitions>
                <Grid.RowDefinitions>
                   <RowDefinition Height="Auto" />
                   <RowDefinition Height="Auto" />
                </Grid.RowDefinitions>
-
-               <Border
+               <Border x:Name="_border"
                         Background="{StaticResource CheckerBrush}"
                         BorderBrush="Black" BorderThickness="1" ClipToBounds="True">
                   <Canvas x:Name="PART_ColorShadingCanvas"
-                            Width="200" Height="100"
+                            Width="{Binding ActualWidth, ElementName=_border}"
+                            Height="100"
                             HorizontalAlignment="Left" VerticalAlignment="Top">
                      <Rectangle x:Name="ColorShadingRectangle"
                                 Width="{Binding ElementName=PART_ColorShadingCanvas, Path=Width}"
                                 Height="{Binding ElementName=PART_ColorShadingCanvas, Path=Height}"
-                                Fill="{Binding SelectedColor, ElementName=PART_SpectrumSlider, Converter={StaticResource ColorToSolidColorBrushConverter}, TargetNullValue={StaticResource RedDiagonalLineBrush}}" />
+                                Fill="{Binding SelectedColor, ElementName=PART_SpectrumSlider, Converter={StaticResource ColorToSolidColorBrushConverter}, TargetNullValue={StaticResource Rectangle_RedDiagonalLineBrush}}" />
                      <Rectangle x:Name="WhiteGradient" Width="{Binding ElementName=PART_ColorShadingCanvas, Path=Width}" Height="{Binding ElementName=PART_ColorShadingCanvas, Path=Height}">
                         <Rectangle.Fill>
                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
@@ -331,7 +331,7 @@
                                 Height="22"
                                 Background="{StaticResource CheckerBrush}"
                                 BorderBrush="Black" BorderThickness="1,1,0,1" SnapsToDevicePixels="True">
-                        <Rectangle x:Name="SelectedColor" Fill="{Binding SelectedColor, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ColorToSolidColorBrushConverter}, TargetNullValue={StaticResource RedDiagonalLineBrush}}" />
+                        <Rectangle x:Name="SelectedColor" Fill="{Binding SelectedColor, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ColorToSolidColorBrushConverter}, TargetNullValue={StaticResource Rectangle_RedDiagonalLineBrush}}" />
                      </Border>
                      <Button x:Name="PART_NullColorButton" Grid.Column="3" Style="{StaticResource NullButtonStyle}" />
                   </Grid>
