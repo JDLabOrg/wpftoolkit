@@ -147,7 +147,7 @@
    </DrawingBrush>
 
    <!--  IUEditor edited by DH 2017.06.15  -->
-   <!--  빨간색 대각선 추가  -->
+   <!--  빨간색 대각선 추가  / square - rectangular  -->
    <DrawingBrush x:Key="Square_RedDiagonalLineBrush" Stretch="Fill" ViewboxUnits="RelativeToBoundingBox">
       <DrawingBrush.Drawing>
          <DrawingGroup>
