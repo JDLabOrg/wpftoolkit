@@ -396,10 +396,16 @@
     <Compile Include="BusyIndicator\Implementation\BusyIndicator.cs" />
     <Compile Include="BusyIndicator\Implementation\Converters\ProgressBarWidthConverter.cs" />
     <Compile Include="ColorCanvas\Implementation\AlphaSpectrumSlider.cs" />
+    <Compile Include="ColorCanvas\Implementation\ColorSpoid.cs" />
     <Compile Include="ColorPicker\Implementation\ColorPickerTabItem.cs" />
     <Compile Include="Core\Converters\ColorModeToTabItemSelectedConverter.cs" />
     <Compile Include="Primitives\SelectAllSelectorItem.cs" />
     <Compile Include="Primitives\SelectAllSelector.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="PropertyGrid\Implementation\Converters\PropertyItemEditorConverter.cs" />
     <Compile Include="Core\LocationEnum.cs" />
     <Compile Include="IconButton\Implementation\IconButton.cs" />
@@ -753,6 +759,10 @@
       <DependentUpon>ErrorMessages.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="CollectionControl\Images\Delete16.png" />
@@ -805,6 +815,17 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="CollectionControl\Images\Duplicate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ColorCanvas\Images\ic_eye_dropper.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ColorCanvas\Images\color_picker_active.cur" />
+    <Resource Include="ColorCanvas\Images\color_picker_default.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="MessageBox\Icons\IUWarn.png" />
+    <Resource Include="MessageBox\Icons\IUInfo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

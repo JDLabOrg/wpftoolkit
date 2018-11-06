@@ -117,16 +117,16 @@ namespace Xceed.Wpf.Toolkit
     private static void OnAvailableColorsSortingModeChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
       ColorPicker colorPicker = ( ColorPicker )d;
-      if( colorPicker != null )
+      if (colorPicker != null)
         colorPicker.OnAvailableColorsSortingModeChanged( ( ColorSortingMode )e.OldValue, ( ColorSortingMode )e.NewValue );
     }
 
     private void OnAvailableColorsSortingModeChanged( ColorSortingMode oldValue, ColorSortingMode newValue )
     {
-      ListCollectionView lcv = ( ListCollectionView )( CollectionViewSource.GetDefaultView( this.AvailableColors ) );
-      if( lcv != null )
+      ListCollectionView lcv = ( ListCollectionView )(CollectionViewSource.GetDefaultView( this.AvailableColors ));
+      if (lcv != null)
       {
-        lcv.CustomSort = ( AvailableColorsSortingMode == ColorSortingMode.HueSaturationBrightness )
+        lcv.CustomSort = (AvailableColorsSortingMode == ColorSortingMode.HueSaturationBrightness)
                           ? new ColorSorter()
                           : null;
       }
@@ -236,14 +236,14 @@ namespace Xceed.Wpf.Toolkit
 
     private static void OnIsOpenChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
-      ColorPicker colorPicker = (ColorPicker)d;
-      if( colorPicker != null )
-        colorPicker.OnIsOpenChanged( (bool)e.OldValue, (bool)e.NewValue );
+      ColorPicker colorPicker = ( ColorPicker )d;
+      if (colorPicker != null)
+        colorPicker.OnIsOpenChanged( ( bool )e.OldValue, ( bool )e.NewValue );
     }
 
     private void OnIsOpenChanged( bool oldValue, bool newValue )
     {
-      if( newValue )
+      if (newValue)
       {
         _initialColor = this.SelectedColor;
       }
@@ -272,7 +272,7 @@ namespace Xceed.Wpf.Toolkit
     private static void OnMaxDropDownWidthChanged( DependencyObject o, DependencyPropertyChangedEventArgs e )
     {
       var colorPicker = o as ColorPicker;
-      if( colorPicker != null )
+      if (colorPicker != null)
         colorPicker.OnMaxDropDownWidthChanged( ( double )e.OldValue, ( double )e.NewValue );
     }
 
@@ -335,7 +335,7 @@ namespace Xceed.Wpf.Toolkit
     private static void OnSelectedColorPropertyChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
       ColorPicker colorPicker = ( ColorPicker )d;
-      if( colorPicker != null )
+      if (colorPicker != null)
         colorPicker.OnSelectedColorChanged( ( Color? )e.OldValue, ( Color? )e.NewValue );
     }
 
@@ -521,7 +521,7 @@ namespace Xceed.Wpf.Toolkit
     private static void OnUsingAlphaChannelPropertyChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
       ColorPicker colorPicker = ( ColorPicker )d;
-      if( colorPicker != null )
+      if (colorPicker != null)
         colorPicker.OnUsingAlphaChannelChanged();
     }
 
@@ -531,6 +531,23 @@ namespace Xceed.Wpf.Toolkit
     }
 
     #endregion //UsingAlphaChannel
+
+    #region IsActivatedSpoid / IUEditor
+    public static readonly DependencyProperty IsActivatedSpoidProperty = DependencyProperty.Register( "IsActivatedSpoid", typeof( bool ), typeof( ColorPicker ),
+     new FrameworkPropertyMetadata( false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault ) );
+    public bool IsActivatedSpoid
+    {
+      get
+      {
+        return ( bool )GetValue( IsActivatedSpoidProperty );
+      }
+      set
+      {
+        SetValue( IsActivatedSpoidProperty, value );
+      }
+    }
+
+    #endregion
 
     #endregion //Properties
 
@@ -562,35 +579,46 @@ namespace Xceed.Wpf.Toolkit
     {
       base.OnApplyTemplate();
 
-      if( _availableColors != null )
+      if (_availableColors != null)
         _availableColors.SelectionChanged -= Color_SelectionChanged;
 
       _availableColors = GetTemplateChild( PART_AvailableColors ) as ListBox;
-      if( _availableColors != null )
+      if (_availableColors != null)
         _availableColors.SelectionChanged += Color_SelectionChanged;
 
-      if( _standardColors != null )
+      if (_standardColors != null)
         _standardColors.SelectionChanged -= Color_SelectionChanged;
 
       _standardColors = GetTemplateChild( PART_StandardColors ) as ListBox;
-      if( _standardColors != null )
+      if (_standardColors != null)
         _standardColors.SelectionChanged += Color_SelectionChanged;
 
-      if( _recentColors != null )
+      if (_recentColors != null)
         _recentColors.SelectionChanged -= Color_SelectionChanged;
 
       _recentColors = GetTemplateChild( PART_RecentColors ) as ListBox;
-      if( _recentColors != null )
+      if (_recentColors != null)
         _recentColors.SelectionChanged += Color_SelectionChanged;
 
-      if( _popup != null )
+      if (_popup != null)
+      {
         _popup.Opened -= Popup_Opened;
+        _popup.Opened -= Popup_Closed;
+      }
 
       _popup = GetTemplateChild( PART_ColorPickerPalettePopup ) as Popup;
-      if( _popup != null )
+      if (_popup != null)
+      {
         _popup.Opened += Popup_Opened;
+        _popup.Closed += Popup_Closed;
+      }
 
       _toggleButton = this.Template.FindName( PART_ColorPickerToggleButton, this ) as ToggleButton;
+    }
+
+    private void Popup_Closed( object sender, EventArgs e )
+    {
+      // do nothing for debugging
     }
 
     protected override void OnMouseUp( MouseButtonEventArgs e )
@@ -598,7 +626,7 @@ namespace Xceed.Wpf.Toolkit
       base.OnMouseUp( e );
 
       // Close ColorPicker on MouseUp to prevent action of MouseUp on controls behind the ColorPicker.
-      if( _selectionChanged )
+      if (_selectionChanged)
       {
         CloseColorPicker( true );
         _selectionChanged = false;
@@ -606,15 +634,15 @@ namespace Xceed.Wpf.Toolkit
     }
 
 
-#endregion //Base Class Overrides
+    #endregion //Base Class Overrides
 
     #region Event Handlers
 
     private void OnKeyDown( object sender, KeyEventArgs e )
     {
-      if( !IsOpen )
+      if (!IsOpen)
       {
-        if( KeyboardUtilities.IsKeyModifyingPopupState( e ) )
+        if (KeyboardUtilities.IsKeyModifyingPopupState( e ))
         {
           IsOpen = true;
           // Focus will be on ListBoxItem in Popup_Opened().
@@ -623,12 +651,12 @@ namespace Xceed.Wpf.Toolkit
       }
       else
       {
-        if( KeyboardUtilities.IsKeyModifyingPopupState( e ) )
+        if (KeyboardUtilities.IsKeyModifyingPopupState( e ))
         {
           CloseColorPicker( true );
           e.Handled = true;
         }
-        else if( e.Key == Key.Escape )
+        else if (e.Key == Key.Escape)
         {
           this.SelectedColor = _initialColor;
           CloseColorPicker( true );
@@ -639,18 +667,21 @@ namespace Xceed.Wpf.Toolkit
 
     private void OnMouseDownOutsideCapturedElement( object sender, MouseButtonEventArgs e )
     {
-      CloseColorPicker( true );
+      if (IsActivatedSpoid == false)
+      {
+        CloseColorPicker( true );
+      }
     }
 
     private void Color_SelectionChanged( object sender, SelectionChangedEventArgs e )
     {
       ListBox lb = ( ListBox )sender;
 
-      if( e.AddedItems.Count > 0 )
+      if (e.AddedItems.Count > 0)
       {
-        var colorItem = ( ColorItem )e.AddedItems[ 0 ];
+        var colorItem = ( ColorItem )e.AddedItems[0];
         SelectedColor = colorItem.Color;
-        if( !string.IsNullOrEmpty( colorItem.Name ) )
+        if (!string.IsNullOrEmpty( colorItem.Name ))
         {
           this.SelectedColorText = colorItem.Name;
         }
@@ -662,22 +693,22 @@ namespace Xceed.Wpf.Toolkit
 
     private void Popup_Opened( object sender, EventArgs e )
     {
-      if( ( _availableColors != null ) && ShowAvailableColors )
+      if ((_availableColors != null) && ShowAvailableColors)
       {
         FocusOnListBoxItem( _availableColors );
       }
-      else if( ( _standardColors != null ) && ShowStandardColors )
+      else if ((_standardColors != null) && ShowStandardColors)
         FocusOnListBoxItem( _standardColors );
-      else if( ( _recentColors != null ) && ShowRecentColors )
+      else if ((_recentColors != null) && ShowRecentColors)
         FocusOnListBoxItem( _recentColors );
     }
 
     private void FocusOnListBoxItem( ListBox listBox )
     {
       ListBoxItem listBoxItem = ( ListBoxItem )listBox.ItemContainerGenerator.ContainerFromItem( listBox.SelectedItem );
-      if( ( listBoxItem == null ) && ( listBox.Items.Count > 0 ) )
-        listBoxItem = ( ListBoxItem )listBox.ItemContainerGenerator.ContainerFromItem( listBox.Items[ 0 ] );
-      if( listBoxItem != null )
+      if ((listBoxItem == null) && (listBox.Items.Count > 0))
+        listBoxItem = ( ListBoxItem )listBox.ItemContainerGenerator.ContainerFromItem( listBox.Items[0] );
+      if (listBoxItem != null)
         listBoxItem.Focus();
     }
 
@@ -742,27 +773,27 @@ namespace Xceed.Wpf.Toolkit
 
     private void CloseColorPicker( bool isFocusOnColorPicker )
     {
-      if( IsOpen )
+      if (IsOpen)
         IsOpen = false;
       ReleaseMouseCapture();
 
-      if( isFocusOnColorPicker && ( _toggleButton != null) )
+      if (isFocusOnColorPicker && (_toggleButton != null))
         _toggleButton.Focus();
       this.UpdateRecentColors( new ColorItem( SelectedColor, SelectedColorText ) );
     }
 
     private void UpdateRecentColors( ColorItem colorItem )
     {
-      if( !RecentColors.Contains( colorItem ) )
+      if (!RecentColors.Contains( colorItem ))
         RecentColors.Add( colorItem );
 
-      if( RecentColors.Count > 20 ) //don't allow more than 20 (10->20 IUEditor) , maybe make a property that can be set by the user.
+      if (RecentColors.Count > 20) //don't allow more than 20 (10->20 IUEditor) , maybe make a property that can be set by the user.
         RecentColors.RemoveAt( 0 );
     }
 
     private string GetFormatedColorString( Color? colorToFormat )
     {
-      if( ( colorToFormat == null ) || !colorToFormat.HasValue )
+      if ((colorToFormat == null) || !colorToFormat.HasValue)
         return string.Empty;
 
       return ColorUtilities.FormatColorString( colorToFormat.Value.GetColorName(), UsingAlphaChannel );
@@ -941,12 +972,12 @@ namespace Xceed.Wpf.Toolkit
     {
       ObservableCollection<ColorItem> standardColors = new ObservableCollection<ColorItem>();
 
-      foreach( var item in ColorUtilities.KnownColors )
+      foreach (var item in ColorUtilities.KnownColors)
       {
-        if( !String.Equals( item.Key, "Transparent" ) )
+        if (!String.Equals( item.Key, "Transparent" ))
         {
           var colorItem = new ColorItem( item.Value, item.Key );
-          if( !standardColors.Contains( colorItem ) )
+          if (!standardColors.Contains( colorItem ))
             standardColors.Add( colorItem );
         }
       }
