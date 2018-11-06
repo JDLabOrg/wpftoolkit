@@ -1,0 +1,29 @@
+﻿<local:DemoView
+    x:Class="Xceed.Wpf.Toolkit.LiveExplorer.Samples.MessageBox.Views.MessageBoxView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Xceed.Wpf.Toolkit.LiveExplorer"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <local:DemoView.Description>
+        <Paragraph FontFamily="Segoe" FontSize="14">
+            Check Message Boxees (Button/Images)
+        </Paragraph>
+    </local:DemoView.Description>
+    <StackPanel>
+        <TextBlock FontWeight="Bold" Text="Click and  Check Message box" />
+        <Separator Margin="0,8" />
+        <TextBlock Text="Error and OK" />
+        <Button Click="ErrorButton_Click" Content="Error" />
+        <Separator Margin="0,8" />
+        <TextBlock Text="Warn and OK/Cancel" />
+        <Button Click="WarnButton_Click" Content="Warn" />
+        <Separator Margin="0,8" />
+        <TextBlock Text="Info and Yes/NO" />
+        <Button Click="InfoButton_Click" Content="Info" />
+        <Separator Margin="0,8" />
+        <TextBlock Text="Question and YES/NO/Cancel" />
+        <Button Click="QuestionButton_Click" Content="Question" />
+    </StackPanel>
+</local:DemoView>

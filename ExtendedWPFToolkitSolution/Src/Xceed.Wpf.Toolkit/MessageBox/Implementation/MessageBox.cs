@@ -906,7 +906,7 @@ namespace Xceed.Wpf.Toolkit
       {
         case MessageBoxImage.Error:
           {
-            iconName = "Error48.png";
+            iconName = "IUError.png";
             break;
           }
         case MessageBoxImage.Information:
@@ -916,7 +916,7 @@ namespace Xceed.Wpf.Toolkit
           }
         case MessageBoxImage.Question:
           {
-            iconName = "Question48.png";
+            iconName = "IUQuestion.png";
             break;
           }
         case MessageBoxImage.Warning:
