@@ -98,7 +98,7 @@ namespace Xceed.Wpf.Toolkit
 
     protected Window Container
     {
-      get { return ( this.Parent as Window ); }
+      get { return (this.Parent as Window); }
     }
 
     #endregion //Protected Properties
@@ -322,14 +322,14 @@ namespace Xceed.Wpf.Toolkit
     {
       base.OnApplyTemplate();
 
-      if( _windowControl != null )
+      if (_windowControl != null)
       {
         _windowControl.HeaderDragDelta -= ( o, e ) => this.OnHeaderDragDelta( e );
         _windowControl.HeaderIconDoubleClicked -= ( o, e ) => this.OnHeaderIconDoubleClicked( e );
         _windowControl.CloseButtonClicked -= ( o, e ) => this.OnCloseButtonClicked( e );
       }
       _windowControl = this.GetTemplateChild( PART_WindowControl ) as WindowControl;
-      if( _windowControl != null )
+      if (_windowControl != null)
       {
         _windowControl.HeaderDragDelta += ( o, e ) => this.OnHeaderDragDelta( e );
         _windowControl.HeaderIconDoubleClicked += ( o, e ) => this.OnHeaderIconDoubleClicked( e );
@@ -340,11 +340,11 @@ namespace Xceed.Wpf.Toolkit
       ChangeVisualState( _button.ToString(), true );
 
       Button closeButton = GetMessageBoxButton( PART_CloseButton );
-      if( closeButton != null )
+      if (closeButton != null)
         closeButton.IsEnabled = !object.Equals( _button, MessageBoxButton.YesNo );
 
       Button okButton = GetMessageBoxButton( PART_OkButton );
-      if( okButton != null )
+      if (okButton != null)
         okButton.IsCancel = object.Equals( _button, MessageBoxButton.OK );
 
       SetDefaultResult();
@@ -355,7 +355,7 @@ namespace Xceed.Wpf.Toolkit
       base.OnPreviewKeyDown( e );
 
       // Prevent MenuItem shortcuts while MessageBox is active.
-      if( Keyboard.IsKeyDown( Key.LeftAlt ) || Keyboard.IsKeyDown( Key.RightAlt ) )
+      if (Keyboard.IsKeyDown( Key.LeftAlt ) || Keyboard.IsKeyDown( Key.RightAlt ))
       {
         e.Handled = true;
       }
@@ -363,21 +363,21 @@ namespace Xceed.Wpf.Toolkit
 
     protected override object OnCoerceCloseButtonVisibility( Visibility newValue )
     {
-      if( newValue != Visibility.Visible )
+      if (newValue != Visibility.Visible)
         throw new InvalidOperationException( "Close button on MessageBox is always Visible." );
       return newValue;
     }
 
     protected override object OnCoerceWindowStyle( WindowStyle newValue )
     {
-      if( newValue != WindowStyle.SingleBorderWindow )
+      if (newValue != WindowStyle.SingleBorderWindow)
         throw new InvalidOperationException( "Window style on MessageBox is not available." );
       return newValue;
     }
 
     internal override void UpdateBlockMouseInputsPanel()
     {
-      if( _windowControl != null )
+      if (_windowControl != null)
       {
         _windowControl.IsBlockMouseInputsPanelActive = this.IsBlockMouseInputsPanelActive;
       }
@@ -403,7 +403,7 @@ namespace Xceed.Wpf.Toolkit
     /// <returns>A System.Windows.MessageBoxResult value that specifies which message box button is clicked by the user.</returns>
     public static MessageBoxResult Show( string messageText )
     {
-      return Show( messageText, string.Empty, MessageBoxButton.OK, (Style)null );
+      return Show( messageText, string.Empty, MessageBoxButton.OK, ( Style )null );
     }
 
     /// <summary>
@@ -415,7 +415,7 @@ namespace Xceed.Wpf.Toolkit
     /// <returns>A System.Windows.MessageBoxResult value that specifies which message box button is clicked by the user.</returns>
     public static MessageBoxResult Show( Window owner, string messageText )
     {
-      return Show( owner, messageText, string.Empty, MessageBoxButton.OK, (Style) null );
+      return Show( owner, messageText, string.Empty, MessageBoxButton.OK, ( Style )null );
     }
 
     /// <summary>
@@ -426,12 +426,12 @@ namespace Xceed.Wpf.Toolkit
     /// <returns>A System.Windows.MessageBoxResult value that specifies which message box button is clicked by the user.</returns>
     public static MessageBoxResult Show( string messageText, string caption )
     {
-        return Show(messageText, caption, MessageBoxButton.OK, (Style)null);
+      return Show( messageText, caption, MessageBoxButton.OK, ( Style )null );
     }
 
     public static MessageBoxResult Show( Window owner, string messageText, string caption )
     {
-        return Show(owner, messageText, caption, (Style)null);
+      return Show( owner, messageText, caption, ( Style )null );
     }
 
     public static MessageBoxResult Show( Window owner, string messageText, string caption, Style messageBoxStyle )
@@ -441,7 +441,7 @@ namespace Xceed.Wpf.Toolkit
 
     public static MessageBoxResult Show( string messageText, string caption, MessageBoxButton button )
     {
-        return Show(messageText, caption, button, (Style)null);
+      return Show( messageText, caption, button, ( Style )null );
     }
 
     /// <summary>
@@ -460,7 +460,7 @@ namespace Xceed.Wpf.Toolkit
 
     public static MessageBoxResult Show( Window owner, string messageText, string caption, MessageBoxButton button )
     {
-        return Show(owner, messageText, caption, button, (Style)null);
+      return Show( owner, messageText, caption, button, ( Style )null );
     }
 
     public static MessageBoxResult Show( Window owner, string messageText, string caption, MessageBoxButton button, Style messageBoxStyle )
@@ -471,7 +471,7 @@ namespace Xceed.Wpf.Toolkit
 
     public static MessageBoxResult Show( string messageText, string caption, MessageBoxButton button, MessageBoxImage icon )
     {
-        return Show(messageText, caption, button, icon, (Style)null);
+      return Show( messageText, caption, button, icon, ( Style )null );
     }
 
     /// <summary>
@@ -490,7 +490,7 @@ namespace Xceed.Wpf.Toolkit
 
     public static MessageBoxResult Show( Window owner, string messageText, string caption, MessageBoxButton button, MessageBoxImage icon )
     {
-        return Show(owner, messageText, caption, button, icon, (Style)null);
+      return Show( owner, messageText, caption, button, icon, ( Style )null );
     }
 
     public static MessageBoxResult Show( Window owner, string messageText, string caption, MessageBoxButton button, MessageBoxImage icon, Style messageBoxStyle )
@@ -501,7 +501,7 @@ namespace Xceed.Wpf.Toolkit
 
     public static MessageBoxResult Show( string messageText, string caption, MessageBoxButton button, MessageBoxImage icon, MessageBoxResult defaultResult )
     {
-        return Show(messageText, caption, button, icon, defaultResult, (Style)null);
+      return Show( messageText, caption, button, icon, defaultResult, ( Style )null );
     }
     /// <summary>
     /// Displays a message box that has a message and that returns a result.
@@ -520,7 +520,7 @@ namespace Xceed.Wpf.Toolkit
 
     public static MessageBoxResult Show( Window owner, string messageText, string caption, MessageBoxButton button, MessageBoxImage icon, MessageBoxResult defaultResult )
     {
-        return Show(owner, messageText, caption, button, icon, defaultResult, (Style) null);
+      return Show( owner, messageText, caption, button, icon, defaultResult, ( Style )null );
     }
 
 
@@ -589,11 +589,11 @@ namespace Xceed.Wpf.Toolkit
     /// </summary>
     public void ShowMessageBox()
     {
-      if( this.Container != null || this.Parent == null )
+      if (this.Container != null || this.Parent == null)
         throw new InvalidOperationException(
           "This method is not intended to be called while displaying a MessageBox outside of a WindowContainer. Use ShowDialog() instead in that case." );
 
-      if( !( this.Parent is WindowContainer ) )
+      if (!(this.Parent is WindowContainer))
         throw new InvalidOperationException(
           "The MessageBox instance is not intended to be displayed in a container other than a WindowContainer." );
 
@@ -651,7 +651,7 @@ namespace Xceed.Wpf.Toolkit
     /// </summary>
     public bool? ShowDialog()
     {
-      if( this.Parent != null )
+      if (this.Parent != null)
         throw new InvalidOperationException(
           "This method is not intended to be called while displaying a Message Box inside a WindowContainer. Use 'ShowMessageBox()' instead." );
 
@@ -714,7 +714,7 @@ namespace Xceed.Wpf.Toolkit
     /// </summary>
     private void Close()
     {
-      if( this.Container != null )
+      if (this.Container != null)
       {
         // The Window.Closed event callback will call "OnClose"
         this.Container.Close();
@@ -731,7 +731,7 @@ namespace Xceed.Wpf.Toolkit
     private void SetDefaultResult()
     {
       var defaultButton = GetDefaultButtonFromDefaultResult();
-      if( defaultButton != null )
+      if (defaultButton != null)
       {
         defaultButton.IsDefault = true;
         defaultButton.Focus();
@@ -745,7 +745,7 @@ namespace Xceed.Wpf.Toolkit
     private Button GetDefaultButtonFromDefaultResult()
     {
       Button defaultButton = null;
-      switch( _defaultResult )
+      switch (_defaultResult)
       {
         case MessageBoxResult.Cancel:
           defaultButton = GetMessageBoxButton( PART_CancelButton );
@@ -774,7 +774,7 @@ namespace Xceed.Wpf.Toolkit
     private Button GetDefaultButton()
     {
       Button defaultButton = null;
-      switch( _button )
+      switch (_button)
       {
         case MessageBoxButton.OK:
         case MessageBoxButton.OKCancel:
@@ -823,12 +823,12 @@ namespace Xceed.Wpf.Toolkit
     /// <returns></returns>
     private static MessageBoxResult ShowCore( Window owner, IntPtr ownerHandle, string messageText, string caption, MessageBoxButton button, MessageBoxImage icon, MessageBoxResult defaultResult, Style messageBoxStyle )
     {
-      if( System.Windows.Interop.BrowserInteropHelper.IsBrowserHosted )
+      if (System.Windows.Interop.BrowserInteropHelper.IsBrowserHosted)
       {
         throw new InvalidOperationException( "Static methods for MessageBoxes are not available in XBAP. Use the instance ShowMessageBox methods instead." );
       }
 
-      if( (owner != null) && (ownerHandle != IntPtr.Zero) )
+      if ((owner != null) && (ownerHandle != IntPtr.Zero))
       {
         throw new NotSupportedException( "The owner of a MessageBox can't be both a Window and a WindowHandle." );
       }
@@ -837,7 +837,7 @@ namespace Xceed.Wpf.Toolkit
       msgBox.InitializeMessageBox( owner, ownerHandle, messageText, caption, button, icon, defaultResult );
 
       // Setting the style to null will inhibit any implicit styles      
-      if( messageBoxStyle != null )
+      if (messageBoxStyle != null)
       {
         msgBox.Style = messageBoxStyle;
       }
@@ -856,9 +856,9 @@ namespace Xceed.Wpf.Toolkit
     {
       Window result = null;
 
-      if( Application.Current != null )
+      if (Application.Current != null)
       {
-        if( Application.Current.Dispatcher.CheckAccess() )
+        if (Application.Current.Dispatcher.CheckAccess())
         {
           result = ComputeOwnerWindowCore();
         }
@@ -870,7 +870,7 @@ namespace Xceed.Wpf.Toolkit
           }
           ) );
         }
-      }     
+      }
 
       return result;
     }
@@ -879,11 +879,11 @@ namespace Xceed.Wpf.Toolkit
     {
       Window owner = null;
 
-      if( Application.Current != null )
+      if (Application.Current != null)
       {
-        foreach( Window w in Application.Current.Windows )
+        foreach (Window w in Application.Current.Windows)
         {
-          if( w.IsActive )
+          if (w.IsActive)
           {
             owner = w;
             break;
@@ -902,7 +902,7 @@ namespace Xceed.Wpf.Toolkit
     {
       String iconName = String.Empty;
 
-      switch( image )
+      switch (image)
       {
         case MessageBoxImage.Error:
           {
@@ -911,7 +911,7 @@ namespace Xceed.Wpf.Toolkit
           }
         case MessageBoxImage.Information:
           {
-            iconName = "Information48.png";
+            iconName = "IUInfo.png";
             break;
           }
         case MessageBoxImage.Question:
@@ -921,7 +921,7 @@ namespace Xceed.Wpf.Toolkit
           }
         case MessageBoxImage.Warning:
           {
-            iconName = "Warning48.png";
+            iconName = "IUWarn.png";
             break;
           }
         case MessageBoxImage.None:
@@ -946,7 +946,7 @@ namespace Xceed.Wpf.Toolkit
       newWindow.Background = Brushes.Transparent;
       newWindow.Content = this;
 
-      if( _ownerHandle != IntPtr.Zero )
+      if (_ownerHandle != IntPtr.Zero)
       {
         var windowHelper = new WindowInteropHelper( newWindow ) { Owner = _ownerHandle };
         newWindow.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
@@ -954,7 +954,7 @@ namespace Xceed.Wpf.Toolkit
       else
       {
         newWindow.Owner = _owner ?? ComputeOwnerWindow();
-        if( newWindow.Owner != null )
+        if (newWindow.Owner != null)
           newWindow.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
         else
           newWindow.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
@@ -980,7 +980,7 @@ namespace Xceed.Wpf.Toolkit
     /// <param name="e">The <see cref="System.Windows.Controls.Primitives.DragDeltaEventArgs"/> instance containing the event data.</param>
     protected virtual void OnHeaderDragDelta( DragDeltaEventArgs e )
     {
-      if( !this.IsCurrentWindow( e.OriginalSource ) )
+      if (!this.IsCurrentWindow( e.OriginalSource ))
         return;
 
       e.Handled = true;
@@ -990,13 +990,13 @@ namespace Xceed.Wpf.Toolkit
       args.Source = this;
       this.RaiseEvent( args );
 
-      if( !args.Handled )
+      if (!args.Handled)
       {
-        if( this.Container == null )
+        if (this.Container == null)
         {
           double left = 0.0;
 
-          if( this.FlowDirection == System.Windows.FlowDirection.RightToLeft )
+          if (this.FlowDirection == System.Windows.FlowDirection.RightToLeft)
             left = this.Left - e.HorizontalChange;
           else
             left = this.Left + e.HorizontalChange;
@@ -1008,7 +1008,7 @@ namespace Xceed.Wpf.Toolkit
         {
           double left = 0.0;
 
-          if( this.FlowDirection == System.Windows.FlowDirection.RightToLeft )
+          if (this.FlowDirection == System.Windows.FlowDirection.RightToLeft)
             left = Container.Left - e.HorizontalChange;
           else
             left = Container.Left + e.HorizontalChange;
@@ -1025,7 +1025,7 @@ namespace Xceed.Wpf.Toolkit
     /// <param name="e">The <see cref="System.Windows.Input.Primitives.MouseButtonEventArgs"/> instance containing the event data.</param>
     protected virtual void OnHeaderIconDoubleClicked( MouseButtonEventArgs e )
     {
-      if( !this.IsCurrentWindow( e.OriginalSource ) )
+      if (!this.IsCurrentWindow( e.OriginalSource ))
         return;
 
       e.Handled = true;
@@ -1035,7 +1035,7 @@ namespace Xceed.Wpf.Toolkit
       args.Source = this;
       this.RaiseEvent( args );
 
-      if( !args.Handled )
+      if (!args.Handled)
       {
         this.Close();
       }
@@ -1047,7 +1047,7 @@ namespace Xceed.Wpf.Toolkit
     /// <param name="e">The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
     protected virtual void OnCloseButtonClicked( RoutedEventArgs e )
     {
-      if( !this.IsCurrentWindow( e.OriginalSource ) )
+      if (!this.IsCurrentWindow( e.OriginalSource ))
         return;
 
       e.Handled = true;
@@ -1059,7 +1059,7 @@ namespace Xceed.Wpf.Toolkit
       RoutedEventArgs args = new RoutedEventArgs( CloseButtonClickedEvent, this );
       this.RaiseEvent( args );
 
-      if( !args.Handled )
+      if (!args.Handled)
       {
         this.Close();
       }
@@ -1074,10 +1074,10 @@ namespace Xceed.Wpf.Toolkit
     {
       Button button = e.OriginalSource as Button;
 
-      if( button == null )
+      if (button == null)
         return;
 
-      switch( button.Name )
+      switch (button.Name)
       {
         case PART_NoButton:
           _dialogResult = MessageBoxResult.No;
@@ -1121,13 +1121,13 @@ namespace Xceed.Wpf.Toolkit
 
     private void MessageBox_IsVisibleChanged( object sender, DependencyPropertyChangedEventArgs e )
     {
-      if( (bool)e.NewValue )
+      if (( bool )e.NewValue)
       {
         Action action = () =>
         {
           //Focus first Focusable Child element of MessageBox to prevent Tab outside MessageBox.
           var defaultButton = this.GetDefaultButtonFromDefaultResult();
-          if( defaultButton != null )
+          if (defaultButton != null)
           {
             defaultButton.Focus();
           }
@@ -1147,7 +1147,7 @@ namespace Xceed.Wpf.Toolkit
     public event EventHandler Closed;
     protected virtual void OnClosed( EventArgs e )
     {
-      if( Closed != null )
+      if (Closed != null)
         Closed( this, e );
     }
 
@@ -1169,7 +1169,7 @@ namespace Xceed.Wpf.Toolkit
       sb.AppendLine();
       sb.Append( "---------------------------" );
       sb.AppendLine();
-      switch( _button )
+      switch (_button)
       {
         case MessageBoxButton.OK:
           sb.Append( OkButtonContent.ToString() );
@@ -1192,7 +1192,7 @@ namespace Xceed.Wpf.Toolkit
         new UIPermission( UIPermissionClipboard.AllClipboard ).Demand();
         Clipboard.SetText( sb.ToString() );
       }
-      catch( SecurityException )
+      catch (SecurityException)
       {
         throw new SecurityException();
       }
