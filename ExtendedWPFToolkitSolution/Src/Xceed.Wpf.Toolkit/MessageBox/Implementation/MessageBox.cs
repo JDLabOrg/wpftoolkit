@@ -406,6 +406,11 @@ namespace Xceed.Wpf.Toolkit
       return Show( messageText, string.Empty, MessageBoxButton.OK, ( Style )null );
     }
 
+    public static MessageBoxResult Show( string messageText, MessageBoxImage icon )
+    {
+      return Show( messageText, string.Empty, MessageBoxButton.OK, icon, ( Style )null );
+    }
+
     /// <summary>
     /// Displays a message box that has a message and that returns a result.
     /// </summary>
