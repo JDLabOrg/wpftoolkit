@@ -406,6 +406,11 @@ namespace Xceed.Wpf.Toolkit
       return Show( messageText, string.Empty, MessageBoxButton.OK, ( Style )null );
     }
 
+    public static MessageBoxResult Show( string messageText, MessageBoxImage icon )
+    {
+      return Show( messageText, string.Empty, MessageBoxButton.OK, icon, ( Style )null );
+    }
+
     /// <summary>
     /// Displays a message box that has a message and that returns a result.
     /// </summary>
@@ -906,7 +911,7 @@ namespace Xceed.Wpf.Toolkit
       {
         case MessageBoxImage.Error:
           {
-            iconName = "Error48.png";
+            iconName = "IUError.png";
             break;
           }
         case MessageBoxImage.Information:
@@ -916,7 +921,7 @@ namespace Xceed.Wpf.Toolkit
           }
         case MessageBoxImage.Question:
           {
-            iconName = "Question48.png";
+            iconName = "IUQuestion.png";
             break;
           }
         case MessageBoxImage.Warning:

@@ -263,6 +263,9 @@
     <Compile Include="Samples\MaterialControls\Views\MaterialControlsView.xaml.cs">
       <DependentUpon>MaterialControlsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Samples\MessageBox\Views\MessageBoxView.xaml.cs">
+      <DependentUpon>MessageBoxView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Samples\MultiCalendar\Views\MultiCalendarView.xaml.cs">
       <DependentUpon>MultiCalendarView.xaml</DependentUpon>
     </Compile>
@@ -641,6 +644,10 @@
     <Page Include="Samples\MaterialControls\Views\MaterialControlsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Samples\MessageBox\Views\MessageBoxView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Samples\MultiCalendar\Views\MultiCalendarView.xaml">
       <Generator>MSBuild:Compile</Generator>
