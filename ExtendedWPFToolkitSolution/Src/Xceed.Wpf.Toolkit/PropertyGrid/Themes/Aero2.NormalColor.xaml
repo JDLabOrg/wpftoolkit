@@ -471,25 +471,26 @@
 
    <Style x:Key="ExpanderStyle" TargetType="{x:Type Expander}">
       <Setter Property="Padding" Value="0" />
-      <Setter Property="Background" Value="#FFF0F0F0" />
       <Setter Property="Template">
          <Setter.Value>
             <ControlTemplate TargetType="{x:Type Expander}">
                <Grid>
                   <Grid.RowDefinitions>
                      <RowDefinition Height="Auto" />
+                     <RowDefinition Height="1" />
                      <RowDefinition x:Name="ContentRow" Height="*" />
                   </Grid.RowDefinitions>
-                  <Border x:Name="Border" Background="{TemplateBinding Background}" BorderBrush="#FFF0F0F0">
+                  <Border x:Name="Border" Height="24" Background="White">
                      <ToggleButton IsChecked="{Binding Path=IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" OverridesDefaultStyle="True" Template="{StaticResource ExpanderToggleButton}">
                         <ContentPresenter
                                     Margin="1,3"
                                     ContentSource="Header" RecognizesAccessKey="True" TextElement.FontWeight="Bold" />
                      </ToggleButton>
                   </Border>
+                  <Separator Grid.Row="1" BorderThickness="1" />
                   <Border x:Name="ExpandSite"
-                            Grid.Row="1"
-                            Padding="3,0,0,0"
+                            Grid.Row="2"
+                            Padding="0,0,0,0"
                             Background="{x:Static SystemColors.ControlBrush}"
                             Visibility="Collapsed">
                      <Border
@@ -599,8 +600,8 @@
       <!--  Set the margin at 1 pixel bottom to let the horizontal "line" effect appear.  -->
       <Setter Property="Margin" Value="0,0,0,1" />
       <Setter Property="Padding" Value="0,1,0,1" />
-      <Setter Property="Width" Value="{Binding ActualWidth, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pg:PropertyGrid}, Converter={StaticResource AdditionConverter}, ConverterParameter=-40}" />
       <Setter Property="VerticalContentAlignment" Value="Center" />
+      <Setter Property="HorizontalContentAlignment" Value="Right" />
       <Setter Property="SnapsToDevicePixels" Value="True" />
       <Setter Property="IsTabStop" Value="False" />
       <Setter Property="Template">
