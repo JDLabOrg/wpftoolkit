@@ -174,30 +174,23 @@ namespace Xceed.Wpf.AvalonDock.Controls
     {
       base.OnMouseEnter( e );
 
-      if( _draggingItem != null
+      if (_draggingItem != null
           && _draggingItem != this
-          && e.LeftButton == MouseButtonState.Pressed )
+          && e.LeftButton == MouseButtonState.Pressed)
       {
         var model = Model;
         var container = model.Parent as ILayoutContainer;
         var containerPane = model.Parent as ILayoutPane;
 
-          if ((containerPane is LayoutAnchorablePane) && !(( LayoutAnchorablePane )containerPane).CanRepositionItems)
-            return;
-          if ((containerPane.Parent != null) && (containerPane.Parent is LayoutAnchorablePaneGroup) && !(( LayoutAnchorablePaneGroup )containerPane.Parent).CanRepositionItems)
-            return;
+        if ((containerPane is LayoutAnchorablePane) && !(( LayoutAnchorablePane )containerPane).CanRepositionItems)
+          return;
+        if ((containerPane.Parent != null) && (containerPane.Parent is LayoutAnchorablePaneGroup) && !(( LayoutAnchorablePaneGroup )containerPane.Parent).CanRepositionItems)
+          return;
 
-          var childrenList = container.Children.ToList();
-          containerPane.MoveChild( childrenList.IndexOf( _draggingItem.Model ), childrenList.IndexOf( model ) );
-        }
-      }
-      catch (NullReferenceException nullEx)
-      {
-        //@2018-08-10 null exception stil exists
-        Console.WriteLine( "[Exception] : " + nullEx.Message );
+        var childrenList = container.Children.ToList();
+        containerPane.MoveChild( childrenList.IndexOf( _draggingItem.Model ), childrenList.IndexOf( model ) );
       }
     }
-
 
     protected override void OnPreviewGotKeyboardFocus( KeyboardFocusChangedEventArgs e )
     {
