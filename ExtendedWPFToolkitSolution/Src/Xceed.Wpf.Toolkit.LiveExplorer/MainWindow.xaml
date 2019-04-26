@@ -382,9 +382,13 @@
                         </core:LiveExplorerTreeViewItem>
                         <core:LiveExplorerTreeViewItem Header="Customizing PropertyItems" SampleType="{x:Type samples:PropertyGrid.Views.PropertyGridPropertyItemStyleView}" Style="{StaticResource TreeViewItemStyle}" />
 
-                    </core:LiveExplorerTreeViewItem>
-                    <core:LiveExplorerTreeViewItem Header="DataGrid" SampleType="{x:Type samples:DataGrid.Views.DataGridView}" />
-                    <core:LiveExplorerTreeViewItem Header="Multi-Column ComboBox" IsPlusOnlyFeature="True" SampleType="{x:Type samples:DataGrid.Views.MultiColumnComboBoxView}" />
+          </core:LiveExplorerTreeViewItem>
+          <core:LiveExplorerTreeViewItem Header="DataGrid"
+                                         SampleType="{x:Type samples:DataGrid.Views.DataGridView}"
+                                         IsPlusOnlyFeature="True" />
+          <core:LiveExplorerTreeViewItem Header="Multi-Column ComboBox"
+                                         SampleType="{x:Type samples:DataGrid.Views.MultiColumnComboBoxView}"
+                                         IsPlusOnlyFeature="True" />
 
                     <core:LiveExplorerTreeViewItem
                         Header="ListBox" IsPlusOnlyFeature="True"

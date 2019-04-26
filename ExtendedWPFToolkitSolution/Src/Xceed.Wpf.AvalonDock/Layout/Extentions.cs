@@ -96,19 +96,11 @@ namespace Xceed.Wpf.AvalonDock.Layout
           layoutPanel = parentContainer.FindParent<LayoutPanel>();
         }
 
-        if ((layoutPanel != null) && (layoutPanel.Children.Count > 0))
+        if( (layoutPanel != null) && ( layoutPanel.Children.Count > 0 ) )
         {
-          // fixed (2018-09-19) IUEditor 
-          if (layoutPanel.Orientation == System.Windows.Controls.Orientation.Horizontal)
-          {
-            var leftChild = layoutPanel.Children[0];
-            return leftChild == element || leftChild.Descendents().Contains( element ) ? AnchorSide.Left : AnchorSide.Right;
-          }
-          else
-          {
-            var topChild = layoutPanel.Children[0];
-            return topChild == element || topChild.Descendents().Contains( element ) ? AnchorSide.Top : AnchorSide.Bottom;
-          }
+          if( layoutPanel.Orientation == System.Windows.Controls.Orientation.Horizontal )
+            return ( layoutPanel.Children[ 0 ].Equals(element) || layoutPanel.Children[ 0 ].Descendents().Contains( element ) ) ? AnchorSide.Left : AnchorSide.Right;
+          return ( layoutPanel.Children[ 0 ].Equals( element ) || layoutPanel.Children[ 0 ].Descendents().Contains( element ) ) ? AnchorSide.Top : AnchorSide.Bottom;
         }
       }
 
