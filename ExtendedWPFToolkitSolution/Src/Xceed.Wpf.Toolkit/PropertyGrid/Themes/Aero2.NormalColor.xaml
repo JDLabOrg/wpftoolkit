@@ -60,6 +60,10 @@
    <x:Static x:Key="EmptyString" Member="sys:String.Empty" />
    <SolidColorBrush x:Key="BorderColorKey" Color="#d8d8d8" />
 
+   <!--  IUEditor Color  -->
+   <SolidColorBrush x:Key="PlainWhite" Color="#FAFAFA" />
+   <SolidColorBrush x:Key="BlackTextKey" Color="#1e1e1e" />
+
    <!--  PropertyGrid numeric Editors  -->
    <Style x:Key="PropertyGridNumericUpDown" BasedOn="{StaticResource NumericUpDown}" TargetType="{x:Type prim:InputBase}" />
 
@@ -469,6 +473,56 @@
       </ControlTemplate.Triggers>
    </ControlTemplate>
 
+   <ControlTemplate x:Key="RightExpanderToggleButton" TargetType="{x:Type ToggleButton}">
+      <Grid>
+         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="20" />
+         </Grid.ColumnDefinitions>
+
+         <Rectangle x:Name="Rectangle" Margin="0,0,0,0" Fill="Transparent" />
+         <Path x:Name="Up_Arrow"
+                Grid.Column="1"
+                HorizontalAlignment="Center" VerticalAlignment="Center"
+                Data="M 0 0 L 4 0 L 4 4" RenderTransformOrigin="0.5,0.5"
+                Stroke="{StaticResource GlyphBrush}"
+                StrokeThickness="1">
+            <Path.RenderTransform>
+               <TransformGroup>
+                  <ScaleTransform ScaleX="1" ScaleY="1" />
+                  <SkewTransform AngleX="0" AngleY="0" />
+                  <RotateTransform Angle="45" />
+                  <TranslateTransform X="0" Y="0" />
+               </TransformGroup>
+            </Path.RenderTransform>
+         </Path>
+         <Path x:Name="Down_Arrow"
+                Grid.Column="1"
+                HorizontalAlignment="Center" VerticalAlignment="Center"
+                Data="M 0 0 L 4 0 L 4 4" RenderTransformOrigin="0.5,0.5"
+                Stroke="{StaticResource GlyphBrush}"
+                StrokeThickness="1" Visibility="Collapsed">
+            <Path.RenderTransform>
+               <TransformGroup>
+                  <ScaleTransform ScaleX="1" ScaleY="1" />
+                  <SkewTransform AngleX="0" AngleY="0" />
+                  <RotateTransform Angle="135" />
+                  <TranslateTransform X="0" Y="0" />
+               </TransformGroup>
+            </Path.RenderTransform>
+         </Path>
+
+         <ContentPresenter Grid.Column="0" />
+      </Grid>
+      <ControlTemplate.Triggers>
+         <Trigger Property="IsChecked" Value="true">
+            <Setter TargetName="Down_Arrow" Property="Visibility" Value="Visible" />
+            <Setter TargetName="Up_Arrow" Property="Visibility" Value="Collapsed" />
+            <Setter TargetName="Down_Arrow" Property="OpacityMask" Value="#FF000000" />
+         </Trigger>
+      </ControlTemplate.Triggers>
+   </ControlTemplate>
+
    <Style x:Key="ExpanderStyle" TargetType="{x:Type Expander}">
       <Setter Property="Padding" Value="0" />
       <Setter Property="Template">
@@ -480,11 +534,11 @@
                      <RowDefinition Height="1" />
                      <RowDefinition x:Name="ContentRow" Height="*" />
                   </Grid.RowDefinitions>
-                  <Border x:Name="Border" Height="24" Background="White">
-                     <ToggleButton IsChecked="{Binding Path=IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" OverridesDefaultStyle="True" Template="{StaticResource ExpanderToggleButton}">
+                  <Border x:Name="Border" Height="24" Background="{StaticResource PlainWhite}">
+                     <ToggleButton IsChecked="{Binding Path=IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" OverridesDefaultStyle="True" Template="{StaticResource RightExpanderToggleButton}">
                         <ContentPresenter
                                     Margin="1,3"
-                                    ContentSource="Header" RecognizesAccessKey="True" TextElement.FontWeight="Bold" />
+                                    ContentSource="Header" RecognizesAccessKey="True" TextElement.FontWeight="SemiBold" />
                      </ToggleButton>
                   </Border>
                   <Separator Grid.Row="1" BorderThickness="1" />
@@ -548,7 +602,7 @@
       <Setter Property="Template">
          <Setter.Value>
             <ControlTemplate>
-               <Border>
+               <Border Background="{StaticResource PlainWhite}">
                   <Expander x:Name="expander"
                             Header="{Binding Name}"
                             IsExpanded="True"
@@ -572,6 +626,7 @@
                      <!--  No Expander for the Misc Category if IsMiscCategoryLabelHidden == true  -->
                      <ItemsPresenter />
                   </ControlTemplate>
+
                </Setter.Value>
             </Setter>
          </MultiDataTrigger>
@@ -594,6 +649,7 @@
    </ContextMenu>
 
    <pg:CategoryGroupStyleSelector x:Key="categoryGroupStyleSelector" ItemGroupStyle="{StaticResource PropertyItemGroupContainerStyle}" SingleDefaultCategoryItemGroupStyle="{StaticResource SingleDefaultCategoryItemGroupContainerStyle}" />
+
 
    <Style TargetType="{x:Type pg:PropertyItemBase}">
       <Setter Property="Background" Value="{x:Static SystemColors.WindowBrush}" />
@@ -814,13 +870,13 @@
                                                 BorderBrush="{TemplateBinding BorderBrush}"
                                                 BorderThickness="{TemplateBinding BorderThickness}"
                                                 SnapsToDevicePixels="True">
-                                       <!-- #region IUEditor -->
-                                       <!-- change HorizontalScrollBarVisibility (Hidden -> Disabled) -->
-                                       <ScrollViewer
+                                    <!--#region IUEditor-->
+                                    <!--  change HorizontalScrollBarVisibility (Hidden -> Disabled)  -->
+                                    <ScrollViewer
                                                     Padding="{TemplateBinding Padding}"
                                                     Focusable="False" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                                       <!-- #endregion -->
-                                          <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                       <!--#endregion-->
+                                       <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                                     </ScrollViewer>
                                  </Border>
                               </ControlTemplate>
@@ -881,6 +937,124 @@
          </Setter.Value>
       </Setter>
    </Style>
+
+   <Style x:Key="ExpandableTitlePropertyItemBaseStyle" TargetType="{x:Type pg:PropertyItemBase}">
+      <Setter Property="Background" Value="{StaticResource PlainWhite}" />
+      <Setter Property="Foreground" Value="{StaticResource BlackTextKey}" />
+      <Setter Property="Template">
+         <Setter.Value>
+            <ControlTemplate TargetType="{x:Type pg:PropertyItemBase}">
+               <Border ContextMenu="{Binding AdvancedOptionsMenu, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pg:PropertyGrid}}" ContextMenuService.Placement="Bottom">
+                  <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                     <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
+                     </Grid.RowDefinitions>
+
+                     <!--  Set the BorderThickness at 1 pixel to the right to let the "vertical line" appear  -->
+                     <Border x:Name="PART_Name"
+                                Height="24"
+                                Margin="0,0,1,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid x:Name="PART_DisplayName" Margin="2,2,2,2" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                           <Grid.ColumnDefinitions>
+                              <ColumnDefinition Width="*" />
+                              <ColumnDefinition Width="24" />
+                           </Grid.ColumnDefinitions>
+                           <pg:TrimmedTextBlock x:Name="_text"
+                                        Margin="6,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                                        FontSize="12" FontWeight="SemiBold"
+                                        IsEnabled="{Binding IsReadOnly, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pg:PropertyGrid}, Converter={StaticResource InverseBoolConverter}}"
+                                        Text="{Binding DisplayName, RelativeSource={RelativeSource TemplatedParent}}"
+                                        TextTrimming="CharacterEllipsis" />
+
+                           <ToggleButton x:Name="_expandableButton"
+                                        Grid.Column="1"
+                                        IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
+                                        OverridesDefaultStyle="True"
+                                        Template="{StaticResource ExpanderToggleButton}"
+                                        Visibility="{Binding IsExpandable, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+                        </Grid>
+
+
+                     </Border>
+
+
+                     <Expander x:Name="_propertyExpander"
+                                Grid.Row="1"
+                                IsEnabled="True"
+                                IsExpanded="{TemplateBinding IsExpanded}"
+                                Style="{StaticResource PropertyExpanderStyle}">
+                        <pg:PropertyItemsControl x:Name="PART_PropertyItemsControl"
+                                    Focusable="False" IsTabStop="False"
+                                    ItemContainerStyle="{Binding PropertyContainerStyle, RelativeSource={RelativeSource TemplatedParent}}"
+                                    ItemsSource="{Binding Properties, RelativeSource={RelativeSource TemplatedParent}}"
+                                    ScrollViewer.CanContentScroll="True"
+                                    VirtualizingStackPanel.IsVirtualizing="{Binding IsVirtualizing, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pg:PropertyGrid}}"
+                                    VirtualizingStackPanel.VirtualizationMode="Recycling">
+                           <ItemsControl.ItemsPanel>
+                              <ItemsPanelTemplate>
+                                 <VirtualizingStackPanel />
+                              </ItemsPanelTemplate>
+                           </ItemsControl.ItemsPanel>
+
+                           <ItemsControl.GroupStyle>
+                              <GroupStyle ContainerStyleSelector="{StaticResource categoryGroupStyleSelector}" />
+                           </ItemsControl.GroupStyle>
+
+                           <ItemsControl.Template>
+                              <ControlTemplate>
+                                 <Border
+                                                Padding="{TemplateBinding Padding}"
+                                                Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                SnapsToDevicePixels="True">
+                                    <!--#region IUEditor-->
+                                    <!--  change HorizontalScrollBarVisibility (Hidden -> Disabled)  -->
+                                    <ScrollViewer
+                                                    Padding="{TemplateBinding Padding}"
+                                                    Focusable="False" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                                       <!--#endregion-->
+                                       <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                    </ScrollViewer>
+                                 </Border>
+                              </ControlTemplate>
+                           </ItemsControl.Template>
+
+                        </pg:PropertyItemsControl>
+                     </Expander>
+                  </Grid>
+               </Border>
+               <ControlTemplate.Triggers>
+                  <Trigger Property="IsEnabled" Value="False">
+                     <Setter Property="Background" Value="#F0F0F0" />
+                     <Setter TargetName="_text" Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                  </Trigger>
+                  <MultiDataTrigger>
+                     <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding ShowDescriptionByTooltip, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pg:PropertyGrid}}" Value="True" />
+                        <Condition Binding="{Binding Description, RelativeSource={RelativeSource Self}, Converter={StaticResource IsStringEmptyConverter}}" Value="False" />
+                     </MultiDataTrigger.Conditions>
+                     <Setter TargetName="PART_Name" Property="ToolTipService.ToolTip" Value="{Binding Description, RelativeSource={RelativeSource TemplatedParent}}" />
+                  </MultiDataTrigger>
+                  <Trigger Property="Validation.HasError" Value="true">
+                     <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors).CurrentItem.ErrorContent}" />
+                  </Trigger>
+                  <Trigger SourceName="_expandableButton" Property="Visibility" Value="Visible">
+                     <Setter Property="Focusable" Value="False" />
+                  </Trigger>
+
+               </ControlTemplate.Triggers>
+            </ControlTemplate>
+         </Setter.Value>
+      </Setter>
+   </Style>
+
+   <pg:ExpandableObjectItemContainerStyleSelector x:Key="expandableObjectItemContainerStyleSelector" TitleContainerStyle="{StaticResource ExpandableTitlePropertyItemBaseStyle}" />
 
    <Style TargetType="{x:Type pg:PropertyGrid}">
       <Setter Property="AdvancedOptionsMenu" Value="{StaticResource {ComponentResourceKey TypeInTargetAssembly={x:Type pg:PropertyGrid}, ResourceId=SelectedObjectAdvancedOptionsMenu}}" />
@@ -1008,6 +1182,7 @@
                                     Background="{x:Static SystemColors.ControlBrush}"
                                     Focusable="False" IsTabStop="False"
                                     ItemContainerStyle="{Binding PropertyContainerStyle, RelativeSource={RelativeSource TemplatedParent}}"
+                                    ItemContainerStyleSelector="{StaticResource expandableObjectItemContainerStyleSelector}"
                                     ItemsSource="{Binding Properties, RelativeSource={RelativeSource TemplatedParent}}"
                                     ScrollViewer.CanContentScroll="True"
                                     VirtualizingStackPanel.IsVirtualizing="{Binding IsVirtualizing, RelativeSource={RelativeSource TemplatedParent}}"
@@ -1030,13 +1205,13 @@
                                                 BorderBrush="{TemplateBinding BorderBrush}"
                                                 BorderThickness="{TemplateBinding BorderThickness}"
                                                 SnapsToDevicePixels="True">
-                                    <!-- #region IUEditor -->
-                                    <!-- change HorizontalScrollBarVisibility (Hidden -> Disabled) -->
+                                    <!--#region IUEditor-->
+                                    <!--  change HorizontalScrollBarVisibility (Hidden -> Disabled)  -->
                                     <ScrollViewer
                                                     Padding="{TemplateBinding Padding}"
                                                     Focusable="False" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                                    <!-- #endregion -->
-                                          <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                       <!--#endregion-->
+                                       <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                                     </ScrollViewer>
                                  </Border>
                               </ControlTemplate>
