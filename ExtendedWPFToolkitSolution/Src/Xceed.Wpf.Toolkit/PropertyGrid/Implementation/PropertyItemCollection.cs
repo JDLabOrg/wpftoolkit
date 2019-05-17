@@ -50,8 +50,8 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       DisplayNamePropertyName = ReflectionHelper.GetPropertyOrFieldName( () => p.DisplayName );
     }
 
-    public PropertyItemCollection(ObservableCollection<PropertyItem> editableCollection)
-      :base(editableCollection)
+    public PropertyItemCollection( ObservableCollection<PropertyItem> editableCollection )
+      : base( editableCollection )
     {
       EditableCollection = editableCollection;
     }
@@ -87,7 +87,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     protected override void OnCollectionChanged( NotifyCollectionChangedEventArgs args )
     {
-      if( _preventNotification )
+      if (_preventNotification)
         return;
 
       base.OnCollectionChanged( args );
@@ -95,14 +95,14 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     internal void UpdateItems( IEnumerable<PropertyItem> newItems )
     {
-      if( newItems == null )
+      if (newItems == null)
         throw new ArgumentNullException( "newItems" );
 
       _preventNotification = true;
-      using( GetDefaultView().DeferRefresh() )
+      using (GetDefaultView().DeferRefresh())
       {
         EditableCollection.Clear();
-        foreach( var item in newItems )
+        foreach (var item in newItems)
         {
           this.EditableCollection.Add( item );
         }
@@ -115,7 +115,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     {
       // Compute Display Order relative to PropertyOrderAttributes on PropertyItem
       // which could be different in Alphabetical or Categorized mode.
-      foreach( PropertyItem item in this.Items )
+      foreach (PropertyItem item in this.Items)
       {
         item.DescriptorDefinition.DisplayOrder = item.DescriptorDefinition.ComputeDisplayOrderInternal( isPropertyGridCategorized );
         item.PropertyOrder = item.DescriptorDefinition.DisplayOrder;
@@ -123,23 +123,23 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
       // Clear view values
       ICollectionView view = this.GetDefaultView();
-      using( view.DeferRefresh() )
+      using (view.DeferRefresh())
       {
         view.GroupDescriptions.Clear();
         view.SortDescriptions.Clear();
 
         // Update view values
-        if( groupDescription != null )
+        if (groupDescription != null)
         {
           view.GroupDescriptions.Add( groupDescription );
-          if( sortAlphabetically )
+          if (sortAlphabetically)
           {
             SortBy( CategoryOrderPropertyName, ListSortDirection.Ascending );
             SortBy( CategoryPropertyName, ListSortDirection.Ascending );
           }
         }
 
-        if( sortAlphabetically )
+        if (sortAlphabetically)
         {
           SortBy( PropertyOrderPropertyName, ListSortDirection.Ascending );
           SortBy( DisplayNamePropertyName, ListSortDirection.Ascending );
@@ -152,31 +152,45 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       GetDefaultView().Refresh();
     }
 
+    internal static bool HasDisplayName( PropertyItem property, string text )
+    {
+      if (property.DisplayName != null)
+      {
+#if !VS2008
+        var displayAttribute = PropertyGridUtilities.GetAttribute<DisplayAttribute>( property.PropertyDescriptor );
+        if (displayAttribute != null)
+        {
+          var canBeFiltered = displayAttribute.GetAutoGenerateFilter();
+          if (canBeFiltered.HasValue && !canBeFiltered.Value)
+            return false;
+        }
+#endif
+        property.HighlightedText = property.DisplayName.ToLower().Contains( text.ToLower() ) ? text : null;
+        return (property.HighlightedText != null);
+      }
+      return false;
+    }
+
     internal static Predicate<object> CreateFilter( string text, IList<PropertyItem> PropertyItems, IPropertyContainer propertyContainer )
     {
       Predicate<object> filter = null;
 
-      if( !string.IsNullOrEmpty( text ) )
+      if (!string.IsNullOrEmpty( text ))
       {
         filter = ( item ) =>
         {
           var property = item as PropertyItem;
-          if( property.DisplayName != null )
+          // appended by IUEditor 2019-05-10
+          // check expandable property
+          if (property.IsExpandable)
           {
-#if !VS2008
-            var displayAttribute = PropertyGridUtilities.GetAttribute<DisplayAttribute>( property.PropertyDescriptor );
-            if( displayAttribute != null )
-            {
-              var canBeFiltered = displayAttribute.GetAutoGenerateFilter();
-              if( canBeFiltered.HasValue && !canBeFiltered.Value )
-                return false;
-            }
-#endif
-            property.HighlightedText = property.DisplayName.ToLower().Contains( text.ToLower() ) ? text : null;
-            return (property.HighlightedText != null);
+            property.IsExpanded = true;
+            IList<PropertyItem> children = property.Properties as IList<PropertyItem>;
+            bool result = children.Any( childItem => HasDisplayName( childItem, text ) );
+            return result;
           }
 
-          return false;
+          return HasDisplayName( property, text );
         };
       }
 
