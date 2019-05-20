@@ -1985,6 +1985,11 @@ namespace Xceed.Wpf.AvalonDock
 
     public LayoutFloatingWindowControl CreateFloatingWindow( LayoutContent contentModel, bool isContentImmutable )
     {
+      // Fixed IUEditor 2019-05-20
+      // create 함수 내부에서 검사해서 layoutanchorablePane을 만드는 데 이 때 auto hidden값이 변함
+      if (!contentModel.CanFloat)
+        return null;
+
       LayoutFloatingWindowControl lfwc = null;
 
       if( contentModel is LayoutAnchorable )
