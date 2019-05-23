@@ -200,6 +200,8 @@ namespace Xceed.Wpf.AvalonDock.Controls
           return;
 
         var childrenList = container.Children.ToList();
+
+        // FIXED IUEDITOR  2019-05-23
         if (_draggingItem.Model == null || model == null)
         {
           return;
