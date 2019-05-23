@@ -27,12 +27,12 @@ namespace Xceed.Wpf.AvalonDock.Layout
     public static IEnumerable<ILayoutElement> Descendents( this ILayoutElement element )
     {
       var container = element as ILayoutContainer;
-      if (container != null)
+      if( container != null )
       {
-        foreach (var childElement in container.Children)
+        foreach( var childElement in container.Children )
         {
           yield return childElement;
-          foreach (var childChildElement in childElement.Descendents())
+          foreach( var childChildElement in childElement.Descendents() )
             yield return childChildElement;
         }
       }
@@ -41,8 +41,8 @@ namespace Xceed.Wpf.AvalonDock.Layout
     public static T FindParent<T>( this ILayoutElement element ) //where T : ILayoutContainer
     {
       var parent = element.Parent;
-      while (parent != null &&
-          !(parent is T))
+      while( parent != null &&
+          !( parent is T ) )
         parent = parent.Parent;
 
 
@@ -51,12 +51,12 @@ namespace Xceed.Wpf.AvalonDock.Layout
 
     public static ILayoutRoot GetRoot( this ILayoutElement element ) //where T : ILayoutContainer
     {
-      if (element is ILayoutRoot)
+      if( element is ILayoutRoot )
         return element as ILayoutRoot;
 
       var parent = element.Parent;
-      while (parent != null &&
-          !(parent is ILayoutRoot))
+      while( parent != null &&
+          !( parent is ILayoutRoot ) )
         parent = parent.Parent;
 
       return ( ILayoutRoot )parent;
@@ -64,8 +64,8 @@ namespace Xceed.Wpf.AvalonDock.Layout
 
     public static bool ContainsChildOfType<T>( this ILayoutContainer element )
     {
-      foreach (var childElement in element.Descendents())
-        if (childElement is T)
+      foreach( var childElement in element.Descendents() )
+        if( childElement is T )
           return true;
 
       return false;
@@ -73,8 +73,8 @@ namespace Xceed.Wpf.AvalonDock.Layout
 
     public static bool ContainsChildOfType<T, S>( this ILayoutContainer container )
     {
-      foreach (var childElement in container.Descendents())
-        if (childElement is T || childElement is S)
+      foreach( var childElement in container.Descendents() )
+        if( childElement is T || childElement is S )
           return true;
 
       return false;
@@ -88,10 +88,10 @@ namespace Xceed.Wpf.AvalonDock.Layout
     public static AnchorSide GetSide( this ILayoutElement element )
     {
       var parentContainer = element.Parent as ILayoutOrientableGroup;
-      if (parentContainer != null)
+      if( parentContainer != null )
       {
         var layoutPanel = parentContainer as LayoutPanel;
-        if (layoutPanel == null)
+        if( layoutPanel == null )
         {
           layoutPanel = parentContainer.FindParent<LayoutPanel>();
         }
@@ -99,8 +99,8 @@ namespace Xceed.Wpf.AvalonDock.Layout
         if( (layoutPanel != null) && ( layoutPanel.Children.Count > 0 ) )
         {
           if( layoutPanel.Orientation == System.Windows.Controls.Orientation.Horizontal )
-            return ( layoutPanel.Children[ 0 ].Equals(element) || layoutPanel.Children[ 0 ].Descendents().Contains( element ) ) ? AnchorSide.Left : AnchorSide.Right;
-          return ( layoutPanel.Children[ 0 ].Equals( element ) || layoutPanel.Children[ 0 ].Descendents().Contains( element ) ) ? AnchorSide.Top : AnchorSide.Bottom;
+            return layoutPanel.Children[ 0 ].Descendents().Contains( element ) ? AnchorSide.Left : AnchorSide.Right;
+          return layoutPanel.Children[ 0 ].Descendents().Contains( element ) ? AnchorSide.Top : AnchorSide.Bottom;
         }
       }
 
@@ -124,33 +124,33 @@ namespace Xceed.Wpf.AvalonDock.Layout
       uint MONITOR_DEFAULTTONULL = 0x00000000;
 
       System.IntPtr monitor = Win32Helper.MonitorFromRect( ref r, MONITOR_DEFAULTTONULL );
-      if (monitor == System.IntPtr.Zero)
+      if( monitor == System.IntPtr.Zero )
       {
         System.IntPtr nearestmonitor = Win32Helper.MonitorFromRect( ref r, MONITOR_DEFAULTTONEAREST );
-        if (nearestmonitor != System.IntPtr.Zero)
+        if( nearestmonitor != System.IntPtr.Zero )
         {
           Win32Helper.MonitorInfo monitorInfo = new Win32Helper.MonitorInfo();
           monitorInfo.Size = Marshal.SizeOf( monitorInfo );
           Win32Helper.GetMonitorInfo( nearestmonitor, monitorInfo );
 
-          if (paneInsideFloatingWindow.FloatingLeft < monitorInfo.Work.Left)
+          if( paneInsideFloatingWindow.FloatingLeft < monitorInfo.Work.Left )
           {
             paneInsideFloatingWindow.FloatingLeft = monitorInfo.Work.Left + 10;
           }
 
-          if (paneInsideFloatingWindow.FloatingLeft + paneInsideFloatingWindow.FloatingWidth > monitorInfo.Work.Right)
+          if( paneInsideFloatingWindow.FloatingLeft + paneInsideFloatingWindow.FloatingWidth > monitorInfo.Work.Right )
           {
-            paneInsideFloatingWindow.FloatingLeft = monitorInfo.Work.Right - (paneInsideFloatingWindow.FloatingWidth + 10);
+            paneInsideFloatingWindow.FloatingLeft = monitorInfo.Work.Right - ( paneInsideFloatingWindow.FloatingWidth + 10 );
           }
 
-          if (paneInsideFloatingWindow.FloatingTop < monitorInfo.Work.Top)
+          if( paneInsideFloatingWindow.FloatingTop < monitorInfo.Work.Top )
           {
             paneInsideFloatingWindow.FloatingTop = monitorInfo.Work.Top + 10;
           }
 
-          if (paneInsideFloatingWindow.FloatingTop + paneInsideFloatingWindow.FloatingHeight > monitorInfo.Work.Bottom)
+          if( paneInsideFloatingWindow.FloatingTop + paneInsideFloatingWindow.FloatingHeight > monitorInfo.Work.Bottom )
           {
-            paneInsideFloatingWindow.FloatingTop = monitorInfo.Work.Bottom - (paneInsideFloatingWindow.FloatingHeight + 10);
+            paneInsideFloatingWindow.FloatingTop = monitorInfo.Work.Bottom - ( paneInsideFloatingWindow.FloatingHeight + 10 );
           }
         }
       }

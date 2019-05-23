@@ -498,20 +498,12 @@ namespace Xceed.Wpf.AvalonDock.Controls
 
     void IOverlayWindow.DragEnter( IDropArea area )
     {
-      var floatingWindowManager = _floatingWindow.Model.Root.Manager;
-
       _visibleAreas.Add( area );
 
-            FrameworkElement areaElement = null;
+      FrameworkElement areaElement;
       switch( area.Type )
       {
         case DropAreaType.DockingManager:
-          var dropAreaDockingManager = area as DropArea<DockingManager>;
-          if( dropAreaDockingManager.AreaElement != floatingWindowManager )
-          {
-            _visibleAreas.Remove( area );
-            return;
-          }
           areaElement = _gridDockingManagerDropTargets;
           break;
         case DropAreaType.AnchorablePane:
@@ -519,34 +511,21 @@ namespace Xceed.Wpf.AvalonDock.Controls
 
           var dropAreaAnchorablePaneGroup = area as DropArea<LayoutAnchorablePaneControl>;
           var layoutAnchorablePane = dropAreaAnchorablePaneGroup.AreaElement.Model as LayoutAnchorablePane;
-          if( layoutAnchorablePane.Root.Manager != floatingWindowManager )
-          {
-            _visibleAreas.Remove( area );
-            return;
-          }
           SetDropTargetIntoVisibility( layoutAnchorablePane );
           break;
-                    #region IUEditor
-                    // DocumentPane & DocuemntPaneGroup은 DragEnter 이벤트를 받지않아야하므로 주석처리
-                    /*
         case DropAreaType.DocumentPaneGroup:
           {
             areaElement = _gridDocumentPaneDropTargets;
             var dropAreaDocumentPaneGroup = area as DropArea<LayoutDocumentPaneGroupControl>;
             var layoutDocumentPane = ( dropAreaDocumentPaneGroup.AreaElement.Model as LayoutDocumentPaneGroup ).Children.First() as LayoutDocumentPane;
             var parentDocumentPaneGroup = layoutDocumentPane.Parent as LayoutDocumentPaneGroup;
-            if( parentDocumentPaneGroup.Root.Manager != floatingWindowManager )
-            {
-              _visibleAreas.Remove( area );
-              return;
-            }
+
             _documentPaneDropTargetLeft.Visibility = Visibility.Hidden;
             _documentPaneDropTargetRight.Visibility = Visibility.Hidden;
             _documentPaneDropTargetTop.Visibility = Visibility.Hidden;
             _documentPaneDropTargetBottom.Visibility = Visibility.Hidden;
           }
           break;
-                    
         case DropAreaType.DocumentPane:
         default:
           {
@@ -557,11 +536,6 @@ namespace Xceed.Wpf.AvalonDock.Controls
               var dropAreaDocumentPaneGroup = area as DropArea<LayoutDocumentPaneControl>;
               var layoutDocumentPane = dropAreaDocumentPaneGroup.AreaElement.Model as LayoutDocumentPane;
               var parentDocumentPaneGroup = layoutDocumentPane.Parent as LayoutDocumentPaneGroup;
-              if( layoutDocumentPane.Root.Manager != floatingWindowManager )
-              {
-                _visibleAreas.Remove( area );
-                return;
-              }
 
               SetDropTargetIntoVisibility( layoutDocumentPane );
 
@@ -653,11 +627,6 @@ namespace Xceed.Wpf.AvalonDock.Controls
               var dropAreaDocumentPaneGroup = area as DropArea<LayoutDocumentPaneControl>;
               var layoutDocumentPane = dropAreaDocumentPaneGroup.AreaElement.Model as LayoutDocumentPane;
               var parentDocumentPaneGroup = layoutDocumentPane.Parent as LayoutDocumentPaneGroup;
-              if( layoutDocumentPane.Root.Manager != floatingWindowManager )
-              {
-                _visibleAreas.Remove( area );
-                return;
-              }
 
               SetDropTargetIntoVisibility( layoutDocumentPane );
 
@@ -700,11 +669,8 @@ namespace Xceed.Wpf.AvalonDock.Controls
             }
           }
           break;
-                    */
       }
-            if (areaElement == null)
-                return;
-#endregion
+
       Canvas.SetLeft( areaElement, area.DetectionRect.Left - Left );
       Canvas.SetTop( areaElement, area.DetectionRect.Top - Top );
       areaElement.Width = area.DetectionRect.Width;

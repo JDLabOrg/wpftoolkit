@@ -37,16 +37,11 @@ namespace Xceed.Wpf.AvalonDock.Controls
       DefaultStyleKeyProperty.OverrideMetadata( typeof( LayoutDocumentFloatingWindowControl ), new FrameworkPropertyMetadata( typeof( LayoutDocumentFloatingWindowControl ) ) );
     }
 
-    internal LayoutDocumentFloatingWindowControl( LayoutDocumentFloatingWindow model, bool isContentImmutable )
-       : base( model, isContentImmutable )
+    internal LayoutDocumentFloatingWindowControl( LayoutDocumentFloatingWindow model )
+        : base( model )
     {
       _model = model;
       UpdateThemeResources();
-    }
-
-    internal LayoutDocumentFloatingWindowControl( LayoutDocumentFloatingWindow model )
-        : base( model, false )
-    {
     }
 
     #endregion

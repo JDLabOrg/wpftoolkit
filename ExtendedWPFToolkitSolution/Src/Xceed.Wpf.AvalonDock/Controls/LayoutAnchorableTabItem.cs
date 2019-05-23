@@ -14,7 +14,6 @@
 
   ***********************************************************************************/
 
-using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -29,6 +28,7 @@ namespace Xceed.Wpf.AvalonDock.Controls
 
     private bool _isMouseDown = false;
     private static LayoutAnchorableTabItem _draggingItem = null;
+    private static bool _cancelMouseLeave = false;
 
     #endregion
 
@@ -76,7 +76,7 @@ namespace Xceed.Wpf.AvalonDock.Controls
     /// </summary>
     private static void OnModelChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
-      (( LayoutAnchorableTabItem )d).OnModelChanged( e );
+      ( ( LayoutAnchorableTabItem )d ).OnModelChanged( e );
     }
 
     /// <summary>
@@ -84,7 +84,7 @@ namespace Xceed.Wpf.AvalonDock.Controls
     /// </summary>
     protected virtual void OnModelChanged( DependencyPropertyChangedEventArgs e )
     {
-      if (Model != null)
+      if( Model != null )
         SetLayoutItem( Model.Root.Manager.GetLayoutItemFromModel( Model ) );
       else
         SetLayoutItem( null );
@@ -142,10 +142,14 @@ namespace Xceed.Wpf.AvalonDock.Controls
     {
       base.OnMouseMove( e );
 
-      if (e.LeftButton != MouseButtonState.Pressed)
+      if( e.LeftButton != MouseButtonState.Pressed )
       {
         _isMouseDown = false;
         _draggingItem = null;
+      }
+      else
+      {
+        _cancelMouseLeave = false;
       }
     }
 
@@ -162,29 +166,31 @@ namespace Xceed.Wpf.AvalonDock.Controls
     {
       base.OnMouseLeave( e );
 
-      if (_isMouseDown && e.LeftButton == MouseButtonState.Pressed)
+      if( _isMouseDown && e.LeftButton == MouseButtonState.Pressed )
       {
-        _draggingItem = this;
+        // drag the item if the mouse leave is not canceled.
+        // Mouse leave should be canceled when selecting a new tab to prevent automatic undock when Panel size is Auto.
+        _draggingItem = !_cancelMouseLeave ? this : null;
       }
 
       _isMouseDown = false;
+      _cancelMouseLeave = false;
     }
 
     protected override void OnMouseEnter( MouseEventArgs e )
     {
       base.OnMouseEnter( e );
 
-      if (_draggingItem != null
-          && _draggingItem != this
-          && e.LeftButton == MouseButtonState.Pressed)
+      if( _draggingItem != this &&
+          e.LeftButton == MouseButtonState.Pressed )
       {
         var model = Model;
         var container = model.Parent as ILayoutContainer;
         var containerPane = model.Parent as ILayoutPane;
 
-        if ((containerPane is LayoutAnchorablePane) && !(( LayoutAnchorablePane )containerPane).CanRepositionItems)
+        if( ( containerPane is LayoutAnchorablePane ) && !( ( LayoutAnchorablePane )containerPane ).CanRepositionItems )
           return;
-        if ((containerPane.Parent != null) && (containerPane.Parent is LayoutAnchorablePaneGroup) && !(( LayoutAnchorablePaneGroup )containerPane.Parent).CanRepositionItems)
+        if( ( containerPane.Parent != null ) && ( containerPane.Parent is LayoutAnchorablePaneGroup ) && !( ( LayoutAnchorablePaneGroup )containerPane.Parent ).CanRepositionItems )
           return;
 
         var childrenList = container.Children.ToList();
@@ -215,7 +221,11 @@ namespace Xceed.Wpf.AvalonDock.Controls
     {
       _draggingItem = null;
     }
+    internal static void CancelMouseLeave()
+    {
+      _cancelMouseLeave = true;
+    }
 
-    #endregion
-  }
+  #endregion
+}
 }
