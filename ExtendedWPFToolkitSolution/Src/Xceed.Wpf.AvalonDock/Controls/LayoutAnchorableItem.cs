@@ -298,15 +298,6 @@ namespace Xceed.Wpf.AvalonDock.Controls
       base.Detach();
     }
 
-    protected override bool CanExecuteDockAsDocumentCommand()
-    {
-      var canExecute = base.CanExecuteDockAsDocumentCommand();
-      if( canExecute && ( _anchorable != null ) )
-        return _anchorable.CanDockAsTabbedDocument;
-
-      return canExecute;
-    }
-
     protected override void Close()
     {
       if( ( _anchorable.Root != null ) && ( _anchorable.Root.Manager != null ) )

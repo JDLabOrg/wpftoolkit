@@ -45,18 +45,13 @@ namespace Xceed.Wpf.AvalonDock.Controls
       DefaultStyleKeyProperty.OverrideMetadata( typeof( LayoutAnchorableFloatingWindowControl ), new FrameworkPropertyMetadata( typeof( LayoutAnchorableFloatingWindowControl ) ) );
     }
 
-    internal LayoutAnchorableFloatingWindowControl( LayoutAnchorableFloatingWindow model, bool isContentImmutable )
-       : base( model, isContentImmutable )
+    internal LayoutAnchorableFloatingWindowControl( LayoutAnchorableFloatingWindow model )
+        : base( model )
     {
       _model = model;
       HideWindowCommand = new RelayCommand( ( p ) => OnExecuteHideWindowCommand( p ), ( p ) => CanExecuteHideWindowCommand( p ) );
       CloseWindowCommand = new RelayCommand( ( p ) => OnExecuteCloseWindowCommand( p ), ( p ) => CanExecuteCloseWindowCommand( p ) );
       UpdateThemeResources();
-    }
-
-    internal LayoutAnchorableFloatingWindowControl( LayoutAnchorableFloatingWindow model)
-        : base( model, false )
-    {
     }
 
     #endregion
@@ -144,11 +139,8 @@ namespace Xceed.Wpf.AvalonDock.Controls
     protected override void OnClosed( EventArgs e )
     {
       var root = Model.Root;
-      if( root != null )
-      {
-        root.Manager.RemoveFloatingWindow( this );
-        root.CollectGarbage();
-      }
+      root.Manager.RemoveFloatingWindow( this );
+      root.CollectGarbage();
       if( _overlayWindow != null )
       {
         _overlayWindow.Close();
@@ -157,7 +149,7 @@ namespace Xceed.Wpf.AvalonDock.Controls
 
       base.OnClosed( e );
 
-      if( !CloseInitiatedByUser && (root != null) )
+      if( !CloseInitiatedByUser )
       {
         root.FloatingWindows.Remove( _model );
       }

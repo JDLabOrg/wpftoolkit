@@ -94,9 +94,15 @@ namespace Xceed.Wpf.AvalonDock.Controls
           _view = new ContentPresenter();
 
           _view.SetBinding( ContentPresenter.ContentProperty, new Binding( "Content" ) { Source = LayoutElement } );
-          _view.SetBinding( ContentPresenter.ContentTemplateProperty, new Binding( "LayoutItemTemplate" ) { Source = LayoutElement.Root.Manager } );
-          _view.SetBinding( ContentPresenter.ContentTemplateSelectorProperty, new Binding( "LayoutItemTemplateSelector" ) { Source = LayoutElement.Root.Manager } );
-          LayoutElement.Root.Manager.InternalAddLogicalChild( _view );
+          if( ( LayoutElement != null ) && ( LayoutElement.Root != null ) )
+          {
+            _view.SetBinding( ContentPresenter.ContentTemplateProperty, new Binding( "LayoutItemTemplate" ) { Source = LayoutElement.Root.Manager } );
+            _view.SetBinding( ContentPresenter.ContentTemplateSelectorProperty, new Binding( "LayoutItemTemplateSelector" ) { Source = LayoutElement.Root.Manager } );
+            if( LayoutElement.Root.Manager != null )
+            {
+              LayoutElement.Root.Manager.InternalAddLogicalChild( _view );
+            }
+          }
         }
 
         return _view;
@@ -599,14 +605,9 @@ namespace Xceed.Wpf.AvalonDock.Controls
       return value;
     }
 
-    protected virtual bool CanExecuteDockAsDocumentCommand()
-    {
-      return ( LayoutElement != null && LayoutElement.FindParent<LayoutDocumentPane>() == null );
-    }
-
     private bool CanExecuteDockAsDocumentCommand( object parameter )
     {
-      return this.CanExecuteDockAsDocumentCommand();
+      return LayoutElement != null && LayoutElement.FindParent<LayoutDocumentPane>() == null;
     }
 
     private void ExecuteDockAsDocumentCommand( object parameter )
@@ -850,9 +851,6 @@ namespace Xceed.Wpf.AvalonDock.Controls
     {
       if( LayoutElement == null )
         return false;
-      var layoutDocument = LayoutElement as LayoutDocument;
-      if( ( layoutDocument != null ) && !layoutDocument.CanMove )
-        return false;
       var parentDocumentGroup = LayoutElement.FindParent<LayoutDocumentPaneGroup>();
       var parentDocumentPane = LayoutElement.Parent as LayoutDocumentPane;
       return ( ( parentDocumentGroup == null ||
@@ -927,9 +925,6 @@ namespace Xceed.Wpf.AvalonDock.Controls
     private bool CanExecuteNewHorizontalTabGroupCommand( object parameter )
     {
       if( LayoutElement == null )
-        return false;
-      var layoutDocument = LayoutElement as LayoutDocument;
-      if( ( layoutDocument != null ) && !layoutDocument.CanMove )
         return false;
       var parentDocumentGroup = LayoutElement.FindParent<LayoutDocumentPaneGroup>();
       var parentDocumentPane = LayoutElement.Parent as LayoutDocumentPane;
