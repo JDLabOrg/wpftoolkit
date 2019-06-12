@@ -41,7 +41,7 @@ namespace Xceed.Wpf.Toolkit
 
     static AlphaSpectrumSlider()
     {
-      DefaultStyleKeyProperty.OverrideMetadata( typeof(AlphaSpectrumSlider), new FrameworkPropertyMetadata( typeof(AlphaSpectrumSlider) ) );
+      DefaultStyleKeyProperty.OverrideMetadata( typeof( AlphaSpectrumSlider ), new FrameworkPropertyMetadata( typeof( AlphaSpectrumSlider ) ) );
     }
 
     #endregion //Constructors
@@ -57,7 +57,7 @@ namespace Xceed.Wpf.Toolkit
       }
       set
       {
-        Value = value.HasValue ? value.Value.A : 255;
+        Value = value.HasValue ? value.Value.ScA * 100 : 100;
         _selectedColor = value;
         UpdateSpectrum();
       }
@@ -89,13 +89,13 @@ namespace Xceed.Wpf.Toolkit
 
       // This gradient stop is partially transparent.
       _pickerBrush.GradientStops.Add(
-          new GradientStop(Color.FromArgb(255, currentcolor.R, currentcolor.G, currentcolor.B), 0.0));
+          new GradientStop( Color.FromArgb( 255, currentcolor.R, currentcolor.G, currentcolor.B ), 0.0 ) );
 
       // This gradient stop is fully opaque. 
       _pickerBrush.GradientStops.Add(
-          new GradientStop(Color.FromArgb(0, currentcolor.R, currentcolor.G, currentcolor.B), 1.0));
+          new GradientStop( Color.FromArgb( 0, currentcolor.R, currentcolor.G, currentcolor.B ), 1.0 ) );
 
-      if( _spectrumDisplay != null )
+      if (_spectrumDisplay != null)
       {
         _spectrumDisplay.Fill = _pickerBrush;
       }
