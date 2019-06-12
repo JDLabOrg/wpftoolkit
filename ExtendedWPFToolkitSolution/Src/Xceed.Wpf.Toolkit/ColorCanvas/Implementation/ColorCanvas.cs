@@ -102,9 +102,58 @@ namespace Xceed.Wpf.Toolkit
 
     #region RGB
 
+    #region DecA
+
+    public static readonly DependencyProperty DecAProperty = DependencyProperty.Register( "DecA", typeof( int ), typeof( ColorCanvas ), new UIPropertyMetadata( 100, OnDecAChanged, OnDecACoerceCallback ) );
+
+    private static object OnDecACoerceCallback( DependencyObject d, object baseValue )
+    {
+      int decA = ( int )baseValue;
+      if (decA < 0)
+      {
+        return 0;
+      }
+      else if (decA > 100)
+      {
+        return 100;
+      }
+      else
+      {
+        return decA;
+      }
+    }
+
+    public int DecA
+    {
+      get
+      {
+        return ( int )GetValue( DecAProperty );
+      }
+      set
+      {
+        SetValue( DecAProperty, value );
+      }
+    }
+
+    private static void OnDecAChanged( DependencyObject o, DependencyPropertyChangedEventArgs e )
+    {
+      ColorCanvas colorCanvas = o as ColorCanvas;
+      if (colorCanvas != null)
+        colorCanvas.OnDecAChanged( ( int )e.OldValue, ( int )e.NewValue );
+    }
+
+    protected virtual void OnDecAChanged( int oldValue, int newValue )
+    {
+      if (!_surpressPropertyChanged)
+        UpdateSelectedColor();
+    }
+
+    #endregion //DecA
+
     #region A
 
     public static readonly DependencyProperty AProperty = DependencyProperty.Register( "A", typeof( byte ), typeof( ColorCanvas ), new UIPropertyMetadata( ( byte )255, OnAChanged ) );
+    [Obsolete( "Use DecA Instead" )]
     public byte A
     {
       get
@@ -588,7 +637,9 @@ namespace Xceed.Wpf.Toolkit
 
     private void UpdateSelectedColor()
     {
-      SelectedColor = Color.FromArgb( A, R, G, B );
+      Color updatedColor = Color.FromRgb( R, G, B );
+      updatedColor.ScA = ( float )(DecA / 100);
+      SelectedColor = updatedColor;
     }
 
     private void UpdateSelectedColor( Color? color )
@@ -606,6 +657,7 @@ namespace Xceed.Wpf.Toolkit
       _surpressPropertyChanged = true;
 
       A = color.Value.A;
+      DecA = ( int )(color.Value.ScA * 100);
       R = color.Value.R;
       G = color.Value.G;
       B = color.Value.B;
@@ -683,8 +735,8 @@ namespace Xceed.Wpf.Toolkit
       var currentColor = ColorUtilities.ConvertHsvToRgb( hsv.H, hsv.S, hsv.V );
 
       // alpha update
-      var alpha = _alphaSlider != null ? _alphaSlider.Value : A;
-      currentColor.A = ( byte )alpha;
+      var alpha = _alphaSlider != null ? _alphaSlider.Value / 100 : DecA / 100;
+      currentColor.ScA = ( float )alpha;
 
       SetColor( currentColor );
     }

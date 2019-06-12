@@ -123,8 +123,9 @@
                <Canvas SnapsToDevicePixels="true">
                   <Path x:Name="LeftArrow"
                             Width="6" Height="8"
-                            Data="F1 M 276.761,316L 262.619,307.835L 262.619,324.165L 276.761,316 Z " Fill="#FF000000" RenderTransformOrigin="0.5,0.5"
-                            Stretch="Fill" Stroke="#FF000000" StrokeLineJoin="Round">
+                            Data="F1 M 276.761,316L 262.619,307.835L 262.619,324.165L 276.761,316 Z " Fill="#FF000000"
+                            RenderTransformOrigin="0.5,0.5" Stretch="Fill" Stroke="#FF000000"
+                            StrokeLineJoin="Round">
                      <Path.RenderTransform>
                         <TransformGroup>
                            <ScaleTransform />
@@ -136,8 +137,9 @@
                   </Path>
                   <Path x:Name="RightArrow"
                             Width="6" Height="8"
-                            Data="F1 M 276.761,316L 262.619,307.835L 262.619,324.165L 276.761,316 Z " Fill="#FF000000" RenderTransformOrigin="0.5,0.5"
-                            Stretch="Fill" Stroke="#FF000000" StrokeLineJoin="Round">
+                            Data="F1 M 276.761,316L 262.619,307.835L 262.619,324.165L 276.761,316 Z " Fill="#FF000000"
+                            RenderTransformOrigin="0.5,0.5" Stretch="Fill" Stroke="#FF000000"
+                            StrokeLineJoin="Round">
                      <Path.RenderTransform>
                         <TransformGroup>
                            <ScaleTransform />
@@ -400,10 +402,11 @@
                            <Slider x:Name="PART_OpacitySlider"
                                         Grid.Row="2" Grid.Column="6"
                                         Margin="4,6,4,6" VerticalAlignment="Center"
-                                        LargeChange="10" Maximum="255" SmallChange="1"
+                                        LargeChange="10" Maximum="100" Minimum="0"
+                                        SmallChange="1"
                                         Style="{StaticResource ColorCanvasSliderStyle}"
                                         Visibility="{Binding Path=UsingAlphaChannel, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                        Value="{Binding Path=A, RelativeSource={RelativeSource TemplatedParent}}" />
+                                        Value="{Binding Path=DecA, RelativeSource={RelativeSource TemplatedParent}}" />
                            <TextBox
                                         Grid.Row="0" Grid.Column="6"
                                         VerticalAlignment="Center"
@@ -477,12 +480,12 @@
       <Setter Property="Background" Value="Transparent" />
       <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
       <Setter Property="Minimum" Value="0" />
-      <Setter Property="Maximum" Value="255" />
-      <Setter Property="TickFrequency" Value="0.001" />
+      <Setter Property="Maximum" Value="100" />
+      <Setter Property="TickFrequency" Value="1" />
       <Setter Property="IsSnapToTickEnabled" Value="True" />
       <Setter Property="IsDirectionReversed" Value="False" />
       <Setter Property="IsMoveToPointEnabled" Value="True" />
-      <Setter Property="Value" Value="0" />
+      <Setter Property="Value" Value="100" />
       <Setter Property="Template">
          <Setter.Value>
             <ControlTemplate TargetType="{x:Type local:AlphaSpectrumSlider}">
