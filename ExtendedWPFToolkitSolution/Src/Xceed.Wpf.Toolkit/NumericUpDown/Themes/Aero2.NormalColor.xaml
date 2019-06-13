@@ -48,7 +48,7 @@
          <Setter.Value>
             <ControlTemplate TargetType="Control">
                <local:ButtonSpinner x:Name="PART_Spinner"
-                        HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                        Padding="0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
                         AllowSpin="{Binding AllowSpin, RelativeSource={RelativeSource TemplatedParent}}"
                         Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
