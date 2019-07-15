@@ -39,12 +39,22 @@ namespace Xceed.Wpf.Toolkit
 
     protected override byte IncrementValue( byte value, byte increment )
     {
-      return ( byte )( value + increment );
+      return ( byte )(value + increment);
     }
 
     protected override byte DecrementValue( byte value, byte increment )
     {
-      return ( byte )( value - increment );
+      return ( byte )(value - increment);
+    }
+
+    protected override byte IncrementTenTimesValue( byte value, byte increment )
+    {
+      return ( byte )(value + increment * 10);
+    }
+
+    protected override byte DecrementTenTimesValue( byte value, byte increment )
+    {
+      return ( byte )(value - increment * 10);
     }
 
     #endregion //Base Class Overrides

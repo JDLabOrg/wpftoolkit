@@ -39,12 +39,22 @@ namespace Xceed.Wpf.Toolkit
 
     protected override uint IncrementValue( uint value, uint increment )
     {
-      return ( uint )( value + increment );
+      return ( uint )(value + increment);
     }
 
     protected override uint DecrementValue( uint value, uint increment )
     {
-      return ( uint )( value - increment );
+      return ( uint )(value - increment);
+    }
+
+    protected override uint IncrementTenTimesValue( uint value, uint increment )
+    {
+      return ( uint )(value + increment * 10);
+    }
+
+    protected override uint DecrementTenTimesValue( uint value, uint increment )
+    {
+      return ( uint )(value - increment * 10);
     }
 
     #endregion //Base Class Overrides

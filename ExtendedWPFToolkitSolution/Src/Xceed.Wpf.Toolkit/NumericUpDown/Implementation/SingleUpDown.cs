@@ -58,7 +58,7 @@ namespace Xceed.Wpf.Toolkit
 
     protected override float? OnCoerceIncrement( float? baseValue )
     {
-      if( baseValue.HasValue && float.IsNaN( baseValue.Value ) )
+      if (baseValue.HasValue && float.IsNaN( baseValue.Value ))
         throw new ArgumentException( "NaN is invalid for Increment." );
 
       return base.OnCoerceIncrement( baseValue );
@@ -66,7 +66,7 @@ namespace Xceed.Wpf.Toolkit
 
     protected override float? OnCoerceMaximum( float? baseValue )
     {
-      if( baseValue.HasValue && float.IsNaN( baseValue.Value ) )
+      if (baseValue.HasValue && float.IsNaN( baseValue.Value ))
         throw new ArgumentException( "NaN is invalid for Maximum." );
 
       return base.OnCoerceMaximum( baseValue );
@@ -74,7 +74,7 @@ namespace Xceed.Wpf.Toolkit
 
     protected override float? OnCoerceMinimum( float? baseValue )
     {
-      if( baseValue.HasValue && float.IsNaN( baseValue.Value ) )
+      if (baseValue.HasValue && float.IsNaN( baseValue.Value ))
         throw new ArgumentException( "NaN is invalid for Minimum." );
 
       return base.OnCoerceMinimum( baseValue );
@@ -90,9 +90,19 @@ namespace Xceed.Wpf.Toolkit
       return value - increment;
     }
 
+    protected override float IncrementTenTimesValue( float value, float increment )
+    {
+      return value + increment * 10;
+    }
+
+    protected override float DecrementTenTimesValue( float value, float increment )
+    {
+      return value - increment * 10;
+    }
+
     protected override void SetValidSpinDirection()
     {
-      if( Value.HasValue && float.IsInfinity( Value.Value ) && ( Spinner != null ) )
+      if (Value.HasValue && float.IsInfinity( Value.Value ) && (Spinner != null))
       {
         Spinner.ValidSpinDirection = ValidSpinDirections.None;
       }
@@ -106,13 +116,13 @@ namespace Xceed.Wpf.Toolkit
     {
       float? result = base.ConvertTextToValue( text );
 
-      if( result != null )
+      if (result != null)
       {
-        if( float.IsNaN( result.Value ) )
+        if (float.IsNaN( result.Value ))
           TestInputSpecialValue( this.AllowInputSpecialValues, AllowedSpecialValues.NaN );
-        else if( float.IsPositiveInfinity( result.Value ) )
+        else if (float.IsPositiveInfinity( result.Value ))
           TestInputSpecialValue( this.AllowInputSpecialValues, AllowedSpecialValues.PositiveInfinity );
-        else if( float.IsNegativeInfinity( result.Value ) )
+        else if (float.IsNegativeInfinity( result.Value ))
           TestInputSpecialValue( this.AllowInputSpecialValues, AllowedSpecialValues.NegativeInfinity );
       }
 

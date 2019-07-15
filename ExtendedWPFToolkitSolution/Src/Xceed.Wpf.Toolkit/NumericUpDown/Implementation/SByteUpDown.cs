@@ -39,12 +39,22 @@ namespace Xceed.Wpf.Toolkit
 
     protected override sbyte IncrementValue( sbyte value, sbyte increment )
     {
-      return ( sbyte )( value + increment );
+      return ( sbyte )(value + increment);
     }
 
     protected override sbyte DecrementValue( sbyte value, sbyte increment )
     {
-      return ( sbyte )( value - increment );
+      return ( sbyte )(value - increment);
+    }
+
+    protected override sbyte IncrementTenTimesValue( sbyte value, sbyte increment )
+    {
+      return ( sbyte )(value + increment * 10);
+    }
+
+    protected override sbyte DecrementTenTimesValue( sbyte value, sbyte increment )
+    {
+      return ( sbyte )(value - increment * 10);
     }
 
     #endregion //Base Class Overrides

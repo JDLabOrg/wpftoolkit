@@ -19,6 +19,7 @@ using System.Windows;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Windows.Input;
 
 namespace Xceed.Wpf.Toolkit
 {
@@ -74,16 +75,16 @@ namespace Xceed.Wpf.Toolkit
 
     protected CommonNumericUpDown( FromText fromText, FromDecimal fromDecimal, Func<T, T, bool> fromLowerThan, Func<T, T, bool> fromGreaterThan )
     {
-      if( fromText == null )
+      if (fromText == null)
         throw new ArgumentNullException( "tryParseMethod" );
 
-      if( fromDecimal == null )
+      if (fromDecimal == null)
         throw new ArgumentNullException( "fromDecimal" );
 
-      if( fromLowerThan == null )
+      if (fromLowerThan == null)
         throw new ArgumentNullException( "fromLowerThan" );
 
-      if( fromGreaterThan == null )
+      if (fromGreaterThan == null)
         throw new ArgumentNullException( "fromGreaterThan" );
 
       _fromText = fromText;
@@ -104,9 +105,9 @@ namespace Xceed.Wpf.Toolkit
 
     protected void TestInputSpecialValue( AllowedSpecialValues allowedValues, AllowedSpecialValues valueToCompare )
     {
-      if( ( allowedValues & valueToCompare ) != valueToCompare )
+      if ((allowedValues & valueToCompare) != valueToCompare)
       {
-        switch( valueToCompare )
+        switch (valueToCompare)
         {
           case AllowedSpecialValues.NaN:
             throw new InvalidDataException( "Value to parse shouldn't be NaN." );
@@ -123,6 +124,32 @@ namespace Xceed.Wpf.Toolkit
       return !IsLowerThan( value, Minimum ) && !IsGreaterThan( value, Maximum );
     }
 
+    protected override void OnPreviewKeyDown( KeyEventArgs e )
+    {
+      base.OnPreviewKeyDown( e );
+      if (!e.Handled)
+      {
+        switch (e.Key)
+        {
+          case Key.OemPlus:
+          case Key.Add:
+            {
+              OnIncrement();
+              e.Handled = true;
+              break;
+            }
+          case Key.OemMinus:
+          case Key.Subtract:
+            {
+              OnDecrement();
+              e.Handled = true;
+              break;
+            }
+        }
+
+      }
+    }
+
     #endregion
 
     #region Private Methods
@@ -136,7 +163,7 @@ namespace Xceed.Wpf.Toolkit
 
     private bool IsLowerThan( T? value1, T? value2 )
     {
-      if( value1 == null || value2 == null )
+      if (value1 == null || value2 == null)
         return false;
 
       return _fromLowerThan( value1.Value, value2.Value );
@@ -144,7 +171,7 @@ namespace Xceed.Wpf.Toolkit
 
     private bool IsGreaterThan( T? value1, T? value2 )
     {
-      if( value1 == null || value2 == null )
+      if (value1 == null || value2 == null)
         return false;
 
       return _fromGreaterThan( value1.Value, value2.Value );
@@ -152,9 +179,9 @@ namespace Xceed.Wpf.Toolkit
 
     private bool HandleNullSpin()
     {
-      if( !Value.HasValue )
+      if (!Value.HasValue)
       {
-        T forcedValue = ( DefaultValue.HasValue )
+        T forcedValue = (DefaultValue.HasValue)
           ? DefaultValue.Value
           : default( T );
 
@@ -162,7 +189,7 @@ namespace Xceed.Wpf.Toolkit
 
         return true;
       }
-      else if( !Increment.HasValue )
+      else if (!Increment.HasValue)
       {
         return true;
       }
@@ -172,9 +199,9 @@ namespace Xceed.Wpf.Toolkit
 
     private T? CoerceValueMinMax( T value )
     {
-      if( IsLowerThan( value, Minimum ) )
+      if (IsLowerThan( value, Minimum ))
         return Minimum;
-      else if( IsGreaterThan( value, Maximum ) )
+      else if (IsGreaterThan( value, Maximum ))
         return Maximum;
       else
         return value;
@@ -186,7 +213,7 @@ namespace Xceed.Wpf.Toolkit
 
     protected override void OnIncrement()
     {
-      if( !HandleNullSpin() )
+      if (!HandleNullSpin())
       {
         /*
         * if UpdateValueOnEnterKey is true, 
@@ -202,15 +229,24 @@ namespace Xceed.Wpf.Toolkit
         //}
         //else 
         // {
-          var result = this.IncrementValue( Value.Value, Increment.Value );
-          this.Value = this.CoerceValueMinMax( result );
+        T increment = Increment.Value;
+        T result;
+        if (Keyboard.IsKeyDown( Key.LeftShift ) || Keyboard.IsKeyDown( Key.RightShift ))
+        {
+          result = this.IncrementTenTimesValue( Value.Value, increment );
+        }
+        else
+        {
+          result = this.IncrementValue( Value.Value, increment );
+        }
+        this.Value = this.CoerceValueMinMax( result );
         // }
       }
     }
 
     protected override void OnDecrement()
     {
-      if( !HandleNullSpin() )
+      if (!HandleNullSpin())
       {
         /* if UpdateValueOnEnterKey is true, 
          * Sync Value on Text only when Enter Key is pressed.
@@ -224,8 +260,17 @@ namespace Xceed.Wpf.Toolkit
         //}
         // else
         // {
-          var result = this.DecrementValue( Value.Value, Increment.Value );
-          this.Value = this.CoerceValueMinMax( result );
+        T increment = Increment.Value;
+        T result;
+        if (Keyboard.IsKeyDown( Key.LeftShift ) || Keyboard.IsKeyDown( Key.RightShift ))
+        {
+          result = this.DecrementTenTimesValue( Value.Value, increment );
+        }
+        else
+        {
+          result = this.DecrementValue( Value.Value, increment );
+        }
+        this.Value = this.CoerceValueMinMax( result );
         // {
       }
     }
@@ -234,7 +279,7 @@ namespace Xceed.Wpf.Toolkit
     {
       base.OnMinimumChanged( oldValue, newValue );
 
-      if( this.Value.HasValue && this.ClipValueToMinMax )
+      if (this.Value.HasValue && this.ClipValueToMinMax)
       {
         this.Value = this.CoerceValueMinMax( this.Value.Value );
       }
@@ -244,7 +289,7 @@ namespace Xceed.Wpf.Toolkit
     {
       base.OnMaximumChanged( oldValue, newValue );
 
-      if( this.Value.HasValue && this.ClipValueToMinMax )
+      if (this.Value.HasValue && this.ClipValueToMinMax)
       {
         this.Value = this.CoerceValueMinMax( this.Value.Value );
       }
@@ -254,13 +299,13 @@ namespace Xceed.Wpf.Toolkit
     {
       T? result = null;
 
-      if( String.IsNullOrEmpty( text ) )
+      if (String.IsNullOrEmpty( text ))
         return result;
 
       // Since the conversion from Value to text using a FormartString may not be parsable,
       // we verify that the already existing text is not the exact same value.
       string currentValueText = ConvertValueToText();
-      if( object.Equals( currentValueText, text ) )
+      if (object.Equals( currentValueText, text ))
       {
         this.IsInvalid = false;
         return this.Value;
@@ -268,7 +313,7 @@ namespace Xceed.Wpf.Toolkit
 
       result = this.ConvertTextToValueCore( currentValueText, text );
 
-      if( this.ClipValueToMinMax )
+      if (this.ClipValueToMinMax)
       {
         return this.GetClippedMinMaxValue( result );
       }
@@ -280,13 +325,13 @@ namespace Xceed.Wpf.Toolkit
 
     protected override string ConvertValueToText()
     {
-      if( Value == null )
+      if (Value == null)
         return string.Empty;
 
       this.IsInvalid = false;
 
       //Manage FormatString of type "{}{0:N2} °" (in xaml) or "{0:N2} °" in code-behind.
-      if( FormatString.Contains( "{0" ) )
+      if (FormatString.Contains( "{0" ))
         return string.Format( CultureInfo, FormatString, Value.Value );
 
       return Value.Value.ToString( FormatString, CultureInfo );
@@ -297,23 +342,23 @@ namespace Xceed.Wpf.Toolkit
       ValidSpinDirections validDirections = ValidSpinDirections.None;
 
       // Null increment always prevents spin.
-      if( (this.Increment != null) && !IsReadOnly )
+      if ((this.Increment != null) && !IsReadOnly)
       {
-        if( IsLowerThan( Value, Maximum ) || !Value.HasValue || !Maximum.HasValue)
+        if (IsLowerThan( Value, Maximum ) || !Value.HasValue || !Maximum.HasValue)
           validDirections = validDirections | ValidSpinDirections.Increase;
 
-        if( IsGreaterThan( Value, Minimum ) || !Value.HasValue || !Minimum.HasValue )
+        if (IsGreaterThan( Value, Minimum ) || !Value.HasValue || !Minimum.HasValue)
           validDirections = validDirections | ValidSpinDirections.Decrease;
       }
 
-      if( Spinner != null )
+      if (Spinner != null)
         Spinner.ValidSpinDirection = validDirections;
     }
 
     private bool IsPercent( string stringToTest )
     {
       int PIndex = stringToTest.IndexOf( "P" );
-      if( PIndex >= 0 )
+      if (PIndex >= 0)
       {
         //stringToTest contains a "P" between 2 "'", it's considered as text, not percent
         bool isText = (stringToTest.Substring( 0, PIndex ).Contains( "'" )
@@ -328,7 +373,7 @@ namespace Xceed.Wpf.Toolkit
     {
       T? result;
 
-      if( this.IsPercent( this.FormatString ) )
+      if (this.IsPercent( this.FormatString ))
       {
         result = _fromDecimal( ParsePercent( text, CultureInfo ) );
       }
@@ -336,29 +381,29 @@ namespace Xceed.Wpf.Toolkit
       {
         T outputValue = new T();
         // Problem while converting new text
-        if( !_fromText( text, this.ParsingNumberStyle, CultureInfo, out outputValue ) )
+        if (!_fromText( text, this.ParsingNumberStyle, CultureInfo, out outputValue ))
         {
           bool shouldThrow = true;
 
           // case 164198: Throw when replacing only the digit part of 99° through UI.
           // Check if CurrentValueText is also failing => it also contains special characters. ex : 90°
           T currentValueTextOutputValue;
-          if( !_fromText( currentValueText, this.ParsingNumberStyle, CultureInfo, out currentValueTextOutputValue ) )
+          if (!_fromText( currentValueText, this.ParsingNumberStyle, CultureInfo, out currentValueTextOutputValue ))
           {
             // extract non-digit characters
             var currentValueTextSpecialCharacters = currentValueText.Where( c => !Char.IsDigit( c ) );
-            if( currentValueTextSpecialCharacters.Count() > 0 )
+            if (currentValueTextSpecialCharacters.Count() > 0)
             {
               var textSpecialCharacters = text.Where( c => !Char.IsDigit( c ) );
               // same non-digit characters on currentValueText and new text => remove them on new Text to parse it again.
-              if( currentValueTextSpecialCharacters.Except( textSpecialCharacters ).ToList().Count == 0 )
+              if (currentValueTextSpecialCharacters.Except( textSpecialCharacters ).ToList().Count == 0)
               {
-                foreach( var character in textSpecialCharacters )
+                foreach (var character in textSpecialCharacters)
                 {
                   text = text.Replace( character.ToString(), string.Empty );
                 }
                 // if without the special characters, parsing is good, do not throw
-                if( _fromText( text, this.ParsingNumberStyle, CultureInfo, out outputValue ) )
+                if (_fromText( text, this.ParsingNumberStyle, CultureInfo, out outputValue ))
                 {
                   shouldThrow = false;
                 }
@@ -366,7 +411,7 @@ namespace Xceed.Wpf.Toolkit
             }
           }
 
-          if( shouldThrow )
+          if (shouldThrow)
           {
             this.IsInvalid = true;
             throw new InvalidDataException( "Input string was not in a correct format." );
@@ -379,9 +424,9 @@ namespace Xceed.Wpf.Toolkit
 
     private T? GetClippedMinMaxValue( T? result )
     {
-      if( this.IsGreaterThan( result, this.Maximum ) )
+      if (this.IsGreaterThan( result, this.Maximum ))
         return this.Maximum;
-      else if( this.IsLowerThan( result, this.Minimum ) )
+      else if (this.IsLowerThan( result, this.Minimum ))
         return this.Minimum;
       return result;
     }
@@ -389,12 +434,12 @@ namespace Xceed.Wpf.Toolkit
     private void ValidateDefaultMinMax( T? value )
     {
       // DefaultValue is always accepted.
-      if( object.Equals( value, DefaultValue ) )
+      if (object.Equals( value, DefaultValue ))
         return;
 
-      if( IsLowerThan( value, Minimum ) )
+      if (IsLowerThan( value, Minimum ))
         throw new ArgumentOutOfRangeException( "Minimum", String.Format( "Value must be greater than MinValue of {0}", Minimum ) );
-      else if( IsGreaterThan( value, Maximum ) )
+      else if (IsGreaterThan( value, Maximum ))
         throw new ArgumentOutOfRangeException( "Maximum", String.Format( "Value must be less than MaxValue of {0}", Maximum ) );
     }
 
@@ -402,7 +447,11 @@ namespace Xceed.Wpf.Toolkit
 
     #region Abstract Methods
 
+    protected abstract T IncrementTenTimesValue( T value, T increment );
+
     protected abstract T IncrementValue( T value, T increment );
+
+    protected abstract T DecrementTenTimesValue( T value, T increment );
 
     protected abstract T DecrementValue( T value, T increment );
 

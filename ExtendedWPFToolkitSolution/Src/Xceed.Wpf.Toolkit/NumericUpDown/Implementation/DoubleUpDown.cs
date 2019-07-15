@@ -59,7 +59,7 @@ namespace Xceed.Wpf.Toolkit
 
     protected override double? OnCoerceIncrement( double? baseValue )
     {
-      if( baseValue.HasValue && double.IsNaN( baseValue.Value ) )
+      if (baseValue.HasValue && double.IsNaN( baseValue.Value ))
         throw new ArgumentException( "NaN is invalid for Increment." );
 
       return base.OnCoerceIncrement( baseValue );
@@ -67,7 +67,7 @@ namespace Xceed.Wpf.Toolkit
 
     protected override double? OnCoerceMaximum( double? baseValue )
     {
-      if( baseValue.HasValue && double.IsNaN( baseValue.Value ) )
+      if (baseValue.HasValue && double.IsNaN( baseValue.Value ))
         throw new ArgumentException( "NaN is invalid for Maximum." );
 
       return base.OnCoerceMaximum( baseValue );
@@ -75,7 +75,7 @@ namespace Xceed.Wpf.Toolkit
 
     protected override double? OnCoerceMinimum( double? baseValue )
     {
-      if( baseValue.HasValue && double.IsNaN( baseValue.Value ) )
+      if (baseValue.HasValue && double.IsNaN( baseValue.Value ))
         throw new ArgumentException( "NaN is invalid for Minimum." );
 
       return base.OnCoerceMinimum( baseValue );
@@ -91,9 +91,19 @@ namespace Xceed.Wpf.Toolkit
       return value - increment;
     }
 
+    protected override double IncrementTenTimesValue( double value, double increment )
+    {
+      return value + increment * 10;
+    }
+
+    protected override double DecrementTenTimesValue( double value, double increment )
+    {
+      return value - increment * 10;
+    }
+
     protected override void SetValidSpinDirection()
     {
-      if( Value.HasValue && double.IsInfinity( Value.Value ) && ( Spinner != null ) )
+      if (Value.HasValue && double.IsInfinity( Value.Value ) && (Spinner != null))
       {
         Spinner.ValidSpinDirection = ValidSpinDirections.None;
       }
@@ -106,13 +116,13 @@ namespace Xceed.Wpf.Toolkit
     protected override double? ConvertTextToValue( string text )
     {
       double? result = base.ConvertTextToValue( text );
-      if( result != null )
+      if (result != null)
       {
-        if( double.IsNaN( result.Value ) )
+        if (double.IsNaN( result.Value ))
           TestInputSpecialValue( this.AllowInputSpecialValues, AllowedSpecialValues.NaN );
-        else if( double.IsPositiveInfinity( result.Value ) )
+        else if (double.IsPositiveInfinity( result.Value ))
           TestInputSpecialValue( this.AllowInputSpecialValues, AllowedSpecialValues.PositiveInfinity );
-        else if( double.IsNegativeInfinity( result.Value ) )
+        else if (double.IsNegativeInfinity( result.Value ))
           TestInputSpecialValue( this.AllowInputSpecialValues, AllowedSpecialValues.NegativeInfinity );
       }
 
