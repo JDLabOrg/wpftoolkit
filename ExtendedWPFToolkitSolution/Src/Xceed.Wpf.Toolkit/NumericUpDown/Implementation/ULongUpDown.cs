@@ -39,12 +39,22 @@ namespace Xceed.Wpf.Toolkit
 
     protected override ulong IncrementValue( ulong value, ulong increment )
     {
-      return ( ulong )( value + increment );
+      return ( ulong )(value + increment);
     }
 
     protected override ulong DecrementValue( ulong value, ulong increment )
     {
-      return ( ulong )( value - increment );
+      return ( ulong )(value - increment);
+    }
+
+    protected override ulong IncrementTenTimesValue( ulong value, ulong increment )
+    {
+      return ( ulong )(value + increment * 10);
+    }
+
+    protected override ulong DecrementTenTimesValue( ulong value, ulong increment )
+    {
+      return ( ulong )(value - increment * 10);
     }
 
     #endregion //Base Class Overrides

@@ -39,12 +39,23 @@ namespace Xceed.Wpf.Toolkit
 
     protected override ushort IncrementValue( ushort value, ushort increment )
     {
-      return ( ushort )( value + increment );
+      return ( ushort )(value + increment);
     }
 
     protected override ushort DecrementValue( ushort value, ushort increment )
     {
-      return ( ushort )( value - increment );
+      return ( ushort )(value - increment);
+    }
+
+
+    protected override ushort IncrementTenTimesValue( ushort value, ushort increment )
+    {
+      return ( ushort )(value + increment * 10);
+    }
+
+    protected override ushort DecrementTenTimesValue( ushort value, ushort increment )
+    {
+      return ( ushort )(value - increment * 10);
     }
 
     #endregion //Base Class Overrides

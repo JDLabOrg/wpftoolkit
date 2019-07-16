@@ -47,6 +47,16 @@ namespace Xceed.Wpf.Toolkit
       return value - increment;
     }
 
+    protected override long IncrementTenTimesValue( long value, long increment )
+    {
+      return value + increment * 10;
+    }
+
+    protected override long DecrementTenTimesValue( long value, long increment )
+    {
+      return value - increment * 10;
+    }
+
     #endregion //Base Class Overrides
   }
 }
